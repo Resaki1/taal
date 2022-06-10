@@ -1,10 +1,16 @@
-type TileProps = { x: number; y: number; color: [number, number, number] };
+export type TileProps = {
+  x: number;
+  y: number;
+  color: [number, number, number];
+};
 
-export const Tile = ({ x, y, color }: TileProps) => (
-  <group position={[x, 0, y]}>
-    <mesh>
-      <boxGeometry />
-      <meshStandardMaterial color={color} />
-    </mesh>
-  </group>
-);
+export const Tile = ({ x, y, color }: TileProps) => {
+  return (
+    <group position={[x, 0, y]}>
+      <mesh>
+        <boxGeometry />
+        <meshStandardMaterial color={color} />
+      </mesh>
+    </group>
+  );
+};
