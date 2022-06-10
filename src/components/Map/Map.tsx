@@ -13,7 +13,7 @@ export const Map = () => {
       map.tiles.push({
         x,
         y,
-        color: [Math.random(), Math.random(), Math.random()],
+        type: Math.round(Math.random() * 3),
       });
     }
   }
@@ -25,7 +25,7 @@ export const Map = () => {
           key={`${tile.x}/${tile.y}`}
           x={tile.x}
           y={tile.y}
-          color={tile.color as [number, number, number]}
+          type={tile.type}
         />
       ))}
     </group>
