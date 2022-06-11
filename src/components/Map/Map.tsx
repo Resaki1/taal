@@ -8,21 +8,26 @@ export const Map = () => {
     tiles: [],
   };
 
-  const MAPSIZE = 32;
+  const MAPSIZE = 128;
+
+  const noisejs = require("noisejs");
+
+  const terrain = new noisejs.Noise(Math.random());
+
   for (var x = -MAPSIZE / 2; x < MAPSIZE / 2; x++) {
     for (var y = -MAPSIZE / 2; y < MAPSIZE / 2; y++) {
       map.tiles.push({
         x,
         y,
-        type: Math.round(Math.random() * 3),
+        type: terrain.perlin2(x / 24, y / 24),
       });
     }
   }
 
   return (
     <Instances
-      /* limit={1000} */ // Optional: max amount of items (for calculating buffer size)
-      range={20} // Optional: draw-range
+      limit={MAPSIZE * MAPSIZE} // Optional: max amount of items (for calculating buffer size)
+      range={1} // Optional: draw-range
     >
       <boxGeometry />
       <meshStandardMaterial />

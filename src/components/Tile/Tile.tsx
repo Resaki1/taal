@@ -10,7 +10,7 @@ export const Tile = ({ x, y, type }: TileProps) => {
       <mesh>
         <boxGeometry />
         <meshStandardMaterial
-          color={type === 0 ? "green" : type === 1 ? "blue" : "grey"}
+          color={type <= -0.2 ? "blue" : type < 0.4 ? "green" : "grey"}
         />
       </mesh>
     </group>
