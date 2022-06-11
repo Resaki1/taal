@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Map } from "./components/Map/Map";
 import "./App.css";
-import { MapControls, Stats } from "@react-three/drei";
+import { AdaptiveDpr, MapControls, Stats } from "@react-three/drei";
 
 const App = () => {
   return (
@@ -15,6 +15,7 @@ const App = () => {
         <MapControls />
         <Map />
         <Stats showPanel={0} className="stats" />
+        <AdaptiveDpr pixelated />
       </Canvas>
     </div>
   );

@@ -1,3 +1,4 @@
+import { Instance, Instances } from "@react-three/drei";
 import { Tile, TileProps } from "../Tile/Tile";
 
 export const Map = () => {
@@ -7,9 +8,9 @@ export const Map = () => {
     tiles: [],
   };
 
-  const MAPSIZE = 40;
-  for (var x = 0; x < MAPSIZE; x++) {
-    for (var y = 0; y < MAPSIZE; y++) {
+  const MAPSIZE = 32;
+  for (var x = -MAPSIZE / 2; x < MAPSIZE / 2; x++) {
+    for (var y = -MAPSIZE / 2; y < MAPSIZE / 2; y++) {
       map.tiles.push({
         x,
         y,
@@ -19,7 +20,12 @@ export const Map = () => {
   }
 
   return (
-    <group>
+    <Instances
+      /* limit={1000} */ // Optional: max amount of items (for calculating buffer size)
+      range={20} // Optional: draw-range
+    >
+      <boxGeometry />
+      <meshStandardMaterial />
       {map.tiles.map((tile) => (
         <Tile
           key={`${tile.x}/${tile.y}`}
@@ -28,6 +34,8 @@ export const Map = () => {
           type={tile.type}
         />
       ))}
-    </group>
+      // As many as you want, make them conditional, mount/unmount them, lazy
+      load them, etc ...
+    </Instances>
   );
 };
