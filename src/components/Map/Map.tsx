@@ -1,5 +1,3 @@
-import { Instances } from "@react-three/drei";
-import { tile } from "../../materials/materials";
 import { Tile, TileProps } from "../Tile/Tile";
 
 export const Map = () => {
@@ -26,10 +24,7 @@ export const Map = () => {
   }
 
   return (
-    <Instances
-      limit={MAPSIZE * MAPSIZE} // Optional: max amount of items (for calculating buffer size)
-      range={1} // Optional: draw-range
-    >
+    <>
       <boxBufferGeometry />
       <meshStandardMaterial />
       {map.tiles.map((tile) => (
@@ -40,6 +35,6 @@ export const Map = () => {
           type={tile.type}
         />
       ))}
-    </Instances>
+    </>
   );
 };
