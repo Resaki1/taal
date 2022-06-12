@@ -1,4 +1,5 @@
-import { Instance, Instances } from "@react-three/drei";
+import { Instances } from "@react-three/drei";
+import { tile } from "../../materials/materials";
 import { Tile, TileProps } from "../Tile/Tile";
 
 export const Map = () => {
@@ -8,7 +9,7 @@ export const Map = () => {
     tiles: [],
   };
 
-  const MAPSIZE = 128;
+  const MAPSIZE = 96;
 
   const noisejs = require("noisejs");
 
@@ -29,7 +30,7 @@ export const Map = () => {
       limit={MAPSIZE * MAPSIZE} // Optional: max amount of items (for calculating buffer size)
       range={1} // Optional: draw-range
     >
-      <boxGeometry />
+      <boxBufferGeometry />
       <meshStandardMaterial />
       {map.tiles.map((tile) => (
         <Tile
@@ -39,8 +40,6 @@ export const Map = () => {
           type={tile.type}
         />
       ))}
-      // As many as you want, make them conditional, mount/unmount them, lazy
-      load them, etc ...
     </Instances>
   );
 };
