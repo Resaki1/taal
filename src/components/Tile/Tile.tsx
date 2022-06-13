@@ -27,7 +27,7 @@ export const Tile = ({ x, y, type }: TileProps) => {
         : type < 0.6
         ? forest
         : mountain,
-    []
+    [type]
   );
 
   return (
