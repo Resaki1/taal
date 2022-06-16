@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export const tile = new THREE.BoxBufferGeometry(1, 1, 1);
+export const tile = new THREE.PlaneBufferGeometry(1, 1, 1);
 
 export const water = new THREE.MeshStandardMaterial({ color: "blue" });
 export const sand = new THREE.MeshStandardMaterial({ color: "yellow" });

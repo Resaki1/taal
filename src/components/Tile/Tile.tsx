@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Euler } from "three";
 import {
   tile,
   water,
@@ -31,6 +32,11 @@ export const Tile = ({ x, y, type }: TileProps) => {
   );
 
   return (
-    <mesh position={[x, 0, y]} geometry={geometry} material={material}></mesh>
+    <mesh
+      position={[x, 0, y]}
+      geometry={geometry}
+      material={material}
+      rotation={new Euler(-Math.PI / 2)}
+    ></mesh>
   );
 };
