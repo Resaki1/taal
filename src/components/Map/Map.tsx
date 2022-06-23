@@ -4,7 +4,7 @@ import { Vector3 } from "three";
 import { Tile } from "../Tile/Tile";
 
 export const Map = () => {
-  const RENDER_DISTANCE = 32;
+  const RENDER_DISTANCE = 96;
 
   const noisejs = require("noisejs");
 
@@ -25,7 +25,7 @@ export const Map = () => {
     // shift in direction of camera
     const newCenter = position.sub(ray).round();
 
-    if (centerBlock.distanceTo(newCenter) > 2) {
+    if (centerBlock.distanceTo(newCenter) > 56) {
       setCenterBlock(newCenter);
 
       let newMap: number[][] = [];
