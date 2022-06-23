@@ -21,6 +21,8 @@ export const Map = () => {
     position.set(camera.position.x, camera.position.y, camera.position.z);
     const direction = camera.getWorldDirection(target);
     const ray = direction.multiplyScalar(camera.position.y / direction.y);
+
+    // shift in direction of camera
     const newCenter = position.sub(ray).round();
 
     if (centerBlock.distanceTo(newCenter) > 2) {

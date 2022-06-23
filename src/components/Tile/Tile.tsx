@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { Euler } from "three";
 import {
-  tile,
   water,
   sand,
   meadow,
   forest,
   mountain,
+  tileMesh,
 } from "../../materials/materials";
 
 export type TileProps = {
@@ -16,7 +16,6 @@ export type TileProps = {
 };
 
 export const Tile = ({ x, y, type }: TileProps) => {
-  const geometry = useMemo(() => tile, []);
   const material = useMemo(
     () =>
       type <= -0.2
@@ -31,12 +30,10 @@ export const Tile = ({ x, y, type }: TileProps) => {
     [type]
   );
 
+  const object = useMemo(() => tileMesh(material), [material]);
+  const rotation = useMemo(() => new Euler(-Math.PI / 2), []);
+
   return (
-    <mesh
-      position={[x, 0, y]}
-      geometry={geometry}
-      material={material}
-      rotation={new Euler(-Math.PI / 2)}
-    ></mesh>
+    <primitive position={[x, 0, y]} rotation={rotation} object={object} />
   );
 };

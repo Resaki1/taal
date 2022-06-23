@@ -14,6 +14,7 @@ const App = () => {
         <directionalLight color="white" position={[10, 8, 5]} intensity={0.2} />
         <MapControls />
         <Map />
+        {/* <fog attach="fog" args={["white", 72, 82]} /> */}
         <Stats showPanel={0} className="stats" />
         <AdaptiveDpr pixelated />
       </Canvas>

@@ -1,9 +1,11 @@
-import * as THREE from "three";
+import { Mesh, MeshStandardMaterial, PlaneBufferGeometry } from "three";
 
-export const tile = new THREE.PlaneBufferGeometry(1, 1, 1);
+export const tile = new PlaneBufferGeometry(1, 1, 1);
+export const tileMesh = (material: MeshStandardMaterial) =>
+  new Mesh(tile, material);
 
-export const water = new THREE.MeshStandardMaterial({ color: "blue" });
-export const sand = new THREE.MeshStandardMaterial({ color: "yellow" });
-export const meadow = new THREE.MeshStandardMaterial({ color: "green" });
-export const forest = new THREE.MeshStandardMaterial({ color: "darkgreen" });
-export const mountain = new THREE.MeshStandardMaterial({ color: "grey" });
+export const water = new MeshStandardMaterial({ color: "blue" });
+export const sand = new MeshStandardMaterial({ color: "yellow" });
+export const meadow = new MeshStandardMaterial({ color: "green" });
+export const forest = new MeshStandardMaterial({ color: "darkgreen" });
+export const mountain = new MeshStandardMaterial({ color: "grey" });
