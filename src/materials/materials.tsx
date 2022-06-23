@@ -1,6 +1,6 @@
-import { Mesh, MeshStandardMaterial, PlaneBufferGeometry } from "three";
+import { BoxBufferGeometry, Mesh, MeshStandardMaterial } from "three";
 
-export const tile = new PlaneBufferGeometry(1, 1, 1);
+export const tile = new BoxBufferGeometry(1, 1, 1);
 export const tileMesh = (material: MeshStandardMaterial) =>
   new Mesh(tile, material);
 
