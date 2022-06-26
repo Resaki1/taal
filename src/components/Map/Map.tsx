@@ -14,6 +14,19 @@ export const Map = () => {
   const [, startTransition] = useTransition();
 
   const [map, setMap] = useState([[0, 0]]);
+  const [buildings, setBuildings] = useState<any[][]>([]);
+
+  const addBuilding = (x: number, y: number) => {
+    let newBuildings = buildings;
+    newBuildings[x][y] = "test";
+    setBuildings(newBuildings);
+  };
+
+  const addXArray = (x: number) => {
+    let newBuildings = buildings;
+    newBuildings[x] = [];
+    setBuildings(newBuildings);
+  };
 
   const target = new Vector3();
   const position = new Vector3();
@@ -49,14 +62,19 @@ export const Map = () => {
 
   return (
     <>
-      {map.map((tile) => (
-        <Tile
-          key={`${tile[0]}/${tile[1]}`}
-          x={tile[0]}
-          y={tile[1]}
-          type={terrain.perlin2(tile[0] / 24, tile[1] / 24)}
-        />
-      ))}
+      {map.map((tile) => {
+        if (!buildings[tile[0]]) addXArray(tile[0]);
+        return (
+          <Tile
+            key={`${tile[0]}/${tile[1]}`}
+            x={tile[0]}
+            y={tile[1]}
+            type={terrain.perlin2(tile[0] / 24, tile[1] / 24)}
+            building={buildings[tile[0]][tile[1]]}
+            addBuilding={addBuilding}
+          />
+        );
+      })}
     </>
   );
 };
