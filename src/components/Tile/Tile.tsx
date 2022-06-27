@@ -1,6 +1,6 @@
 import { Select } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import {
   water,
   sand,
@@ -24,7 +24,7 @@ export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
     () =>
       type <= -0.2
         ? water
-        : type < -0.15
+        : type < -0.1
         ? sand
         : type < 0.1
         ? meadow
@@ -43,7 +43,7 @@ export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
   };
 
   return (
-    <>
+    <Suspense>
       <Select box onClick={(e) => handleClick(e)}>
         <primitive position={position} object={object} />
       </Select>
@@ -51,9 +51,9 @@ export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
         <mesh
           material={mountain}
           geometry={tile}
-          position={[x, Math.pow(type, 3) * 20 + 1, y]}
+          position={[x, Math.pow(type, 3) * 20 + 2, y]}
         />
       )}
-    </>
+    </Suspense>
   );
 };

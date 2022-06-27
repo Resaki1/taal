@@ -4,7 +4,7 @@ import { Vector3 } from "three";
 import { Tile } from "../Tile/Tile";
 
 export const Map = () => {
-  const RENDER_DISTANCE = 96;
+  const RENDER_DISTANCE = 32;
 
   const noisejs = require("noisejs");
 
@@ -13,7 +13,7 @@ export const Map = () => {
   const [centerBlock, setCenterBlock] = useState(new Vector3(9999, 0, 0));
   const [, startTransition] = useTransition();
 
-  const [map, setMap] = useState([[0, 0]]);
+  const [map, setMap] = useState<number[][]>([[]]);
   const [buildings, setBuildings] = useState<any[][]>([]);
 
   const addBuilding = (x: number, y: number) => {
@@ -30,6 +30,7 @@ export const Map = () => {
 
   const target = new Vector3();
   const position = new Vector3();
+
   useFrame(() => {
     position.set(camera.position.x, camera.position.y, camera.position.z);
     const direction = camera.getWorldDirection(target);
@@ -38,7 +39,7 @@ export const Map = () => {
     // shift in direction of camera
     const newCenter = position.sub(ray).round();
 
-    if (centerBlock.distanceTo(newCenter) > 56) {
+    if (centerBlock.distanceTo(newCenter) > 6) {
       setCenterBlock(newCenter);
 
       let newMap: number[][] = [];
@@ -69,7 +70,7 @@ export const Map = () => {
             key={`${tile[0]}/${tile[1]}`}
             x={tile[0]}
             y={tile[1]}
-            type={terrain.perlin2(tile[0] / 24, tile[1] / 24)}
+            type={terrain.perlin2(tile[0] / 12, tile[1] / 12)}
             building={buildings[tile[0]][tile[1]]}
             addBuilding={addBuilding}
           />
