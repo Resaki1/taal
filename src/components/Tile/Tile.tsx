@@ -35,7 +35,7 @@ export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
   );
 
   const object = useMemo(() => tileMesh(material), [material]);
-  const position = useMemo(() => [x, Math.pow(type, 3) * 20, y], [x, y, type]);
+  const position = useMemo(() => [x, Math.pow(type, 3) * 16, y], [x, y, type]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -51,7 +51,7 @@ export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
         <mesh
           material={mountain}
           geometry={tile}
-          position={[x, Math.pow(type, 3) * 20 + 2, y]}
+          position={[x, Math.pow(type, 3) * 20 + 3, y]}
         />
       )}
     </Suspense>
