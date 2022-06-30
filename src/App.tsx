@@ -17,6 +17,7 @@ const App = () => {
         {/* <fog attach="fog" args={["white", 72, 82]} /> */}
         <Stats showPanel={0} className="stats" />
         <AdaptiveDpr pixelated />
+        <gridHelper args={[500, 500]} />
       </Canvas>
     </div>
   );

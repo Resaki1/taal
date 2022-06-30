@@ -1,6 +1,7 @@
-import { Select } from "@react-three/drei";
+import { Html, Select } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import { Suspense, useMemo } from "react";
+import { Vector3 } from "three";
 import {
   water,
   sand,
@@ -12,14 +13,13 @@ import {
 } from "../../materials/materials";
 
 export type TileProps = {
-  x: number;
-  y: number;
   type: number;
   building?: string;
   addBuilding: (x: number, y: number) => void;
+  tileRef: (el: any) => any;
 };
 
-export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
+export const Tile = ({ type, building, addBuilding, tileRef }: TileProps) => {
   const material = useMemo(
     () =>
       type <= -0.2
@@ -35,25 +35,17 @@ export const Tile = ({ x, y, type, building, addBuilding }: TileProps) => {
   );
 
   const object = useMemo(() => tileMesh(material), [material]);
-  const position = useMemo(() => [x, Math.pow(type, 3) * 16, y], [x, y, type]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    addBuilding(x, y);
   };
 
   return (
-    <Suspense>
+    <>
       <Select box onClick={(e) => handleClick(e)}>
-        <primitive position={position} object={object} />
+        <primitive object={object} ref={tileRef} />
       </Select>
-      {building && (
-        <mesh
-          material={mountain}
-          geometry={tile}
-          position={[x, Math.pow(type, 3) * 20 + 3, y]}
-        />
-      )}
-    </Suspense>
+      {building && <mesh material={mountain} geometry={tile} />}
+    </>
   );
 };
