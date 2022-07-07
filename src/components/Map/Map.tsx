@@ -1,16 +1,16 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useLayoutEffect, useRef, useState, useTransition } from "react";
-import { Vector3 } from "three";
+import { useLayoutEffect, useRef, useState } from "react";
+import { Group, Vector3 } from "three";
 import { Tile } from "../Tile/Tile";
 
 export const Map = () => {
   const RENDER_DISTANCE = 32;
 
-  let map: boolean[][] = [[]];
+  let map: number[][] = [[]];
   for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
     map[x] = [];
     for (let y = 0; y <= RENDER_DISTANCE * 2; y++) {
-      map[x][y] = true;
+      map[x][y] = Math.random();
     }
   }
 
@@ -20,6 +20,7 @@ export const Map = () => {
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
+  const groupRef = useRef<any>();
 
   const [buildings, setBuildings] = useState<any[][]>([]);
 
@@ -36,16 +37,17 @@ export const Map = () => {
   };
 
   const target = new Vector3();
-  const position = new Vector3();
+  const newPosition = new Vector3();
   const vec = new Vector3();
+  const direction = new Vector3();
+  const moveVector = new Vector3();
 
   useLayoutEffect(() => {
-    position.set(camera.position.x, camera.position.y, camera.position.z);
-    const direction = camera.getWorldDirection(target);
-    const ray = direction.multiplyScalar(camera.position.y / direction.y);
+    newPosition.set(camera.position.x, camera.position.y, camera.position.z);
+    direction.copy(camera.getWorldDirection(target));
+    vec.copy(direction.multiplyScalar(camera.position.y / direction.y));
     // shift in direction of camera
-    const newCenter = position.sub(ray).round();
-    centerBlock.current = newCenter.clone();
+    centerBlock.current = newPosition.sub(vec).round().clone();
 
     map.forEach((xRow, x) => {
       xRow.forEach((_, y) => {
@@ -60,41 +62,40 @@ export const Map = () => {
   });
 
   useFrame(() => {
-    position.set(camera.position.x, camera.position.y, camera.position.z);
-    const direction = camera.getWorldDirection(target);
-    const ray = direction.multiplyScalar(camera.position.y / direction.y);
+    newPosition.copy(camera.position); // set newPosition to camera position
+    vec.copy(camera.getWorldDirection(target)); // set vec to camera direction
+    // TODO: Maybe use .projectOnPlane()?
+    vec.multiplyScalar(camera.position.y / vec.y); // magic
+    newPosition.sub(vec).round(); // set newPosition to tile in center of view
 
-    // TODO: Create vectors once and then set position here
-    const newCenter = position.sub(ray).round();
-
-    if (centerBlock.current.distanceTo(newCenter) > 0) {
-      const dir = newCenter.clone().sub(centerBlock.current);
-      console.log(dir);
-      const test = dir
-        .clone()
+    if (centerBlock.current.distanceTo(newPosition) > 0) {
+      direction.copy(newPosition).sub(centerBlock.current); // set direction to where the camera has moved
+      moveVector
+        .copy(direction)
         .multiplyScalar(RENDER_DISTANCE * 2)
-        .add(dir.clone());
+        .add(direction);
 
-      for (let x in tileRef.current) {
-        for (let y in tileRef.current[x]) {
-          const tile = tileRef.current[x][y];
-          const centerDistance = tile?.position.distanceTo(newCenter);
+      groupRef.current.children.forEach((child: Group) => {
+        const tile = child.children[0];
 
-          if (Math.abs(tile?.position.x - newCenter.x) > RENDER_DISTANCE) {
-            tile.position.add(new Vector3(test.x, 0, 0));
-          }
-          if (Math.abs(tile?.position.z - newCenter.z) > RENDER_DISTANCE) {
-            tile.position.add(new Vector3(0, 0, test.z));
-          }
+        let updated = false;
+        if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
+          tile.position.x += moveVector.x;
+          updated = true;
         }
-      }
+        if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
+          tile.position.z += moveVector.z;
+          updated = true;
+        }
+        if (updated) tile.userData.update();
+      });
 
-      centerBlock.current = newCenter.clone();
+      centerBlock.current.copy(newPosition);
     }
   });
 
   return (
-    <>
+    <group ref={groupRef}>
       {map.map((_, x) => {
         return map.map((_, y) => {
           if (!buildings[x]) addXArray(x);
@@ -103,13 +104,13 @@ export const Map = () => {
             <Tile
               tileRef={(el: any) => (tileRef.current[x][y] = el)}
               key={`${x}/${y}`}
-              type={terrain.perlin2(x / 8, y / 8)}
+              terrain={terrain}
               building={buildings[x][y]}
               addBuilding={addBuilding}
             />
           );
         });
       })}
-    </>
+    </group>
   );
 };
