@@ -1,7 +1,14 @@
 import { Canvas } from "@react-three/fiber";
 import { Map } from "./components/Map/Map";
 import "./App.css";
-import { AdaptiveDpr, MapControls, Stats } from "@react-three/drei";
+import {
+  AdaptiveDpr,
+  AdaptiveEvents,
+  MapControls,
+  Sky,
+  Stars,
+  Stats,
+} from "@react-three/drei";
 
 const App = () => {
   return (
@@ -10,14 +17,34 @@ const App = () => {
         frameloop="demand"
         camera={{ fov: 25, near: 0.1, far: 1000, position: [6, 5, 6] }}
       >
-        <ambientLight intensity={0.6} color={"white"} />
-        <directionalLight color="white" position={[10, 8, 5]} intensity={0.6} />
+        <ambientLight intensity={0.2} color={"white"} castShadow />
+        <directionalLight
+          color="#FDB813"
+          position={[100, 20, 80]}
+          intensity={1}
+        />
+        <Sky
+          distance={4500000}
+          sunPosition={[100, 20, 80]}
+          inclination={0}
+          azimuth={0}
+          rayleigh={0}
+          turbidity={0.5}
+        />
+        <Stars
+          radius={100}
+          depth={50}
+          count={5000}
+          factor={4}
+          saturation={0}
+          fade
+          speed={1}
+        />
         <MapControls />
         <Map />
-        {/* <fog attach="fog" args={["white", 72, 82]} /> */}
         <Stats showPanel={0} className="stats" />
+        <AdaptiveEvents />
         <AdaptiveDpr pixelated />
-        {/* <gridHelper args={[500, 500]} /> */}
       </Canvas>
     </div>
   );

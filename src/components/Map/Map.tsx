@@ -47,7 +47,7 @@ export const Map = () => {
     direction.copy(camera.getWorldDirection(target));
     vec.copy(direction.multiplyScalar(camera.position.y / direction.y));
     // shift in direction of camera
-    centerBlock.current = newPosition.sub(vec).round().clone();
+    centerBlock.current.copy(newPosition.sub(vec).round());
 
     map.forEach((xRow, x) => {
       xRow.forEach((_, y) => {
