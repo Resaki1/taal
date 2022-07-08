@@ -17,15 +17,15 @@ const App = () => {
         frameloop="demand"
         camera={{ fov: 25, near: 0.1, far: 1000, position: [6, 5, 6] }}
       >
-        <ambientLight intensity={0.2} color={"white"} castShadow />
+        <ambientLight intensity={0.2} color={"#91AFFF"} />
         <directionalLight
-          color="#FDB813"
-          position={[100, 20, 80]}
-          intensity={1}
+          color="#ffdf91"
+          position={[100, 30, 80]}
+          intensity={1.4}
         />
         <Sky
           distance={4500000}
-          sunPosition={[100, 20, 80]}
+          sunPosition={[100, 15, 80]}
           inclination={0}
           azimuth={0}
           rayleigh={0}
