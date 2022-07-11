@@ -1,6 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { Group, Vector3 } from "three";
+import { useStore } from "../../store/store";
 import { Tile } from "../Tile/Tile";
 
 export const Map = () => {
@@ -16,25 +17,15 @@ export const Map = () => {
 
   const noisejs = require("noisejs");
 
+  useEffect(() => console.log("Map UseEffect"));
+
   const terrain = new noisejs.Noise(0);
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
   const groupRef = useRef<any>();
 
-  const [buildings, setBuildings] = useState<any[][]>([]);
-
-  const addBuilding = (x: number, y: number) => {
-    let newBuildings = buildings;
-    newBuildings[x][y] = "test";
-    setBuildings(newBuildings);
-  };
-
-  const addXArray = (x: number) => {
-    let newBuildings = buildings;
-    newBuildings[x] = [];
-    setBuildings(newBuildings);
-  };
+  const buildings = useStore((state) => state.buildings);
 
   const target = new Vector3();
   const newPosition = new Vector3();
@@ -59,6 +50,7 @@ export const Map = () => {
         );
       });
     });
+    console.log(buildings);
   });
 
   useFrame(() => {
@@ -98,15 +90,12 @@ export const Map = () => {
     <group ref={groupRef}>
       {map.map((_, x) => {
         return map.map((_, y) => {
-          if (!buildings[x]) addXArray(x);
           if (!tileRef.current[x]) tileRef.current[x] = [];
           return (
             <Tile
               tileRef={(el: any) => (tileRef.current[x][y] = el)}
               key={`${x}/${y}`}
               terrain={terrain}
-              building={buildings[x][y]}
-              addBuilding={addBuilding}
             />
           );
         });

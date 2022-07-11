@@ -9,3 +9,5 @@ export const sand = new MeshStandardMaterial({ color: "yellow" });
 export const meadow = new MeshStandardMaterial({ color: "green" });
 export const forest = new MeshStandardMaterial({ color: "darkgreen" });
 export const mountain = new MeshStandardMaterial({ color: "grey" });
+
+export const building = new BoxBufferGeometry(0.5, 0.5, 0.5);
