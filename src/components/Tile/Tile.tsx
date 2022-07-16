@@ -111,6 +111,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
           position={{ ...ref.current.position }}
           addBuilding={handleAdd}
           removeBuilding={handleRemove}
+          close={() => setPopupOpen(false)}
         />
       )}
     </Suspense>

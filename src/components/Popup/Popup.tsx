@@ -1,6 +1,7 @@
 import { Html } from "@react-three/drei";
 import { MouseEvent, useMemo } from "react";
 import { Vector3 } from "three";
+import { useDetectClickOutside } from "react-detect-click-outside";
 import { useStore } from "../../store/store";
 import "./Popup.scss";
 
@@ -8,13 +9,16 @@ type PopupProps = {
   position: { x: number; y: number; z: number };
   addBuilding: () => void;
   removeBuilding: () => void;
+  close: () => void;
 };
 
 export const Popup = ({
   position,
   addBuilding,
   removeBuilding,
+  close,
 }: PopupProps) => {
+  const ref = useDetectClickOutside({ onTriggered: close });
   const popupPosition = useMemo(
     () => new Vector3(position.x, position.y + 1, position.z),
     [position]
@@ -40,7 +44,7 @@ export const Popup = ({
   };
 
   return (
-    <Html position={popupPosition}>
+    <Html position={popupPosition} ref={ref}>
       <div className="popup">
         {!hasBuilding && <button onClick={handleAdd}>add</button>}
         {hasBuilding && <button onClick={handleDelete}>delete</button>}
