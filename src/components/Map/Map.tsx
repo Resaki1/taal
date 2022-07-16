@@ -1,7 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Group, Vector3 } from "three";
-import { useStore } from "../../store/store";
 import { Tile } from "../Tile/Tile";
 
 export const Map = () => {
@@ -17,15 +16,11 @@ export const Map = () => {
 
   const noisejs = require("noisejs");
 
-  useEffect(() => console.log("Map UseEffect"));
-
   const terrain = new noisejs.Noise(0);
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
   const groupRef = useRef<any>();
-
-  const buildings = useStore((state) => state.buildings);
 
   const target = new Vector3();
   const newPosition = new Vector3();
@@ -50,7 +45,6 @@ export const Map = () => {
         );
       });
     });
-    console.log(buildings);
   });
 
   useFrame(() => {

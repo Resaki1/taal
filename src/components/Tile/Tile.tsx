@@ -11,6 +11,7 @@ import {
   tileMesh,
   building,
 } from "../../materials/materials";
+import { Popup } from "../Popup/Popup";
 
 export type TileProps = {
   tileRef: (el: any) => any;
@@ -21,6 +22,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
   const ref = useRef<any>();
   const [type, setType] = useState<number>(0);
   const [, setValue] = useState(0);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   const forceUpdate = () => setValue((value) => value + 1);
 
@@ -40,8 +42,6 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
     buildings[ref.current.position.x] &&
     buildings[ref.current.position.x][ref.current.position.z] !== undefined;
 
-  useEffect(() => console.log("rendered Tile"));
-
   const getMaterial = (type: number) =>
     type <= -0.2
       ? water
@@ -57,9 +57,9 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    addBuilding(ref.current.position.x, ref.current.position.z, "test");
-    console.log(buildings);
-    forceUpdate();
+    setPopupOpen(true);
+    /* addBuilding(ref.current.position.x, ref.current.position.z, "test");
+    forceUpdate(); */
   };
 
   const onRefChange = () => {
@@ -101,6 +101,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
           ]}
         />
       )}
+      {popupOpen && <Popup position={{ ...ref.current.position }} />}
     </Suspense>
   );
 };
