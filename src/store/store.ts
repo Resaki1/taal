@@ -7,6 +7,7 @@ interface Buildings {
 interface BearState {
   buildings: Buildings;
   addBuilding: (x: number, y: number, building: string) => void;
+  removeBuilding: (x: number, y: number) => void;
 }
 
 export const useStore = create<BearState>()(
@@ -17,6 +18,12 @@ export const useStore = create<BearState>()(
         const newBuildings = state.buildings;
         if (!newBuildings[x]) newBuildings[x] = {};
         newBuildings[x][y] = building;
+        return { buildings: newBuildings };
+      }),
+    removeBuilding: (x, y) =>
+      set((state: BearState) => {
+        const newBuildings = state.buildings;
+        delete newBuildings[x][y];
         return { buildings: newBuildings };
       }),
   }))

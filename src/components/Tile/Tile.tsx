@@ -34,9 +34,12 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
       ref.current.position.y = type * type * type * 10;
     }
   }, [terrain, type]);
+  useEffect(() => console.log("useEffect"));
 
   const buildings = useStore((state) => state.buildings);
   const addBuilding = useStore((state) => state.addBuilding);
+  const removeBuilding = useStore((state) => state.removeBuilding);
+
   const hasBuilding =
     ref?.current &&
     buildings[ref.current.position.x] &&
@@ -55,13 +58,6 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
 
   const object = useMemo(() => tileMesh(getMaterial(type)), [type]);
 
-  const handleClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation();
-    setPopupOpen(true);
-    /* addBuilding(ref.current.position.x, ref.current.position.z, "test");
-    forceUpdate(); */
-  };
-
   const onRefChange = () => {
     if (
       hasBuilding ||
@@ -76,6 +72,25 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
     );
     ref.current.position.y = type * type * type * 10;
     ref.current.material = getMaterial(type);
+  };
+
+  const handleClick = (e: ThreeEvent<MouseEvent>) => {
+    e.stopPropagation();
+    setPopupOpen(!popupOpen);
+    /* addBuilding(ref.current.position.x, ref.current.position.z, "test");
+    forceUpdate(); */
+  };
+
+  const handleAdd = () => {
+    addBuilding(ref.current.position.x, ref.current.position.z, "test");
+    forceUpdate();
+    setPopupOpen(false);
+  };
+
+  const handleRemove = () => {
+    removeBuilding(ref.current.position.x, ref.current.position.z);
+    forceUpdate();
+    setPopupOpen(false);
   };
 
   return (
@@ -101,7 +116,13 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
           ]}
         />
       )}
-      {popupOpen && <Popup position={{ ...ref.current.position }} />}
+      {popupOpen && (
+        <Popup
+          position={{ ...ref.current.position }}
+          addBuilding={handleAdd}
+          removeBuilding={handleRemove}
+        />
+      )}
     </Suspense>
   );
 };
