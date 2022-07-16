@@ -9,9 +9,9 @@ import {
   forest,
   mountain,
   tileMesh,
-  building,
 } from "../../materials/materials";
 import { Popup } from "../Popup/Popup";
+import { Building } from "../building/Building";
 
 export type TileProps = {
   tileRef: (el: any) => any;
@@ -105,17 +105,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
           userData={{ update: () => onRefChange() }}
         />
       </Select>
-      {hasBuilding && (
-        <mesh
-          material={mountain}
-          geometry={building}
-          position={[
-            ref.current.position.x,
-            ref.current.position.y + 0.75,
-            ref.current.position.z,
-          ]}
-        />
-      )}
+      {hasBuilding && <Building position={ref.current.position} />}
       {popupOpen && (
         <Popup
           position={{ ...ref.current.position }}
