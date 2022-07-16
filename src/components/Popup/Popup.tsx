@@ -44,7 +44,7 @@ export const Popup = ({
   };
 
   return (
-    <Html position={popupPosition} ref={ref}>
+    <Html position={popupPosition} center ref={ref} distanceFactor={8}>
       <div className="popup">
         {!hasBuilding && <button onClick={handleAdd}>add</button>}
         {hasBuilding && <button onClick={handleDelete}>delete</button>}
