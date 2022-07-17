@@ -10,8 +10,8 @@ import {
   mountain,
   tileMesh,
 } from "../../materials/materials";
-import { Popup } from "../Popup/Popup";
 import { Building } from "../building/Building";
+import { Object3D, Event } from "three";
 
 export type TileProps = {
   tileRef: (el: any) => any;
@@ -20,9 +20,10 @@ export type TileProps = {
 
 export const Tile = ({ tileRef, terrain }: TileProps) => {
   const ref = useRef<any>();
+
   const [type, setType] = useState<number>(0);
   const [, setValue] = useState(0);
-  const [popupOpen, setPopupOpen] = useState(false);
+  const [selected, setSelected] = useState(false);
 
   const forceUpdate = () => setValue((value) => value + 1);
 
@@ -37,8 +38,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
   useEffect(() => console.log("useEffect"));
 
   const buildings = useStore((state) => state.buildings);
-  const addBuilding = useStore((state) => state.addBuilding);
-  const removeBuilding = useStore((state) => state.removeBuilding);
+  const setGlobalSelected = useStore((state) => state.setSelected);
 
   const hasBuilding =
     ref?.current &&
@@ -72,30 +72,40 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
     );
     ref.current.position.y = type * type * type * 10;
     ref.current.material = getMaterial(type);
+    selected && deselect();
   };
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    setPopupOpen(!popupOpen);
-    /* addBuilding(ref.current.position.x, ref.current.position.z, "test");
-    forceUpdate(); */
+    if (!selected) {
+      select(e.object);
+    } else {
+      deselect();
+    }
   };
 
-  const handleAdd = () => {
-    addBuilding(ref.current.position.x, ref.current.position.z, "test");
-    forceUpdate();
-    setPopupOpen(false);
+  const select = (object: Object3D<Event>) => {
+    const newMaterial = ref.current.material.clone();
+    newMaterial.emissive.set(0xffffff);
+    ref.current.material = newMaterial;
+    setGlobalSelected({ type: "tile", object: object });
+    setSelected(true);
   };
 
-  const handleRemove = () => {
-    removeBuilding(ref.current.position.x, ref.current.position.z);
-    forceUpdate();
-    setPopupOpen(false);
+  const deselect = () => {
+    ref.current.material = getMaterial(type);
+    setGlobalSelected(undefined);
+    setSelected(false);
   };
 
   return (
     <Suspense>
-      <Select key={Math.random()} box onClick={(e) => handleClick(e)}>
+      <Select
+        key={Math.random()}
+        box
+        onClick={(e) => handleClick(e)}
+        onPointerMissed={() => selected && deselect()}
+      >
         <primitive
           object={object}
           ref={(el: any) => {
@@ -106,14 +116,6 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
         />
       </Select>
       {hasBuilding && <Building position={ref.current.position} />}
-      {popupOpen && (
-        <Popup
-          position={{ ...ref.current.position }}
-          addBuilding={handleAdd}
-          removeBuilding={handleRemove}
-          close={() => setPopupOpen(false)}
-        />
-      )}
     </Suspense>
   );
 };

@@ -1,0 +1,13 @@
+.build-menu {
+  position: absolute;
+  bottom: -64px;
+  width: 100%;
+  background-color: #21494db3;
+  color: white;
+  height: 64px;
+  transition: transform 0.2s ease-in-out;
+
+  &--visible {
+    transform: translateY(-64px);
+  }
+}

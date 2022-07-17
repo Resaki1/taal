@@ -9,6 +9,7 @@ import {
   Stars,
   Stats,
 } from "@react-three/drei";
+import { BuildMenu } from "./components/BuildMenu/BuildMenu";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
         <AdaptiveEvents />
         <AdaptiveDpr pixelated />
       </Canvas>
+      <BuildMenu />
     </div>
   );
 };
