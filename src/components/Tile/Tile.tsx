@@ -93,6 +93,10 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
   };
 
   const deselect = () => {
+    const type = terrain.perlin2(
+      ref.current.position.x / 8,
+      ref.current.position.z / 8
+    );
     ref.current.material = getMaterial(type);
     setGlobalSelected(undefined);
     setSelected(false);
