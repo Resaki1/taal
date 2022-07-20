@@ -2,16 +2,10 @@ import { Select } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "../../store/store";
-import {
-  water,
-  sand,
-  meadow,
-  forest,
-  mountain,
-  tileMesh,
-} from "../../materials/materials";
+import { water, tileMesh } from "../../materials/materials";
 import { Building } from "../building/Building";
 import { Object3D, Event } from "three";
+import { Materials } from "../../materials/materials";
 
 export type TileProps = {
   tileRef: (el: any) => any;
@@ -20,6 +14,8 @@ export type TileProps = {
 
 export const Tile = ({ tileRef, terrain }: TileProps) => {
   const ref = useRef<any>();
+
+  const MATERIALS = Materials();
 
   const [type, setType] = useState<number>(0);
   const [, setValue] = useState(0);
@@ -35,7 +31,6 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
       ref.current.position.y = type * type * type * 10;
     }
   }, [terrain, type]);
-  useEffect(() => console.log("useEffect"));
 
   const buildings = useStore((state) => state.buildings);
   const setGlobalSelected = useStore((state) => state.setSelected);
@@ -49,12 +44,12 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
     type <= -0.2
       ? water
       : type < -0.1
-      ? sand
+      ? MATERIALS.sand
       : type < 0.1
-      ? meadow
+      ? MATERIALS.meadow
       : type < 0.4
-      ? forest
-      : mountain;
+      ? MATERIALS.forest
+      : MATERIALS.mountain;
 
   const object = useMemo(() => tileMesh(getMaterial(type)), [type]);
 
