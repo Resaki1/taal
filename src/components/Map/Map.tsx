@@ -14,9 +14,6 @@ export const Map = () => {
     }
   }
 
-  const noisejs = require("noisejs");
-
-  const terrain = new noisejs.Noise(0);
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
@@ -89,7 +86,6 @@ export const Map = () => {
             <Tile
               tileRef={(el: any) => (tileRef.current[x][y] = el)}
               key={`${x}/${y}`}
-              terrain={terrain}
             />
           );
         });

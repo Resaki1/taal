@@ -3,16 +3,16 @@ import { ThreeEvent } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "../../store/store";
 import { water, tileMesh } from "../../materials/materials";
-import { Building } from "../building/Building";
+import { Building } from "../Building/Building";
 import { Object3D, Event } from "three";
 import { Materials } from "../../materials/materials";
+import getTerrainValue from "../../helpers/terrain";
 
 export type TileProps = {
   tileRef: (el: any) => any;
-  terrain: any;
 };
 
-export const Tile = ({ tileRef, terrain }: TileProps) => {
+export const Tile = ({ tileRef }: TileProps) => {
   const ref = useRef<any>();
 
   const MATERIALS = Materials();
@@ -26,11 +26,11 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
   useEffect(() => {
     if (ref && ref.current) {
       setType(
-        terrain.perlin2(ref.current.position.x / 8, ref.current.position.z / 8)
+        getTerrainValue(ref.current.position.x / 8, ref.current.position.z / 8)
       );
       ref.current.position.y = type * type * type * 10;
     }
-  }, [terrain, type]);
+  }, [type]);
 
   const buildings = useStore((state) => state.buildings);
   const setGlobalSelected = useStore((state) => state.setSelected);
@@ -61,7 +61,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
     )
       forceUpdate();
 
-    const type = terrain.perlin2(
+    const type = getTerrainValue(
       ref.current.position.x / 8,
       ref.current.position.z / 8
     );
@@ -88,7 +88,7 @@ export const Tile = ({ tileRef, terrain }: TileProps) => {
   };
 
   const deselect = () => {
-    const type = terrain.perlin2(
+    const type = getTerrainValue(
       ref.current.position.x / 8,
       ref.current.position.z / 8
     );
