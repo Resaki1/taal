@@ -29,14 +29,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     buildings[ref.current.position.x] &&
     buildings[ref.current.position.x][ref.current.position.z] !== undefined;
 
-  const onRefChange = () => {
-    if (
-      hasBuilding ||
-      (buildings[ref.current.position.x] &&
-        buildings[ref.current.position.x][ref.current.position.z] !== undefined)
-    )
-      forceUpdate();
-
+  const updateTile = (ref: React.MutableRefObject<any>) => {
     ref.current.material = MATERIALS.get(
       ref.current.position.x,
       ref.current.position.z
@@ -45,6 +38,17 @@ export const Tile = ({ tileRef }: TileProps) => {
       ref.current.position.x,
       ref.current.position.z
     );
+  };
+
+  const onRefChange = () => {
+    if (
+      hasBuilding ||
+      (buildings[ref.current.position.x] &&
+        buildings[ref.current.position.x][ref.current.position.z] !== undefined)
+    )
+      forceUpdate();
+
+    updateTile(ref);
     selected && deselect();
   };
 
@@ -68,10 +72,7 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   const deselect = () => {
-    ref.current.material = MATERIALS.get(
-      ref.current.position.x,
-      ref.current.position.z
-    );
+    updateTile(ref);
     setGlobalSelected(undefined);
     setSelected(false);
   };
@@ -90,6 +91,8 @@ export const Tile = ({ tileRef }: TileProps) => {
             ref.current = el;
             tileRef(el);
           }}
+          position={ref?.current && ref.current.position}
+          material={ref?.current && ref.current.material}
           userData={{ update: () => onRefChange() }}
         />
       </Select>

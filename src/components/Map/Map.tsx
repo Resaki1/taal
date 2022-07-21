@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Group, Vector3 } from "three";
 import { getTerrainHeight } from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
@@ -29,7 +29,7 @@ export const Map = () => {
   const moveVector = useMemo(() => new Vector3(), []);
 
   useEffect(() => {
-    console.log("useLayoutEffect");
+    console.log("map useEffect");
     newPosition.set(camera.position.x, camera.position.y, camera.position.z);
     direction.copy(camera.getWorldDirection(target));
     vec.copy(direction.multiplyScalar(camera.position.y / direction.y));
@@ -51,6 +51,8 @@ export const Map = () => {
     });
   }, []);
 
+  let updated = false;
+  let tile;
   useFrame(() => {
     newPosition.copy(camera.position); // set newPosition to camera position
     vec.copy(camera.getWorldDirection(target)); // set vec to camera direction
@@ -66,9 +68,9 @@ export const Map = () => {
         .add(direction);
 
       groupRef.current.children.forEach((child: Group) => {
-        const tile = child.children[0];
+        tile = child.children[0];
 
-        let updated = false;
+        updated = false;
         if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
           tile.position.x += moveVector.x;
           updated = true;
