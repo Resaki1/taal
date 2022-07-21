@@ -1,12 +1,11 @@
 import { Select } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import { useStore } from "../../store/store";
-import { water, tileMesh } from "../../materials/materials";
 import { Building } from "../Building/Building";
 import { Object3D, Event } from "three";
 import { Materials } from "../../materials/materials";
-import getTerrainValue from "../../helpers/terrain";
+import { getTerrainHeight } from "../../helpers/terrain";
 
 export type TileProps = {
   tileRef: (el: any) => any;
@@ -17,20 +16,10 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   const MATERIALS = Materials();
 
-  const [type, setType] = useState<number>(0);
   const [, setValue] = useState(0);
   const [selected, setSelected] = useState(false);
 
   const forceUpdate = () => setValue((value) => value + 1);
-
-  useEffect(() => {
-    if (ref && ref.current) {
-      setType(
-        getTerrainValue(ref.current.position.x / 8, ref.current.position.z / 8)
-      );
-      ref.current.position.y = type * type * type * 10;
-    }
-  }, [type]);
 
   const buildings = useStore((state) => state.buildings);
   const setGlobalSelected = useStore((state) => state.setSelected);
@@ -40,19 +29,6 @@ export const Tile = ({ tileRef }: TileProps) => {
     buildings[ref.current.position.x] &&
     buildings[ref.current.position.x][ref.current.position.z] !== undefined;
 
-  const getMaterial = (type: number) =>
-    type <= -0.2
-      ? water
-      : type < -0.1
-      ? MATERIALS.sand
-      : type < 0.1
-      ? MATERIALS.meadow
-      : type < 0.4
-      ? MATERIALS.forest
-      : MATERIALS.mountain;
-
-  const object = useMemo(() => tileMesh(getMaterial(type)), [type]);
-
   const onRefChange = () => {
     if (
       hasBuilding ||
@@ -61,14 +37,18 @@ export const Tile = ({ tileRef }: TileProps) => {
     )
       forceUpdate();
 
-    const type = getTerrainValue(
-      ref.current.position.x / 8,
-      ref.current.position.z / 8
+    ref.current.material = MATERIALS.get(
+      ref.current.position.x,
+      ref.current.position.z
     );
-    ref.current.position.y = type * type * type * 10;
-    ref.current.material = getMaterial(type);
+    ref.current.position.y = getTerrainHeight(
+      ref.current.position.x,
+      ref.current.position.z
+    );
     selected && deselect();
   };
+
+  const object = useMemo(() => MATERIALS.cube, []);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
@@ -88,11 +68,10 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   const deselect = () => {
-    const type = getTerrainValue(
-      ref.current.position.x / 8,
-      ref.current.position.z / 8
+    ref.current.material = MATERIALS.get(
+      ref.current.position.x,
+      ref.current.position.z
     );
-    ref.current.material = getMaterial(type);
     setGlobalSelected(undefined);
     setSelected(false);
   };

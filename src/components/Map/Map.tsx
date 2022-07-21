@@ -1,6 +1,8 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Group, Vector3 } from "three";
+import { getTerrainHeight } from "../../helpers/terrain";
+import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
 
 export const Map = () => {
@@ -14,18 +16,20 @@ export const Map = () => {
     }
   }
 
+  const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
   const groupRef = useRef<any>();
 
-  const target = new Vector3();
-  const newPosition = new Vector3();
-  const vec = new Vector3();
-  const direction = new Vector3();
-  const moveVector = new Vector3();
+  const target = useMemo(() => new Vector3(), []);
+  const newPosition = useMemo(() => new Vector3(), []);
+  const vec = useMemo(() => new Vector3(), []);
+  const direction = useMemo(() => new Vector3(), []);
+  const moveVector = useMemo(() => new Vector3(), []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    console.log("useLayoutEffect");
     newPosition.set(camera.position.x, camera.position.y, camera.position.z);
     direction.copy(camera.getWorldDirection(target));
     vec.copy(direction.multiplyScalar(camera.position.y / direction.y));
@@ -35,14 +39,17 @@ export const Map = () => {
     map.forEach((xRow, x) => {
       xRow.forEach((_, y) => {
         vec.set(x - RENDER_DISTANCE, 0, y - RENDER_DISTANCE);
+        const posX = x - RENDER_DISTANCE;
+        const posY = y - RENDER_DISTANCE;
         tileRef.current[x][y].position.set(
-          x - RENDER_DISTANCE,
-          0,
-          y - RENDER_DISTANCE
+          posX,
+          getTerrainHeight(posX, posY),
+          posY
         );
+        tileRef.current[x][y].material = MATERIALS.get(posX, posY);
       });
     });
-  });
+  }, []);
 
   useFrame(() => {
     newPosition.copy(camera.position); // set newPosition to camera position
