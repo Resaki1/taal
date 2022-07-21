@@ -29,7 +29,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     buildings[ref.current.position.x] &&
     buildings[ref.current.position.x][ref.current.position.z] !== undefined;
 
-  const updateTile = (ref: React.MutableRefObject<any>) => {
+  const updateTile = () => {
     ref.current.material = MATERIALS.get(
       ref.current.position.x,
       ref.current.position.z
@@ -48,7 +48,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     )
       forceUpdate();
 
-    updateTile(ref);
+    updateTile();
     selected && deselect();
   };
 
@@ -72,7 +72,7 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   const deselect = () => {
-    updateTile(ref);
+    updateTile();
     setGlobalSelected(undefined);
     setSelected(false);
   };

@@ -8,11 +8,11 @@ import { Tile } from "../Tile/Tile";
 export const Map = () => {
   const RENDER_DISTANCE = 32;
 
-  let map: number[][] = [[]];
+  let map: boolean[][] = [[]];
   for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
     map[x] = [];
     for (let y = 0; y <= RENDER_DISTANCE * 2; y++) {
-      map[x][y] = Math.random();
+      map[x][y] = true;
     }
   }
 
@@ -29,7 +29,6 @@ export const Map = () => {
   const moveVector = useMemo(() => new Vector3(), []);
 
   useEffect(() => {
-    console.log("map useEffect");
     newPosition.set(camera.position.x, camera.position.y, camera.position.z);
     direction.copy(camera.getWorldDirection(target));
     vec.copy(direction.multiplyScalar(camera.position.y / direction.y));
