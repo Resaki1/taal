@@ -1,6 +1,6 @@
 import { Select } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
-import { Suspense, useMemo, useRef, useState } from "react";
+import { startTransition, Suspense, useMemo, useRef, useState } from "react";
 import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
 import { Object3D, Event } from "three";
@@ -46,7 +46,7 @@ export const Tile = ({ tileRef }: TileProps) => {
       (buildings[ref.current.position.x] &&
         buildings[ref.current.position.x][ref.current.position.z] !== undefined)
     )
-      forceUpdate();
+      startTransition(() => forceUpdate());
 
     updateTile();
     selected && deselect();

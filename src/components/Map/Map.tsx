@@ -5,28 +5,28 @@ import { getTerrainHeight } from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
 
-export const Map = () => {
-  const RENDER_DISTANCE = 32;
+const RENDER_DISTANCE = 32;
 
-  let map: boolean[][] = [[]];
-  for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
-    map[x] = [];
-    for (let y = 0; y <= RENDER_DISTANCE * 2; y++) {
-      map[x][y] = true;
-    }
+let map: boolean[][] = [[]];
+for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
+  map[x] = [];
+  for (let y = 0; y <= RENDER_DISTANCE * 2; y++) {
+    map[x][y] = true;
   }
+}
 
+const target = new Vector3();
+const newPosition = new Vector3();
+const vec = new Vector3();
+const direction = new Vector3();
+const moveVector = new Vector3();
+
+export const Map = () => {
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
   const groupRef = useRef<any>();
-
-  const target = useMemo(() => new Vector3(), []);
-  const newPosition = useMemo(() => new Vector3(), []);
-  const vec = useMemo(() => new Vector3(), []);
-  const direction = useMemo(() => new Vector3(), []);
-  const moveVector = useMemo(() => new Vector3(), []);
 
   useEffect(() => {
     newPosition.set(camera.position.x, camera.position.y, camera.position.z);
@@ -35,11 +35,13 @@ export const Map = () => {
     // shift in direction of camera
     centerBlock.current.copy(newPosition.sub(vec).round());
 
+    let posX;
+    let posY;
     map.forEach((xRow, x) => {
       xRow.forEach((_, y) => {
         vec.set(x - RENDER_DISTANCE, 0, y - RENDER_DISTANCE);
-        const posX = x - RENDER_DISTANCE;
-        const posY = y - RENDER_DISTANCE;
+        posX = x - RENDER_DISTANCE;
+        posY = y - RENDER_DISTANCE;
         tileRef.current[x][y].position.set(
           posX,
           getTerrainHeight(posX, posY),
