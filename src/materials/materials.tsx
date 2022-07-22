@@ -9,7 +9,7 @@ import tile_meadow from "../textures/tile_meadow.jpg";
 import tile_beach from "../textures/tile_beach.jpg";
 import tile_forest from "../textures/tile_forest.jpg";
 import tile_mountain from "../textures/tile_mountain.jpg";
-import { getTerrainValue } from "../helpers/terrain";
+import { getTerrainType, getTerrainValue, Terrain } from "../helpers/terrain";
 
 export const tile = new BoxBufferGeometry(1, 1, 1);
 export const tileMesh = (material: MeshStandardMaterial) =>
@@ -56,16 +56,12 @@ export const Materials = () => {
   });
 
   const get = (x: number, y: number) => {
-    const type = getTerrainValue(x, y);
-    return type <= -0.2
-      ? water
-      : type < -0.1
-      ? sand
-      : type < 0.1
-      ? meadow
-      : type < 0.4
-      ? forest
-      : mountain;
+    const type = getTerrainType(x, y);
+    if (type === Terrain.WATER) return water;
+    if (type === Terrain.BEACH) return sand;
+    if (type === Terrain.MEADOW) return meadow;
+    if (type === Terrain.FOREST) return forest;
+    return mountain;
   };
 
   const cube = new Mesh(new BoxBufferGeometry(1, 1, 1));

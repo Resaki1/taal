@@ -95,7 +95,12 @@ export const Tile = ({ tileRef }: TileProps) => {
           userData={{ update: () => onRefChange() }}
         />
       </Select>
-      {hasBuilding && <Building position={ref.current.position} />}
+      {hasBuilding && (
+        <Building
+          position={ref.current.position}
+          type={buildings[ref.current.position.x][ref.current.position.z]}
+        />
+      )}
     </Suspense>
   );
 };
