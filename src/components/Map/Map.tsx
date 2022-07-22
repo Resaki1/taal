@@ -61,25 +61,28 @@ export const Map = () => {
 
     if (centerBlock.current.distanceTo(newPosition) > 0) {
       direction.copy(newPosition).sub(centerBlock.current); // set direction to where the camera has moved
-      moveVector
-        .copy(direction)
-        .multiplyScalar(RENDER_DISTANCE * 2)
-        .add(direction);
+      // only update if camera has moved less than 1 tile to fix distorted map
+      if (Math.abs(direction.x) <= 1 && Math.abs(direction.z) <= 1) {
+        moveVector
+          .copy(direction)
+          .multiplyScalar(RENDER_DISTANCE * 2)
+          .add(direction);
 
-      groupRef.current.children.forEach((child: Group) => {
-        tile = child.children[0];
+        groupRef.current.children.forEach((child: Group) => {
+          tile = child.children[0];
 
-        updated = false;
-        if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
-          tile.position.x += moveVector.x;
-          updated = true;
-        }
-        if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
-          tile.position.z += moveVector.z;
-          updated = true;
-        }
-        if (updated) tile.userData.update();
-      });
+          updated = false;
+          if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
+            tile.position.x += moveVector.x;
+            updated = true;
+          }
+          if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
+            tile.position.z += moveVector.z;
+            updated = true;
+          }
+          if (updated) tile.userData.update();
+        });
+      }
 
       centerBlock.current.copy(newPosition);
     }

@@ -80,7 +80,6 @@ export const Tile = ({ tileRef }: TileProps) => {
   return (
     <Suspense>
       <Select
-        key={Math.random()}
         box
         onClick={(e) => handleClick(e)}
         onPointerMissed={() => selected && deselect()}
