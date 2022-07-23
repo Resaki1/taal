@@ -10,6 +10,7 @@ import {
   Stats,
 } from "@react-three/drei";
 import { BuildMenu } from "./components/BuildMenu/BuildMenu";
+import { RessourceMenu } from "./components/RessourceMenu/RessourceMenu";
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
         <AdaptiveDpr pixelated />
       </Canvas>
       <BuildMenu />
+      <RessourceMenu />
     </div>
   );
 };

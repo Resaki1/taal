@@ -1,6 +1,6 @@
 import { getTerrainType, Terrain } from "../../helpers/terrain";
-import { useStore } from "../../store/store";
-import { Buildings } from "../Building/Building";
+import { Ressources, useStore } from "../../store/store";
+import { BuildingCosts, Buildings } from "../Building/Building";
 import "./BuildMenu.scss";
 
 var classNames = require("classnames");
@@ -8,6 +8,7 @@ var classNames = require("classnames");
 export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);
   const buildings = useStore((state) => state.buildings);
+  const ressources = useStore((state) => ({ ...state.ressources }));
   const addBuilding = useStore((state) => state.addBuilding);
   const removeBuilding = useStore((state) => state.removeBuilding);
 
@@ -49,6 +50,16 @@ export const BuildMenu = () => {
     else return [];
   };
 
+  const hasEnoughRessources = (building: Buildings) => {
+    const recipe = BuildingCosts[building];
+    let hasEnough = true;
+    Object.entries(recipe).forEach((cost) => {
+      if (ressources[cost[0] as Ressources] < recipe[cost[0] as Ressources]!)
+        hasEnough = false;
+    });
+    return hasEnough;
+  };
+
   return (
     <div
       className={classNames({
@@ -59,7 +70,11 @@ export const BuildMenu = () => {
       {selected &&
         !hasBuilding &&
         getPossibleBuildings().map((building) => (
-          <button key={building.type} onClick={() => handleAdd(building.type)}>
+          <button
+            key={building.type}
+            onClick={() => handleAdd(building.type)}
+            disabled={!hasEnoughRessources(building.type)}
+          >
             {building.name}
           </button>
         ))}
