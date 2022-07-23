@@ -12,6 +12,7 @@ type BuildingProps = {
 export enum Buildings {
   Outpost,
   Lumberhut,
+  House,
 }
 
 type BuildingRessourcesType = {
@@ -23,18 +24,30 @@ type BuildingRessourcesType = {
 export const BuildingCosts: BuildingRessourcesType = {
   [Buildings.Outpost]: {
     wood: 10,
+    gold: 100,
   },
   [Buildings.Lumberhut]: {
     wood: 2,
+    gold: 10,
+    villager: 1,
+  },
+  [Buildings.House]: {
+    wood: 6,
+    gold: 100,
+    villager: -4,
   },
 };
 
 export const BuildingOutputs: BuildingRessourcesType = {
   [Buildings.Outpost]: {
-    gold: 10,
+    gold: -10 / 60,
   },
   [Buildings.Lumberhut]: {
-    wood: 1,
+    wood: 1 / 60,
+    gold: -1 / 60,
+  },
+  [Buildings.House]: {
+    gold: 5 / 60,
   },
 };
 

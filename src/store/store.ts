@@ -7,7 +7,7 @@ import {
   BuildingOutputs,
 } from "../components/Building/Building";
 
-export type Ressources = "wood" | "stone" | "gold";
+export type Ressources = "wood" | "stone" | "gold" | "villager";
 
 interface BuildingsState {
   [key: number]: { [key: number]: Buildings };
@@ -43,6 +43,7 @@ export const useStore = create<State>()(
       wood: 0,
       stone: 0,
       gold: 0,
+      villager: 0,
     },
     addBuilding: (x, y, building) =>
       set((state: State) => {
@@ -71,9 +72,10 @@ export const useStore = create<State>()(
         return { selected: object };
       }),
     ressources: {
-      wood: 5,
+      wood: 15,
       stone: 0,
-      gold: 0,
+      gold: 5000,
+      villager: 2,
     },
     addRessources: (
       ressourcesToAdd: Partial<{ [key in Ressources]: number }>

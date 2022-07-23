@@ -39,13 +39,20 @@ export const BuildMenu = () => {
     );
 
     if (type === Terrain.BEACH)
-      return [{ type: Buildings.Outpost, name: "Outpost" }];
+      return [
+        { type: Buildings.Outpost, name: "Outpost" },
+        { type: Buildings.House, name: "House" },
+      ];
     if (type === Terrain.MEADOW)
-      return [{ type: Buildings.Outpost, name: "Outpost" }];
+      return [
+        { type: Buildings.Outpost, name: "Outpost" },
+        { type: Buildings.House, name: "House" },
+      ];
     if (Terrain.FOREST)
       return [
         { type: Buildings.Outpost, name: "Outpost" },
         { type: Buildings.Lumberhut, name: "Lumberhut" },
+        { type: Buildings.House, name: "House" },
       ];
     else return [];
   };

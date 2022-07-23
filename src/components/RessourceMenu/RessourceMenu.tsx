@@ -7,9 +7,10 @@ export const RessourceMenu = () => {
   return (
     <div className="ressource-menu">
       <ul>
-        <li>Wood: {ressources.wood}</li>
-        <li>Stone: {ressources.stone}</li>
-        <li>Coins: {ressources.gold}</li>
+        <li>Coins: {Math.floor(ressources.gold)}</li>
+        <li>Wood: {Math.floor(ressources.wood)}</li>
+        <li>Stone: {Math.floor(ressources.stone)}</li>
+        <li>Villagers: {Math.floor(ressources.villager)}</li>
       </ul>
     </div>
   );
