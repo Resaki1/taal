@@ -11,8 +11,20 @@ import {
 } from "@react-three/drei";
 import { BuildMenu } from "./components/BuildMenu/BuildMenu";
 import { RessourceMenu } from "./components/RessourceMenu/RessourceMenu";
+import { useStore } from "./store/store";
+import { useEffect } from "react";
 
 const App = () => {
+  const addRessources = useStore((state) => state.addRessources);
+  const buildingOutputs = useStore((state) => state.buildingOutputs);
+
+  useEffect(() => {
+    const tickWorker = new Worker("tickWorker.js");
+    tickWorker.onmessage = () => addRessources(buildingOutputs);
+
+    return () => tickWorker.terminate();
+  });
+
   return (
     <div className="App">
       <Canvas

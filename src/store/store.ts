@@ -20,6 +20,7 @@ interface SelectedObject {
 
 interface State {
   buildings: BuildingsState;
+  buildingOutputs: { [key in Ressources]: number };
   addBuilding: (x: number, y: number, building: Buildings) => void;
   removeBuilding: (x: number, y: number) => void;
   selected: SelectedObject | undefined;
@@ -38,19 +39,25 @@ interface State {
 export const useStore = create<State>()(
   /* persist( */ (set) => ({
     buildings: {},
+    buildingOutputs: {
+      wood: 0,
+      stone: 0,
+      gold: 0,
+    },
     addBuilding: (x, y, building) =>
       set((state: State) => {
         state.removeRessources(BuildingCosts[building]);
-
-        const interval = setInterval(() => {
-          state.addRessources(BuildingOutputs[building]);
-        }, 1000);
 
         const newBuildings = state.buildings;
         if (!newBuildings[x]) newBuildings[x] = {};
         newBuildings[x][y] = building;
 
-        return { buildings: newBuildings };
+        const newBuildingOutputs = state.buildingOutputs;
+        Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+          newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
+        });
+
+        return { buildings: newBuildings, buildingOutputs: newBuildingOutputs };
       }),
     removeBuilding: (x, y) =>
       set((state: State) => {
