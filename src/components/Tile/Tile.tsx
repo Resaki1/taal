@@ -1,6 +1,13 @@
 import { Select } from "@react-three/drei";
-import { ThreeEvent } from "@react-three/fiber";
-import { startTransition, Suspense, useMemo, useRef, useState } from "react";
+import { ThreeEvent, useFrame } from "@react-three/fiber";
+import {
+  startTransition,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
 import { Object3D, Event } from "three";
@@ -18,26 +25,27 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   const [, setValue] = useState(0);
   const [selected, setSelected] = useState(false);
+  const [isUnlocked, setUnlocked] = useState(false);
 
   const forceUpdate = () => setValue((value) => value + 1);
 
   const buildings = useStore((state) => state.buildings);
   const setGlobalSelected = useStore((state) => state.setSelected);
+  const unlocked = useStore((state) => state.unlocked);
 
   const hasBuilding =
     ref?.current &&
     buildings[ref.current.position.x] &&
     buildings[ref.current.position.x][ref.current.position.z] !== undefined;
 
+  let x: number;
+  let y: number;
   const updateTile = () => {
-    ref.current.material = MATERIALS.get(
-      ref.current.position.x,
-      ref.current.position.z
-    );
-    ref.current.position.y = getTerrainHeight(
-      ref.current.position.x,
-      ref.current.position.z
-    );
+    x = ref.current.position.x;
+    y = ref.current.position.z;
+    ref.current.material = MATERIALS.get(x, y);
+    if (isUnlocked) ref.current.material.color = "";
+    ref.current.position.y = getTerrainHeight(x, y);
   };
 
   const onRefChange = () => {
@@ -65,6 +73,7 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   const select = (object: Object3D<Event>) => {
     const newMaterial = ref.current.material.clone();
+    newMaterial.color = "";
     newMaterial.emissive.set(0xffffff);
     ref.current.material = newMaterial;
     setGlobalSelected({ type: "tile", object: object });
@@ -76,6 +85,19 @@ export const Tile = ({ tileRef }: TileProps) => {
     setGlobalSelected(undefined);
     setSelected(false);
   };
+
+  useFrame(() => {
+    if (
+      !isUnlocked &&
+      unlocked[ref.current.position.x] &&
+      unlocked[ref.current.position.x][ref.current.position.z]
+    ) {
+      setUnlocked(true);
+      const newMaterial = ref.current.material.clone();
+      newMaterial.color = "";
+      ref.current.material = newMaterial;
+    }
+  });
 
   return (
     <Suspense>

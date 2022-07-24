@@ -41,18 +41,22 @@ export const Materials = () => {
   const forest = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: forest_texture,
+    color: "gray",
   });
   const meadow = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: meadow_texture,
+    color: "gray",
   });
   const sand = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: beach_texture,
+    color: "gray",
   });
   const mountain = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: mounatin_texture,
+    color: "gray",
   });
 
   const get = (x: number, y: number) => {

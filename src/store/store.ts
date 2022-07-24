@@ -21,22 +21,24 @@ interface SelectedObject {
 type State = {
   buildings: BuildingsState;
   buildingOutputs: { [key in Ressources]: number };
-  selected: SelectedObject | undefined;
   ressources: {
     [key in Ressources]: number;
   };
+  unlocked: { [key: number]: { [key: number]: boolean } };
+  selected: SelectedObject | undefined;
 };
 
 type Actions = {
   addBuilding: (x: number, y: number, building: Buildings) => void;
   removeBuilding: (x: number, y: number) => void;
-  setSelected: (object: SelectedObject | undefined) => void;
   addRessources: (
     ressourcesToAdd: Partial<{ [key in Ressources]: number }>
   ) => void;
   removeRessources: (
     ressourcesToRemove: Partial<{ [key in Ressources]: number }>
   ) => void;
+  unlock: (x: number, y: number, range: number) => void;
+  setSelected: (object: SelectedObject | undefined) => void;
   reset: () => void;
 };
 
@@ -48,13 +50,14 @@ const initialState: State = {
     gold: 0,
     villager: 0,
   },
-  selected: undefined,
   ressources: {
     wood: 15,
     stone: 0,
     gold: 2000,
     villager: 2,
   },
+  unlocked: {},
+  selected: undefined,
 };
 
 export const useStore = create<State & Actions>()(
@@ -65,14 +68,20 @@ export const useStore = create<State & Actions>()(
         set((state) => {
           state.removeRessources(BuildingCosts[building]);
 
-          const newBuildings = state.buildings;
-          if (!newBuildings[x]) newBuildings[x] = {};
-          newBuildings[x][y] = building;
+          if (building === Buildings.Outpost) {
+            state.unlock(x, y, 8);
+          }
 
+          // add building output
           const newBuildingOutputs = state.buildingOutputs;
           Object.entries(BuildingOutputs[building]).forEach((ressource) => {
             newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
           });
+
+          // add new building
+          const newBuildings = state.buildings;
+          if (!newBuildings[x]) newBuildings[x] = {};
+          newBuildings[x][y] = building;
 
           return {
             buildings: newBuildings,
@@ -91,10 +100,6 @@ export const useStore = create<State & Actions>()(
           const newBuildings = state.buildings;
           delete newBuildings[x][y];
           return { buildings: newBuildings };
-        }),
-      setSelected: (object) =>
-        set(() => {
-          return { selected: object };
         }),
       addRessources: (
         ressourcesToAdd: Partial<{ [key in Ressources]: number }>
@@ -119,6 +124,27 @@ export const useStore = create<State & Actions>()(
           return {
             ressources: newRessources,
           };
+        }),
+      unlock: (x, y, range) =>
+        set((state: State) => {
+          const newUnlocked = state.unlocked;
+          let distance: number;
+          for (let i = x - range; i <= x + range; i++) {
+            for (let j = y - range; j <= y + range; j++) {
+              distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
+              if (distance < range) {
+                if (!newUnlocked[i]) newUnlocked[i] = {};
+                newUnlocked[i][j] = true;
+              }
+            }
+          }
+          return {
+            unlocked: newUnlocked,
+          };
+        }),
+      setSelected: (object) =>
+        set(() => {
+          return { selected: object };
         }),
       reset: () => set({ ...initialState }),
     }))
