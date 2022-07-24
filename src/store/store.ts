@@ -1,6 +1,6 @@
 import { Object3D, Event } from "three";
 import create from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, devtools } from "zustand/middleware";
 import {
   Buildings,
   BuildingCosts,
@@ -18,89 +18,109 @@ interface SelectedObject {
   object: Object3D<Event>;
 }
 
-interface State {
+type State = {
   buildings: BuildingsState;
   buildingOutputs: { [key in Ressources]: number };
-  addBuilding: (x: number, y: number, building: Buildings) => void;
-  removeBuilding: (x: number, y: number) => void;
   selected: SelectedObject | undefined;
-  setSelected: (object: SelectedObject | undefined) => void;
   ressources: {
     [key in Ressources]: number;
   };
+};
+
+type Actions = {
+  addBuilding: (x: number, y: number, building: Buildings) => void;
+  removeBuilding: (x: number, y: number) => void;
+  setSelected: (object: SelectedObject | undefined) => void;
   addRessources: (
     ressourcesToAdd: Partial<{ [key in Ressources]: number }>
   ) => void;
   removeRessources: (
     ressourcesToRemove: Partial<{ [key in Ressources]: number }>
   ) => void;
-}
+  reset: () => void;
+};
 
-export const useStore = create<State>()(
-  /* persist( */ (set) => ({
-    buildings: {},
-    buildingOutputs: {
-      wood: 0,
-      stone: 0,
-      gold: 0,
-      villager: 0,
-    },
-    addBuilding: (x, y, building) =>
-      set((state: State) => {
-        state.removeRessources(BuildingCosts[building]);
+const initialState: State = {
+  buildings: {},
+  buildingOutputs: {
+    wood: 0,
+    stone: 0,
+    gold: 0,
+    villager: 0,
+  },
+  selected: undefined,
+  ressources: {
+    wood: 15,
+    stone: 0,
+    gold: 2000,
+    villager: 2,
+  },
+};
 
-        const newBuildings = state.buildings;
-        if (!newBuildings[x]) newBuildings[x] = {};
-        newBuildings[x][y] = building;
+export const useStore = create<State & Actions>()(
+  devtools(
+    persist((set, get) => ({
+      ...initialState,
+      addBuilding: (x, y, building) =>
+        set((state) => {
+          state.removeRessources(BuildingCosts[building]);
 
-        const newBuildingOutputs = state.buildingOutputs;
-        Object.entries(BuildingOutputs[building]).forEach((ressource) => {
-          newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
-        });
+          const newBuildings = state.buildings;
+          if (!newBuildings[x]) newBuildings[x] = {};
+          newBuildings[x][y] = building;
 
-        return { buildings: newBuildings, buildingOutputs: newBuildingOutputs };
-      }),
-    removeBuilding: (x, y) =>
-      set((state: State) => {
-        const newBuildings = state.buildings;
-        delete newBuildings[x][y];
-        return { buildings: newBuildings };
-      }),
-    selected: undefined,
-    setSelected: (object) =>
-      set(() => {
-        return { selected: object };
-      }),
-    ressources: {
-      wood: 15,
-      stone: 0,
-      gold: 5000,
-      villager: 2,
-    },
-    addRessources: (
-      ressourcesToAdd: Partial<{ [key in Ressources]: number }>
-    ) =>
-      set((state: State) => {
-        const newRessources = state.ressources;
-        Object.entries(ressourcesToAdd).forEach((ressource) => {
-          newRessources[ressource[0] as Ressources] += ressource[1];
-        });
-        return {
-          ressources: newRessources,
-        };
-      }),
-    removeRessources: (
-      ressourcesToRemove: Partial<{ [key in Ressources]: number }>
-    ) =>
-      set((state: State) => {
-        const newRessources = state.ressources;
-        Object.entries(ressourcesToRemove).forEach((ressource) => {
-          newRessources[ressource[0] as Ressources] -= ressource[1];
-        });
-        return {
-          ressources: newRessources,
-        };
-      }),
-  })
+          const newBuildingOutputs = state.buildingOutputs;
+          Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+            newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
+          });
+
+          return {
+            buildings: newBuildings,
+            buildingOutputs: newBuildingOutputs,
+          };
+        }),
+      removeBuilding: (x, y) =>
+        set((state: State) => {
+          // TODO: remove output froom state.buildingOutputs
+          const newBuildingOutputs = state.buildingOutputs;
+          const building = state.buildings[x][y];
+          Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+            newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
+          });
+
+          const newBuildings = state.buildings;
+          delete newBuildings[x][y];
+          return { buildings: newBuildings };
+        }),
+      setSelected: (object) =>
+        set(() => {
+          return { selected: object };
+        }),
+      addRessources: (
+        ressourcesToAdd: Partial<{ [key in Ressources]: number }>
+      ) =>
+        set((state: State) => {
+          const newRessources = state.ressources;
+          Object.entries(ressourcesToAdd).forEach((ressource) => {
+            newRessources[ressource[0] as Ressources] += ressource[1];
+          });
+          return {
+            ressources: newRessources,
+          };
+        }),
+      removeRessources: (
+        ressourcesToRemove: Partial<{ [key in Ressources]: number }>
+      ) =>
+        set((state: State) => {
+          const newRessources = state.ressources;
+          Object.entries(ressourcesToRemove).forEach((ressource) => {
+            newRessources[ressource[0] as Ressources] -= ressource[1];
+          });
+          return {
+            ressources: newRessources,
+          };
+        }),
+      reset: () => set({ ...initialState }),
+    }))
+  )
 );
-/* ); */

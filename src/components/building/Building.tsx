@@ -44,10 +44,10 @@ export const BuildingOutputs: BuildingRessourcesType = {
   },
   [Buildings.Lumberhut]: {
     wood: 1 / 60,
-    gold: -1 / 60,
+    gold: -2 / 60,
   },
   [Buildings.House]: {
-    gold: 5 / 60,
+    gold: 1 / 60,
   },
 };
 

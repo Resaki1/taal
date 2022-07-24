@@ -14,6 +14,7 @@ export const BuildMenu = () => {
 
   const hasBuilding =
     selected &&
+    selected.object?.position &&
     buildings[selected.object.position.x] !== undefined &&
     buildings[selected.object.position.x][selected.object.position.z] !==
       undefined;
@@ -33,28 +34,29 @@ export const BuildMenu = () => {
   };
 
   const getPossibleBuildings = () => {
-    const type = getTerrainType(
-      selected!.object.position.x,
-      selected!.object.position.z
-    );
+    if (selected && selected.object?.position) {
+      const type = getTerrainType(
+        selected.object.position.x,
+        selected.object.position.z
+      );
 
-    if (type === Terrain.BEACH)
-      return [
-        { type: Buildings.Outpost, name: "Outpost" },
-        { type: Buildings.House, name: "House" },
-      ];
-    if (type === Terrain.MEADOW)
-      return [
-        { type: Buildings.Outpost, name: "Outpost" },
-        { type: Buildings.House, name: "House" },
-      ];
-    if (Terrain.FOREST)
-      return [
-        { type: Buildings.Outpost, name: "Outpost" },
-        { type: Buildings.Lumberhut, name: "Lumberhut" },
-        { type: Buildings.House, name: "House" },
-      ];
-    else return [];
+      if (type === Terrain.BEACH)
+        return [
+          { type: Buildings.Outpost, name: "Outpost" },
+          { type: Buildings.House, name: "House" },
+        ];
+      if (type === Terrain.MEADOW)
+        return [
+          { type: Buildings.Outpost, name: "Outpost" },
+          { type: Buildings.House, name: "House" },
+        ];
+      if (Terrain.FOREST)
+        return [
+          { type: Buildings.Outpost, name: "Outpost" },
+          { type: Buildings.Lumberhut, name: "Lumberhut" },
+          { type: Buildings.House, name: "House" },
+        ];
+    } else return [];
   };
 
   const hasEnoughRessources = (building: Buildings) => {
@@ -76,7 +78,7 @@ export const BuildMenu = () => {
     >
       {selected &&
         !hasBuilding &&
-        getPossibleBuildings().map((building) => (
+        getPossibleBuildings()?.map((building) => (
           <button
             key={building.type}
             onClick={() => handleAdd(building.type)}
