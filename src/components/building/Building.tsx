@@ -1,6 +1,7 @@
 import { Suspense, useMemo } from "react";
 import { Vector3 } from "three";
 import { Ressources } from "../../store/store";
+import House from "./buildings/House/House";
 import Lumberhut from "./buildings/Lumberhut/Lumberhut";
 import Outpost from "./buildings/Outpost/Outpost";
 
@@ -80,6 +81,16 @@ export const Building = ({ position, type }: BuildingProps) => {
       return <Outpost position={buildingPosition} />;
     if (type === Buildings.Lumberhut)
       return <Lumberhut position={buildingPosition} />;
+    if (type === Buildings.House)
+      return (
+        <House
+          position={[
+            buildingPosition.x,
+            buildingPosition.y - 0.25,
+            buildingPosition.z,
+          ]}
+        />
+      );
     return <mesh />;
   };
 
