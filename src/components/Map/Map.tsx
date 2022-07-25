@@ -1,6 +1,7 @@
+import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
-import { Group, Vector3 } from "three";
+import { Euler, Group, Vector3 } from "three";
 import { getTerrainHeight } from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
@@ -27,6 +28,7 @@ export const Map = () => {
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
   const groupRef = useRef<any>();
+  const waterRef = useRef<any>();
 
   useEffect(() => {
     newPosition.set(camera.position.x, camera.position.y, camera.position.z);
@@ -37,6 +39,7 @@ export const Map = () => {
 
     let posX;
     let posY;
+    waterRef.current.position.copy(centerBlock.current);
     map.forEach((xRow, x) => {
       xRow.forEach((_, y) => {
         vec.set(x - RENDER_DISTANCE, 0, y - RENDER_DISTANCE);
@@ -86,6 +89,7 @@ export const Map = () => {
         });
       }
 
+      waterRef.current.position.copy(newPosition);
       centerBlock.current.copy(newPosition);
     }
   });
@@ -103,6 +107,13 @@ export const Map = () => {
           );
         });
       })}
+      <Plane
+        args={[RENDER_DISTANCE * 2 + 1, RENDER_DISTANCE * 2 + 1]}
+        rotation={new Euler(-Math.PI / 2, 0, 0)}
+        material={MATERIALS.water}
+        onClick={(e) => e.stopPropagation()}
+        ref={waterRef}
+      />
     </group>
   );
 };

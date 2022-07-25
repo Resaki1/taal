@@ -61,10 +61,18 @@ export const Materials = () => {
     map: mounatin_texture,
     color: gray,
   });
+  const water = new MeshStandardMaterial({
+    color: new Color(0x0055ff),
+    emissiveIntensity: 0.2,
+    transparent: true,
+    opacity: 0.9,
+    metalness: 0.7,
+    roughness: 0.5,
+  });
 
   const get = (x: number, y: number) => {
     const type = getTerrainType(x, y);
-    if (type === Terrain.WATER) return water;
+    if (type === Terrain.WATER) return sand;
     if (type === Terrain.BEACH) return sand;
     if (type === Terrain.MEADOW) return meadow;
     if (type === Terrain.FOREST) return forest;
@@ -73,5 +81,5 @@ export const Materials = () => {
 
   const cube = new Mesh(new BoxBufferGeometry(1, 1, 1));
 
-  return { forest, meadow, sand, mountain, get, cube };
+  return { forest, meadow, sand, mountain, water, get, cube };
 };

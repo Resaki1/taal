@@ -24,5 +24,8 @@ export const getTerrainType = (x: number, y: number): Terrain => {
 
 export const getTerrainHeight = (x: number, y: number): number => {
   const value = getTerrainValue(x, y);
-  return value * value * value * 10;
+  let height = value * value * value * 10 - 0.3;
+
+  if (height > -0.52 && height < -0.48) height += 0.04;
+  return height;
 };
