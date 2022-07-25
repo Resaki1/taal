@@ -66,7 +66,7 @@ export const BuildingOutputs: BuildingRessourcesType = {
     gold: -6 / 60,
   },
   [Buildings.House]: {
-    gold: 4 / 60,
+    gold: 6 / 60,
   },
 };
 

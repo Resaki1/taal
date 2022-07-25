@@ -43,26 +43,28 @@ export const BuildMenu = () => {
 
       const possibleBuildings: any[] = [];
 
-      if (type === Terrain.BEACH) {
-        possibleBuildings.push({ type: Buildings.Outpost, name: "Outpost" });
-        if (isUnlocked) {
-          possibleBuildings.push({ type: Buildings.House, name: "House" });
-        }
-      }
-      if (type === Terrain.MEADOW) {
-        possibleBuildings.push({ type: Buildings.Outpost, name: "Outpost" });
-        if (isUnlocked) {
-          possibleBuildings.push({ type: Buildings.House, name: "House" });
-        }
-      }
-      if (type === Terrain.FOREST) {
-        possibleBuildings.push({ type: Buildings.Outpost, name: "Outpost" });
-        if (isUnlocked) {
+      if (Object.keys(unlocked).length === 0) {
+        if (type !== Terrain.WATER && type !== Terrain.MOUNTAIN) {
+          return [{ type: Buildings.Outpost, name: "Outpost" }];
+        } else return [];
+      } else if (!isUnlocked) return [];
+      else {
+        if (type === Terrain.BEACH)
           possibleBuildings.push(
+            { type: Buildings.Outpost, name: "Outpost" },
+            { type: Buildings.House, name: "House" }
+          );
+        if (type === Terrain.MEADOW)
+          possibleBuildings.push(
+            { type: Buildings.Outpost, name: "Outpost" },
+            { type: Buildings.House, name: "House" }
+          );
+        if (type === Terrain.FOREST)
+          possibleBuildings.push(
+            { type: Buildings.Outpost, name: "Outpost" },
             { type: Buildings.House, name: "House" },
             { type: Buildings.Lumberhut, name: "Lumberhut" }
           );
-        }
       }
       return possibleBuildings;
     }
