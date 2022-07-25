@@ -38,6 +38,24 @@ export const BuildingCosts: BuildingRessourcesType = {
   },
 };
 
+const SELLFACTOR = 0.5;
+export const BuildingSellBenefits: BuildingRessourcesType = {
+  [Buildings.Outpost]: {
+    wood: Math.ceil(BuildingCosts[Buildings.Outpost].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[Buildings.Outpost].gold! * SELLFACTOR),
+  },
+  [Buildings.Lumberhut]: {
+    wood: Math.ceil(BuildingCosts[Buildings.Lumberhut].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[Buildings.Lumberhut].gold! * SELLFACTOR),
+    villager: BuildingCosts[Buildings.Lumberhut].villager!,
+  },
+  [Buildings.House]: {
+    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
+    villager: BuildingCosts[Buildings.House].villager!,
+  },
+};
+
 export const BuildingOutputs: BuildingRessourcesType = {
   [Buildings.Outpost]: {
     gold: -10 / 60,

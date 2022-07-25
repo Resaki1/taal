@@ -5,6 +5,7 @@ import {
   Buildings,
   BuildingCosts,
   BuildingOutputs,
+  BuildingSellBenefits,
 } from "../components/Building/Building";
 
 export type Ressources = "wood" | "stone" | "gold" | "villager";
@@ -89,7 +90,9 @@ export const useStore = create<State & Actions>()(
           };
         }),
       removeBuilding: (x, y) =>
-        set((state: State) => {
+        set((state) => {
+          state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
+
           // TODO: remove output froom state.buildingOutputs
           const newBuildingOutputs = state.buildingOutputs;
           const building = state.buildings[x][y];
