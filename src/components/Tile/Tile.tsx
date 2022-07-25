@@ -47,7 +47,19 @@ export const Tile = ({ tileRef }: TileProps) => {
     x = ref.current.position.x;
     y = ref.current.position.z;
     ref.current.material = MATERIALS.get(x, y);
-    if (isUnlocked) ref.current.material.color = "";
+
+    if (isUnlocked) {
+      if (!unlocked[x][y]) {
+        // tile is shown as unlocked but should be locked
+        ref.current.material.color = gray;
+        startTransition(() => setUnlocked(false));
+      } else ref.current.material.color = noColor; // unlocked tile is deselected
+    } else if (!isUnlocked && unlocked[x]?.[y]) {
+      // tile is shown as locked but should be unlocked
+      startTransition(() => setUnlocked(true));
+      ref.current.material.color = noColor;
+    }
+
     ref.current.position.y = getTerrainHeight(x, y);
   };
 
