@@ -9,6 +9,7 @@ export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);
   const buildings = useStore((state) => state.buildings);
   const ressources = useStore((state) => ({ ...state.ressources }));
+  const unlocked = useStore((state) => state.unlocked);
   const addBuilding = useStore((state) => state.addBuilding);
   const removeBuilding = useStore((state) => state.removeBuilding);
 
@@ -34,29 +35,37 @@ export const BuildMenu = () => {
   };
 
   const getPossibleBuildings = () => {
-    if (selected && selected.object?.position) {
-      const type = getTerrainType(
-        selected.object.position.x,
-        selected.object.position.z
-      );
+    const position = selected?.object?.position;
+    if (position) {
+      const type = getTerrainType(position.x, position.z);
+      const isUnlocked =
+        unlocked[position.x] && unlocked[position.x][position.z];
 
-      if (type === Terrain.BEACH)
-        return [
-          { type: Buildings.Outpost, name: "Outpost" },
-          { type: Buildings.House, name: "House" },
-        ];
-      if (type === Terrain.MEADOW)
-        return [
-          { type: Buildings.Outpost, name: "Outpost" },
-          { type: Buildings.House, name: "House" },
-        ];
-      if (Terrain.FOREST)
-        return [
-          { type: Buildings.Outpost, name: "Outpost" },
-          { type: Buildings.Lumberhut, name: "Lumberhut" },
-          { type: Buildings.House, name: "House" },
-        ];
-    } else return [];
+      const possibleBuildings: any[] = [];
+
+      if (type === Terrain.BEACH) {
+        possibleBuildings.push({ type: Buildings.Outpost, name: "Outpost" });
+        if (isUnlocked) {
+          possibleBuildings.push({ type: Buildings.House, name: "House" });
+        }
+      }
+      if (type === Terrain.MEADOW) {
+        possibleBuildings.push({ type: Buildings.Outpost, name: "Outpost" });
+        if (isUnlocked) {
+          possibleBuildings.push({ type: Buildings.House, name: "House" });
+        }
+      }
+      if (type === Terrain.FOREST) {
+        possibleBuildings.push({ type: Buildings.Outpost, name: "Outpost" });
+        if (isUnlocked) {
+          possibleBuildings.push(
+            { type: Buildings.House, name: "House" },
+            { type: Buildings.Lumberhut, name: "Lumberhut" }
+          );
+        }
+      }
+      return possibleBuildings;
+    }
   };
 
   const hasEnoughRessources = (building: Buildings) => {

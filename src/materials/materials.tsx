@@ -1,6 +1,7 @@
 import { useTexture } from "@react-three/drei";
 import {
   BoxBufferGeometry,
+  Color,
   Mesh,
   MeshStandardMaterial,
   NearestFilter,
@@ -26,6 +27,8 @@ export const mountain = new MeshStandardMaterial({
 
 export const building = new BoxBufferGeometry(0.5, 0.5, 0.5);
 
+export const gray = new Color(0x696969);
+
 export const Materials = () => {
   const [forest_texture, meadow_texture, beach_texture, mounatin_texture] =
     useTexture([tile_forest, tile_meadow, tile_beach, tile_mountain]);
@@ -41,22 +44,22 @@ export const Materials = () => {
   const forest = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: forest_texture,
-    color: "gray",
+    color: gray,
   });
   const meadow = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: meadow_texture,
-    color: "gray",
+    color: gray,
   });
   const sand = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: beach_texture,
-    color: "gray",
+    color: gray,
   });
   const mountain = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
     map: mounatin_texture,
-    color: "gray",
+    color: gray,
   });
 
   const get = (x: number, y: number) => {

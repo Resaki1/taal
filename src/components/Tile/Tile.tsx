@@ -10,13 +10,16 @@ import {
 } from "react";
 import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
-import { Object3D, Event } from "three";
-import { Materials } from "../../materials/materials";
+import { Object3D, Event, MeshStandardMaterial, Color } from "three";
+import { gray, Materials } from "../../materials/materials";
 import { getTerrainHeight } from "../../helpers/terrain";
 
 export type TileProps = {
   tileRef: (el: any) => any;
 };
+
+let newMaterial: MeshStandardMaterial;
+const noColor = new Color();
 
 export const Tile = ({ tileRef }: TileProps) => {
   const ref = useRef<any>();
@@ -72,8 +75,8 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   const select = (object: Object3D<Event>) => {
-    const newMaterial = ref.current.material.clone();
-    newMaterial.color = "";
+    newMaterial = ref.current.material.clone();
+    newMaterial.color = noColor;
     newMaterial.emissive.set(0xffffff);
     ref.current.material = newMaterial;
     setGlobalSelected({ type: "tile", object: object });
@@ -92,9 +95,14 @@ export const Tile = ({ tileRef }: TileProps) => {
       unlocked[ref.current.position.x] &&
       unlocked[ref.current.position.x][ref.current.position.z]
     ) {
-      setUnlocked(true);
-      const newMaterial = ref.current.material.clone();
-      newMaterial.color = "";
+      startTransition(() => setUnlocked(true));
+      newMaterial = ref.current.material.clone();
+      newMaterial.color = noColor;
+      ref.current.material = newMaterial;
+    } else if (isUnlocked && !unlocked[ref.current.position.x]) {
+      startTransition(() => setUnlocked(false));
+      newMaterial = ref.current.material.clone();
+      newMaterial.color = gray;
       ref.current.material = newMaterial;
     }
   });
