@@ -17,14 +17,14 @@ export const getTerrainType = (x: number, y: number): Terrain => {
   const value = getTerrainValue(x, y);
   if (value < -0.2) return Terrain.WATER;
   if (value < -0.1) return Terrain.BEACH;
-  if (value < 0.1) return Terrain.MEADOW;
+  if (value < 0.2) return Terrain.MEADOW;
   if (value < 0.4) return Terrain.FOREST;
   return Terrain.MOUNTAIN;
 };
 
 export const getTerrainHeight = (x: number, y: number): number => {
   const value = getTerrainValue(x, y);
-  let height = value * value * value * 10 - 0.3;
+  let height = value * value * value * 10 - 0.4;
 
   if (height > -0.52 && height < -0.48) height += 0.04;
   return height;

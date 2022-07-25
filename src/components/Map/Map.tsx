@@ -39,7 +39,8 @@ export const Map = () => {
 
     let posX;
     let posY;
-    waterRef.current.position.copy(centerBlock.current);
+    waterRef.current.position.x = centerBlock.current.x;
+    waterRef.current.position.z = centerBlock.current.z;
     map.forEach((xRow, x) => {
       xRow.forEach((_, y) => {
         vec.set(x - RENDER_DISTANCE, 0, y - RENDER_DISTANCE);
@@ -110,6 +111,7 @@ export const Map = () => {
       <Plane
         args={[RENDER_DISTANCE * 2 + 1, RENDER_DISTANCE * 2 + 1]}
         rotation={new Euler(-Math.PI / 2, 0, 0)}
+        position={[0, 0, 0]}
         material={MATERIALS.water}
         onClick={(e) => e.stopPropagation()}
         ref={waterRef}
