@@ -15,7 +15,6 @@ export const getTerrainValue = (x: number, y: number): number => {
 
 export const getTerrainType = (x: number, y: number): Terrain => {
   const value = getTerrainValue(x, y);
-  if (value < -0.2) return Terrain.WATER;
   if (value < -0.1) return Terrain.BEACH;
   if (value < 0.2) return Terrain.MEADOW;
   if (value < 0.4) return Terrain.FOREST;
