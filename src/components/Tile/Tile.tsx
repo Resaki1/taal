@@ -72,6 +72,11 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
+    e.intersections.forEach((intersection, index) => {
+      if (index > 0)
+        intersection.object.userData.deselect &&
+          intersection.object.userData.deselect();
+    });
     if (!selected) {
       select(e.object);
     } else {
@@ -127,7 +132,7 @@ export const Tile = ({ tileRef }: TileProps) => {
           }}
           position={ref?.current && ref.current.position}
           material={ref?.current && ref.current.material}
-          userData={{ update: () => onRefChange() }}
+          userData={{ update: () => onRefChange(), deselect: () => deselect() }}
         />
       </Select>
       {hasBuilding && (
