@@ -6,6 +6,7 @@ import { Building } from "../Building/Building";
 import { Object3D, Event, MeshStandardMaterial, Color } from "three";
 import { gray, Materials } from "../../materials/materials";
 import { getTerrainHeight } from "../../helpers/terrain";
+import { Foilage } from "../Foilage/Foilage";
 
 export type TileProps = {
   tileRef: (el: any) => any;
@@ -140,6 +141,9 @@ export const Tile = ({ tileRef }: TileProps) => {
           position={ref.current.position}
           type={buildings[ref.current.position.x][ref.current.position.z]}
         />
+      )}
+      {ref?.current?.position && !hasBuilding && (
+        <Foilage position={ref.current.position} />
       )}
     </Suspense>
   );
