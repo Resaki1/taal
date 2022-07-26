@@ -86,7 +86,7 @@ export const Map = () => {
             tile.position.z += moveVector.z;
             updated = true;
           }
-          if (updated) tile.userData.update();
+          if (updated) tile.userData.update && tile.userData.update();
         });
       }
 

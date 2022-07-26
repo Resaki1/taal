@@ -49,7 +49,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     ref.current.material = MATERIALS.get(x, y);
 
     if (isUnlocked) {
-      if (!unlocked[x][y]) {
+      if (!unlocked[x]?.[y]) {
         // tile is shown as unlocked but should be locked
         ref.current.material.color = gray;
         startTransition(() => setUnlocked(false));
