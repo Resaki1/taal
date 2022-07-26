@@ -75,7 +75,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     e.intersections.forEach((intersection, index) => {
       if (index > 0)
         intersection.object.userData.deselect &&
-          intersection.object.userData.deselect();
+          startTransition(() => intersection.object.userData.deselect());
     });
     if (!selected) {
       select(e.object);
