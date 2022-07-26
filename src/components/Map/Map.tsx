@@ -1,6 +1,6 @@
 import { Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Euler, Group, Vector3 } from "three";
 import { getTerrainHeight } from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
@@ -54,6 +54,7 @@ export const Map = () => {
         tileRef.current[x][y].material = MATERIALS.get(posX, posY);
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let updated = false;

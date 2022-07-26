@@ -6,17 +6,17 @@ source: https://sketchfab.com/3d-models/pixel-house-fb19698f540649d58d840e7e3459
 title: Pixel House
 */
 
-import * as THREE from "three";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { Mesh, MeshStandardMaterial } from "three";
 
 type GLTFResult = GLTF & {
   nodes: {
-    Object_4: THREE.Mesh;
+    Object_4: Mesh;
   };
   materials: {
-    Pixel_House_A: THREE.MeshStandardMaterial;
+    Pixel_House_A: MeshStandardMaterial;
   };
 };
 
@@ -24,17 +24,12 @@ export default function Model({ ...props }: JSX.IntrinsicElements["group"]) {
   const group = useRef<any>();
   const { nodes, materials } = useGLTF("/gltf/house/house.gltf") as GLTFResult;
   return (
-    <group ref={group} {...props} dispose={null} scale={4}>
-      <group rotation={[-Math.PI / 2, 0, 0]}>
-        <group rotation={[Math.PI / 2, 0, 0]}>
-          <group position={[0, 0.11, 0]}>
-            <mesh
-              geometry={nodes.Object_4.geometry}
-              material={materials.Pixel_House_A}
-            />
-          </group>
-        </group>
-      </group>
+    <group ref={group} {...props} dispose={null} scale={3}>
+      <mesh
+        position={[0, 0.028, 0]}
+        geometry={nodes.Object_4.geometry}
+        material={materials.Pixel_House_A}
+      />
     </group>
   );
 }

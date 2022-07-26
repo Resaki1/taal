@@ -1,13 +1,6 @@
 import { Select } from "@react-three/drei";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import {
-  startTransition,
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { startTransition, Suspense, useMemo, useRef, useState } from "react";
 import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
 import { Object3D, Event, MeshStandardMaterial, Color } from "three";
@@ -75,7 +68,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     selected && deselect();
   };
 
-  const object = useMemo(() => MATERIALS.cube, []);
+  const object = useMemo(() => MATERIALS.cube, [MATERIALS.cube]);
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();

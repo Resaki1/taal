@@ -81,16 +81,7 @@ export const Building = ({ position, type }: BuildingProps) => {
       return <Outpost position={buildingPosition} />;
     if (type === Buildings.Lumberhut)
       return <Lumberhut position={buildingPosition} />;
-    if (type === Buildings.House)
-      return (
-        <House
-          position={[
-            buildingPosition.x,
-            buildingPosition.y - 0.25,
-            buildingPosition.z,
-          ]}
-        />
-      );
+    if (type === Buildings.House) return <House position={buildingPosition} />;
     return <mesh />;
   };
 
