@@ -1,4 +1,4 @@
-import { Select } from "@react-three/drei";
+import { Instance, Select } from "@react-three/drei";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { startTransition, Suspense, useMemo, useRef, useState } from "react";
 import { useStore } from "../../store/store";
@@ -73,7 +73,8 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    e.intersections.forEach((intersection, index) => {
+    console.log(e.object.position)
+    /* e.intersections.forEach((intersection, index) => {
       if (index > 0)
         intersection.object.userData.deselect &&
           startTransition(() => intersection.object.userData.deselect());
@@ -82,7 +83,7 @@ export const Tile = ({ tileRef }: TileProps) => {
       select(e.object);
     } else {
       deselect();
-    }
+    } */
   };
 
   const select = (object: Object3D<Event>) => {
@@ -120,31 +121,24 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   return (
     <Suspense>
-      <Select
-        box
-        onClick={(e) => handleClick(e)}
-        onPointerMissed={() => selected && deselect()}
-      >
-        <primitive
-          object={object}
+        <Instance
           ref={(el: any) => {
             ref.current = el;
             tileRef(el);
           }}
-          position={ref?.current && ref.current.position}
-          material={ref?.current && ref.current.material}
           userData={{ update: () => onRefChange(), deselect: () => deselect() }}
+        onClick={(e) => handleClick(e)}
+        onPointerMissed={() => selected && deselect()}
         />
-      </Select>
       {hasBuilding && (
         <Building
           position={ref.current.position}
           type={buildings[ref.current.position.x][ref.current.position.z]}
         />
       )}
-      {ref?.current?.position && !hasBuilding && (
+      {/* {ref?.current?.position && !hasBuilding && (
         <Foilage position={ref.current.position} />
-      )}
+      )} */}
     </Suspense>
   );
 };

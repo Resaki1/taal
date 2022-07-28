@@ -10,6 +10,7 @@ import tile_meadow from "../textures/tile_meadow.jpg";
 import tile_beach from "../textures/tile_beach.jpg";
 import tile_forest from "../textures/tile_forest.jpg";
 import tile_mountain from "../textures/tile_mountain.jpg";
+import textureAtlas from "../textures/textureAtlas.jpg";
 import { getTerrainType, getTerrainValue, Terrain } from "../helpers/terrain";
 
 export const tile = new BoxBufferGeometry(1, 1, 1);
@@ -30,8 +31,19 @@ export const building = new BoxBufferGeometry(0.5, 0.5, 0.5);
 export const gray = new Color(0x696969);
 
 export const Materials = () => {
-  const [forest_texture, meadow_texture, beach_texture, mounatin_texture] =
-    useTexture([tile_forest, tile_meadow, tile_beach, tile_mountain]);
+  const [
+    forest_texture,
+    meadow_texture,
+    beach_texture,
+    mounatin_texture,
+    texture_atlas,
+  ] = useTexture([
+    tile_forest,
+    tile_meadow,
+    tile_beach,
+    tile_mountain,
+    textureAtlas,
+  ]);
   forest_texture.minFilter = NearestFilter;
   forest_texture.magFilter = NearestFilter;
   meadow_texture.minFilter = NearestFilter;
@@ -40,6 +52,8 @@ export const Materials = () => {
   beach_texture.magFilter = NearestFilter;
   mounatin_texture.minFilter = NearestFilter;
   mounatin_texture.magFilter = NearestFilter;
+  texture_atlas.minFilter = NearestFilter;
+  texture_atlas.magFilter = NearestFilter;
 
   const forest = new MeshStandardMaterial({
     emissiveIntensity: 0.2,
@@ -70,6 +84,10 @@ export const Materials = () => {
     roughness: 0.5,
   });
 
+  const atlas = new MeshStandardMaterial({
+    map: texture_atlas,
+  });
+
   const get = (x: number, y: number) => {
     const type = getTerrainType(x, y);
     if (type === Terrain.WATER) return sand;
@@ -81,5 +99,5 @@ export const Materials = () => {
 
   const cube = new Mesh(new BoxBufferGeometry(1, 1, 1));
 
-  return { forest, meadow, sand, mountain, water, get, cube };
+  return { forest, meadow, sand, mountain, water, get, cube, atlas };
 };
