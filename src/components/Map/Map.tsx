@@ -32,7 +32,7 @@ export const Map = () => {
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
   const tileRef = useRef<any[][]>([[]]);
-  const groupRef = useRef<any>();
+  const instancedMesh = useRef<any>();
   const waterRef = useRef<any>();
 
   useLayoutEffect(() => {
@@ -47,8 +47,8 @@ export const Map = () => {
     waterRef.current.position.x = centerBlock.current.x;
     waterRef.current.position.z = centerBlock.current.z;
 
-    tileRef.current[posX][posY].parent.material = MATERIALS.atlas;
-    tileRef.current[posX][posY].parent.material.map.repeat.set(0.1, 0.1);
+    console.log();
+    instancedMesh.current.material = MATERIALS.atlas;
 
     map.forEach((_, x) => {
       map.forEach((_, y) => {
@@ -89,7 +89,7 @@ export const Map = () => {
           .multiplyScalar(RENDER_DISTANCE * 2)
           .add(direction);
 
-        groupRef.current.children.forEach((child: Group) => {
+        instancedMesh.current.children.forEach((child: Group) => {
           tile = child;
 
           updated = false;
@@ -112,7 +112,7 @@ export const Map = () => {
 
   return (
     <group>
-      <Instances ref={groupRef} limit={4225}>
+      <Instances ref={instancedMesh} limit={4225}>
         <boxBufferGeometry />
         <meshStandardMaterial />
         {map.map((_, x) => {
