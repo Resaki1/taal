@@ -11,7 +11,7 @@ import tile_beach from "../textures/tile_beach.jpg";
 import tile_forest from "../textures/tile_forest.jpg";
 import tile_mountain from "../textures/tile_mountain.jpg";
 import textureAtlas from "../textures/textureAtlas.jpg";
-import { getTerrainType, getTerrainValue, Terrain } from "../helpers/terrain";
+import { getTerrainType, Terrain } from "../helpers/terrain";
 
 export const tile = new BoxBufferGeometry(1, 1, 1);
 export const tileMesh = (material: MeshStandardMaterial) =>

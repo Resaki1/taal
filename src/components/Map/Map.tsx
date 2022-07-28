@@ -44,30 +44,29 @@ export const Map = () => {
 
     let posX = 0;
     let posY = 0;
+    let tile: any;
     waterRef.current.position.x = centerBlock.current.x;
     waterRef.current.position.z = centerBlock.current.z;
 
-    console.log();
     instancedMesh.current.material = MATERIALS.atlas;
+    instancedMesh.current.material.map.repeat.set(0.0625, 0.0625);
 
     map.forEach((_, x) => {
       map.forEach((_, y) => {
-        vec.set(x - RENDER_DISTANCE, 0, y - RENDER_DISTANCE);
         posX = x - RENDER_DISTANCE;
         posY = y - RENDER_DISTANCE;
+        tile = tileRef.current[x][y];
 
-        tileRef.current[x][y].position.set(
-          posX,
-          getTerrainHeight(posX, posY),
-          posY
-        );
+        tile.position.set(posX, getTerrainHeight(posX, posY), posY);
 
-        tileRef.current[x][y].material = MATERIALS.atlas;
-
-        //tileRef.current[x][y].material.map.repeat.set(0.5, 0.5);
+        // 16-23
+        // [16][17]: 0, 1
+        // [18][19]: 1, 1
+        // [20][21]: 0, 0
+        // [22][23]: 1, 0
+        console.log(tile.geometry.attributes.uv);
       });
     });
-    //tileRef.current[posX][posY].parent.material = MATERIALS.get(posX, posY);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

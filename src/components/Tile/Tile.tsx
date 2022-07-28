@@ -73,8 +73,7 @@ export const Tile = ({ tileRef }: TileProps) => {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    console.log(e.object.position)
-    /* e.intersections.forEach((intersection, index) => {
+    e.intersections.forEach((intersection, index) => {
       if (index > 0)
         intersection.object.userData.deselect &&
           startTransition(() => intersection.object.userData.deselect());
@@ -83,7 +82,7 @@ export const Tile = ({ tileRef }: TileProps) => {
       select(e.object);
     } else {
       deselect();
-    } */
+    }
   };
 
   const select = (object: Object3D<Event>) => {
@@ -101,7 +100,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     setSelected(false);
   };
 
-  useFrame(() => {
+  /* useFrame(() => {
     if (
       !isUnlocked &&
       unlocked[ref.current.position.x] &&
@@ -117,19 +116,19 @@ export const Tile = ({ tileRef }: TileProps) => {
       newMaterial.color = gray;
       ref.current.material = newMaterial;
     }
-  });
+  }); */
 
   return (
     <Suspense>
-        <Instance
-          ref={(el: any) => {
-            ref.current = el;
-            tileRef(el);
-          }}
-          userData={{ update: () => onRefChange(), deselect: () => deselect() }}
+      <Instance
+        ref={(el: any) => {
+          ref.current = el;
+          tileRef(el);
+        }}
+        userData={{ update: () => onRefChange(), deselect: () => deselect() }}
         onClick={(e) => handleClick(e)}
         onPointerMissed={() => selected && deselect()}
-        />
+      />
       {hasBuilding && (
         <Building
           position={ref.current.position}
