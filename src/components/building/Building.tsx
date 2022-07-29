@@ -6,7 +6,6 @@ import Lumberhut from "./buildings/Lumberhut/Lumberhut";
 import Outpost from "./buildings/Outpost/Outpost";
 
 type BuildingProps = {
-  position: Vector3;
   type: Buildings;
 };
 
@@ -70,11 +69,8 @@ export const BuildingOutputs: BuildingRessourcesType = {
   },
 };
 
-export const Building = ({ position, type }: BuildingProps) => {
-  const buildingPosition = useMemo(
-    () => new Vector3(position.x, position.y + 0.75, position.z),
-    [position]
-  );
+export const Building = ({ type }: BuildingProps) => {
+  const buildingPosition = useMemo(() => new Vector3(0, 0.75, 0), []);
 
   const getBuilding = () => {
     if (type === Buildings.Outpost)

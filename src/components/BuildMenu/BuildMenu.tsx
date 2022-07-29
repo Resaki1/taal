@@ -16,8 +16,7 @@ export const BuildMenu = () => {
   const hasBuilding =
     selected &&
     selected.object?.position &&
-    buildings[selected.object.position.x] !== undefined &&
-    buildings[selected.object.position.x][selected.object.position.z] !==
+    buildings[selected.object.position.x]?.[selected.object.position.z] !==
       undefined;
 
   const handleAdd = (building: Buildings) => {

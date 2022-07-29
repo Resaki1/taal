@@ -11,6 +11,7 @@ import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
 
 const RENDER_DISTANCE = 32;
+const mapSize = 4225; // Math.sqrt(RENDER_DISTANCE * 2 + 1)
 
 let map: boolean[] = [];
 for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
@@ -59,7 +60,7 @@ export const Map = () => {
     );
   };
 
-  let texIdx = new Float32Array(4225).fill(0);
+  let texIdx = new Float32Array(mapSize).fill(0);
   let index = 0;
 
   useLayoutEffect(() => {
@@ -149,7 +150,7 @@ export const Map = () => {
 
   return (
     <group>
-      <Instances ref={instancedMesh} limit={4225}>
+      <Instances ref={instancedMesh} limit={mapSize}>
         <boxBufferGeometry />
         <meshStandardMaterial
           onBeforeCompile={onBeforeCompile}

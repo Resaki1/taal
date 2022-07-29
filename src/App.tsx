@@ -6,7 +6,6 @@ import {
   AdaptiveEvents,
   MapControls,
   Sky,
-  Stars,
   Stats,
 } from "@react-three/drei";
 import { BuildMenu } from "./components/BuildMenu/BuildMenu";
@@ -46,15 +45,6 @@ const App = () => {
           rayleigh={0}
           turbidity={0.5}
         />
-        {/* <Stars
-          radius={100}
-          depth={50}
-          count={5000}
-          factor={4}
-          saturation={0}
-          fade
-          speed={1}
-        /> */}
         <MapControls />
         <Map />
         <Stats showPanel={0} className="stats" />

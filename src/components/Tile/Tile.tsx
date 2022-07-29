@@ -3,8 +3,7 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { startTransition, Suspense, useRef, useState } from "react";
 import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
-import { Object3D, Event, Color } from "three";
-import { Materials } from "../../materials/materials";
+import { Color } from "three";
 import { getTerrainHeight } from "../../helpers/terrain";
 
 export type TileProps = {
@@ -17,8 +16,6 @@ const noColor = new Color();
 
 export const Tile = ({ tileRef }: TileProps) => {
   const ref = useRef<any>();
-
-  const MATERIALS = Materials();
 
   const [, setValue] = useState(0);
   const [selected, setSelected] = useState(false);
@@ -74,14 +71,14 @@ export const Tile = ({ tileRef }: TileProps) => {
           startTransition(() => intersection.object.userData.deselect());
     });
     if (!selected) {
-      select(e.object);
+      select();
     } else {
       deselect();
     }
   };
 
-  const select = (object: Object3D<Event>) => {
-    setGlobalSelected({ type: "tile", object: object });
+  const select = () => {
+    setGlobalSelected({ type: "tile", object: ref.current });
     setSelected(true);
   };
 
@@ -117,13 +114,13 @@ export const Tile = ({ tileRef }: TileProps) => {
         onClick={(e) => handleClick(e)}
         onPointerMissed={() => selected && deselect()}
         color={selected ? noColor : isUnlocked ? lightGray : gray}
-      />
-      {hasBuilding && (
-        <Building
-          position={ref.current.position}
-          type={buildings[ref.current.position.x][ref.current.position.z]}
-        />
-      )}
+      >
+        {hasBuilding && (
+          <Building
+            type={buildings[ref.current.position.x][ref.current.position.z]}
+          />
+        )}
+      </Instance>
       {/* {ref?.current?.position && !hasBuilding && (
         <Foilage position={ref.current.position} />
       )} */}
