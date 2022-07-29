@@ -36,7 +36,7 @@ const App = () => {
         <directionalLight
           color="#ffdf91"
           position={[100, 30, 80]}
-          intensity={1.4}
+          intensity={1.8}
         />
         <Sky
           distance={4500000}

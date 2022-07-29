@@ -1,18 +1,18 @@
-import { Instance, Select } from "@react-three/drei";
+import { Instance } from "@react-three/drei";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { startTransition, Suspense, useMemo, useRef, useState } from "react";
+import { startTransition, Suspense, useRef, useState } from "react";
 import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
-import { Object3D, Event, MeshStandardMaterial, Color } from "three";
-import { gray, Materials } from "../../materials/materials";
+import { Object3D, Event, Color } from "three";
+import { Materials } from "../../materials/materials";
 import { getTerrainHeight } from "../../helpers/terrain";
-import { Foilage } from "../Foilage/Foilage";
 
 export type TileProps = {
   tileRef: (el: any) => any;
 };
 
-let newMaterial: MeshStandardMaterial;
+const gray = new Color(0x303030);
+const lightGray = new Color(0xa0a0a0);
 const noColor = new Color();
 
 export const Tile = ({ tileRef }: TileProps) => {
@@ -40,18 +40,15 @@ export const Tile = ({ tileRef }: TileProps) => {
   const updateTile = () => {
     x = ref.current.position.x;
     y = ref.current.position.z;
-    ref.current.material = MATERIALS.get(x, y);
 
     if (isUnlocked) {
       if (!unlocked[x]?.[y]) {
         // tile is shown as unlocked but should be locked
-        ref.current.material.color = gray;
         startTransition(() => setUnlocked(false));
-      } else ref.current.material.color = noColor; // unlocked tile is deselected
+      } else console.log(); // unlocked tile is deselected
     } else if (!isUnlocked && unlocked[x]?.[y]) {
       // tile is shown as locked but should be unlocked
       startTransition(() => setUnlocked(true));
-      ref.current.material.color = noColor;
     }
 
     ref.current.position.y = getTerrainHeight(x, y);
@@ -69,8 +66,6 @@ export const Tile = ({ tileRef }: TileProps) => {
     selected && deselect();
   };
 
-  const object = useMemo(() => MATERIALS.cube, [MATERIALS.cube]);
-
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     e.intersections.forEach((intersection, index) => {
@@ -86,10 +81,6 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   const select = (object: Object3D<Event>) => {
-    newMaterial = ref.current.material.clone();
-    newMaterial.color = noColor;
-    newMaterial.emissive.set(0xffffff);
-    ref.current.material = newMaterial;
     setGlobalSelected({ type: "tile", object: object });
     setSelected(true);
   };
@@ -100,23 +91,20 @@ export const Tile = ({ tileRef }: TileProps) => {
     setSelected(false);
   };
 
-  /* useFrame(() => {
+  useFrame(() => {
     if (
       !isUnlocked &&
       unlocked[ref.current.position.x] &&
       unlocked[ref.current.position.x][ref.current.position.z]
     ) {
       startTransition(() => setUnlocked(true));
-      newMaterial = ref.current.material.clone();
-      newMaterial.color = noColor;
-      ref.current.material = newMaterial;
-    } else if (isUnlocked && !unlocked[ref.current.position.x]) {
+    } else if (
+      isUnlocked &&
+      !unlocked[ref.current.position.x]?.[ref.current.position.z]
+    ) {
       startTransition(() => setUnlocked(false));
-      newMaterial = ref.current.material.clone();
-      newMaterial.color = gray;
-      ref.current.material = newMaterial;
     }
-  }); */
+  });
 
   return (
     <Suspense>
@@ -128,6 +116,7 @@ export const Tile = ({ tileRef }: TileProps) => {
         userData={{ update: () => onRefChange(), deselect: () => deselect() }}
         onClick={(e) => handleClick(e)}
         onPointerMissed={() => selected && deselect()}
+        color={selected ? noColor : isUnlocked ? lightGray : gray}
       />
       {hasBuilding && (
         <Building

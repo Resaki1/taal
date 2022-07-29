@@ -1,16 +1,12 @@
 import { Instances, Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import { Euler, Group, InstancedBufferAttribute, Shader, Vector3 } from "three";
 import {
-  BoxGeometry,
-  Color,
-  Euler,
-  Group,
-  Matrix4,
-  Vector2,
-  Vector3,
-} from "three";
-import { getTerrainHeight } from "../../helpers/terrain";
+  getTerrainHeight,
+  getTerrainType,
+  Terrain,
+} from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
 
@@ -35,6 +31,37 @@ export const Map = () => {
   const instancedMesh = useRef<any>();
   const waterRef = useRef<any>();
 
+  const texStep = 1 / (Terrain.MOUNTAIN + 1); // last value of Terrain enum + 1
+  const onBeforeCompile = (shader: Shader) => {
+    shader.uniforms.texAtlas = { value: MATERIALS.texture_atlas };
+    shader.vertexShader = `
+    	attribute float texIdx;
+    	varying float vTexIdx;
+      ${shader.vertexShader}
+    `.replace(
+      `void main() {`,
+      `void main() {
+      	vTexIdx = texIdx;
+      `
+    );
+    shader.fragmentShader = `
+    	uniform sampler2D texAtlas;
+    	varying float vTexIdx;
+      ${shader.fragmentShader}
+    `.replace(
+      `#include <map_fragment>`,
+      `#include <map_fragment>
+      	
+       	vec2 blockUv = ${texStep} * (floor(vTexIdx + 0.1) + vUv); 
+        vec4 blockColor = texture(texAtlas, blockUv);
+        diffuseColor *= blockColor;
+      `
+    );
+  };
+
+  let texIdx = new Float32Array(4225).fill(0);
+  let index = 0;
+
   useLayoutEffect(() => {
     newPosition.set(camera.position.x, camera.position.y, camera.position.z);
     direction.copy(camera.getWorldDirection(target));
@@ -48,9 +75,6 @@ export const Map = () => {
     waterRef.current.position.x = centerBlock.current.x;
     waterRef.current.position.z = centerBlock.current.z;
 
-    instancedMesh.current.material = MATERIALS.atlas;
-    instancedMesh.current.material.map.repeat.set(0.0625, 0.0625);
-
     map.forEach((_, x) => {
       map.forEach((_, y) => {
         posX = x - RENDER_DISTANCE;
@@ -59,14 +83,16 @@ export const Map = () => {
 
         tile.position.set(posX, getTerrainHeight(posX, posY), posY);
 
-        // 16-23
-        // [16][17]: 0, 1
-        // [18][19]: 1, 1
-        // [20][21]: 0, 0
-        // [22][23]: 1, 0
-        console.log(tile.geometry.attributes.uv);
+        texIdx[index] = getTerrainType(posX, posY);
+        tile.userData.update();
+        index++;
       });
     });
+
+    instancedMesh.current.geometry.setAttribute(
+      "texIdx",
+      new InstancedBufferAttribute(texIdx, 1)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -88,20 +114,32 @@ export const Map = () => {
           .multiplyScalar(RENDER_DISTANCE * 2)
           .add(direction);
 
-        instancedMesh.current.children.forEach((child: Group) => {
-          tile = child;
+        texIdx = instancedMesh.current.geometry.attributes.texIdx.array;
 
-          updated = false;
-          if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
-            tile.position.x += moveVector.x;
-            updated = true;
+        instancedMesh.current.children.forEach(
+          (child: Group, index: number) => {
+            tile = child;
+
+            updated = false;
+            if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
+              tile.position.x += moveVector.x;
+              updated = true;
+            }
+            if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
+              tile.position.z += moveVector.z;
+              updated = true;
+            }
+            if (updated) {
+              texIdx[index] = getTerrainType(tile.position.x, tile.position.z);
+              tile.userData.update && tile.userData.update();
+            }
           }
-          if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
-            tile.position.z += moveVector.z;
-            updated = true;
-          }
-          if (updated) tile.userData.update && tile.userData.update();
-        });
+        );
+
+        instancedMesh.current.geometry.setAttribute(
+          "texIdx",
+          new InstancedBufferAttribute(texIdx, 1)
+        );
       }
 
       waterRef.current.position.copy(newPosition);
@@ -113,7 +151,10 @@ export const Map = () => {
     <group>
       <Instances ref={instancedMesh} limit={4225}>
         <boxBufferGeometry />
-        <meshStandardMaterial />
+        <meshStandardMaterial
+          onBeforeCompile={onBeforeCompile}
+          defines={{ USE_UV: "" }}
+        />
         {map.map((_, x) => {
           return map.map((_, y) => {
             if (!tileRef.current[x]) tileRef.current[x] = [];
