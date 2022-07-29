@@ -38,6 +38,7 @@ type Actions = {
   removeRessources: (
     ressourcesToRemove: Partial<{ [key in Ressources]: number }>
   ) => void;
+  lock: (x: number, y: number, range: number) => void;
   unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
   reset: () => void;
@@ -91,11 +92,15 @@ export const useStore = create<State & Actions>()(
         }),
       removeBuilding: (x, y) =>
         set((state) => {
+          const building = state.buildings[x][y];
           state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
+
+          if (building === Buildings.Outpost) {
+            state.lock(x, y, 8);
+          }
 
           // TODO: remove output froom state.buildingOutputs
           const newBuildingOutputs = state.buildingOutputs;
-          const building = state.buildings[x][y];
           Object.entries(BuildingOutputs[building]).forEach((ressource) => {
             newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
           });
@@ -126,6 +131,23 @@ export const useStore = create<State & Actions>()(
           });
           return {
             ressources: newRessources,
+          };
+        }),
+      lock: (x, y, range) =>
+        set((state: State) => {
+          const newUnlocked = state.unlocked;
+          let distance: number;
+          for (let i = x - range; i <= x + range; i++) {
+            for (let j = y - range; j <= y + range; j++) {
+              distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
+              if (distance < range) {
+                if (!newUnlocked[i]) newUnlocked[i] = {};
+                newUnlocked[i][j] = false;
+              }
+            }
+          }
+          return {
+            unlocked: newUnlocked,
           };
         }),
       unlock: (x, y, range) =>
