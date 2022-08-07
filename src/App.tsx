@@ -1,4 +1,4 @@
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Map } from "./components/Map/Map";
 import "./App.css";
 import {
@@ -11,9 +11,10 @@ import {
 import { BuildMenu } from "./components/BuildMenu/BuildMenu";
 import { RessourceMenu } from "./components/RessourceMenu/RessourceMenu";
 import { useStore } from "./store/store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const App = () => {
+  const sun = useRef<any>();
   const addRessources = useStore((state) => state.addRessources);
   const buildingOutputs = useStore((state) => state.buildingOutputs);
 
@@ -30,12 +31,22 @@ const App = () => {
         frameloop="demand"
         camera={{ fov: 25, near: 0.1, far: 1000, position: [6, 5, 6] }}
         flat
+        shadows
       >
         <ambientLight intensity={0.2} color={"#91AFFF"} />
         <directionalLight
           color="#ffdf91"
-          position={[100, 30, 80]}
-          intensity={1.8}
+          position={[100, 60, 100]}
+          ref={sun}
+          intensity={3}
+          castShadow
+          shadow-mapSize-height={2048}
+          shadow-mapSize-width={2048}
+          shadow-camera-left={-42}
+          shadow-camera-right={42}
+          shadow-camera-top={16}
+          shadow-camera-bottom={-16}
+          shadow-camera-visible={true}
         />
         <Sky
           distance={4500000}
@@ -46,7 +57,7 @@ const App = () => {
           turbidity={0.5}
         />
         <MapControls />
-        <Map />
+        <Map sun={sun} />
         <Stats showPanel={0} className="stats" />
         <AdaptiveEvents />
         <AdaptiveDpr pixelated />

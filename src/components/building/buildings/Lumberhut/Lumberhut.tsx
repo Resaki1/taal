@@ -6,7 +6,13 @@ interface LumberhutProps {
 }
 
 const Lumberhut = ({ position }: LumberhutProps) => (
-  <mesh material={mountain} geometry={building} position={position} />
+  <mesh
+    material={mountain}
+    geometry={building}
+    position={position}
+    castShadow
+    receiveShadow
+  />
 );
 
 export default Lumberhut;

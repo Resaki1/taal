@@ -24,11 +24,20 @@ export default function Model({ ...props }: JSX.IntrinsicElements["group"]) {
   const group = useRef<any>();
   const { nodes, materials } = useGLTF("/gltf/house/house.gltf") as GLTFResult;
   return (
-    <group ref={group} {...props} dispose={null} scale={3}>
+    <group
+      ref={group}
+      {...props}
+      dispose={null}
+      scale={3}
+      castShadow
+      receiveShadow
+    >
       <mesh
         position={[0, 0.028, 0]}
         geometry={nodes.Object_4.geometry}
         material={materials.Pixel_House_A}
+        castShadow
+        receiveShadow
       />
     </group>
   );

@@ -1,7 +1,14 @@
 import { Instances, Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useLayoutEffect, useRef } from "react";
-import { Euler, Group, InstancedBufferAttribute, Shader, Vector3 } from "three";
+import { MutableRefObject, useLayoutEffect, useRef } from "react";
+import {
+  CullFaceNone,
+  Euler,
+  Group,
+  InstancedBufferAttribute,
+  Shader,
+  Vector3,
+} from "three";
 import {
   getTerrainHeight,
   getTerrainType,
@@ -9,6 +16,10 @@ import {
 } from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
+
+interface MapProps {
+  sun: MutableRefObject<any>;
+}
 
 const RENDER_DISTANCE = 32;
 const mapSize = 4225; // Math.sqrt(RENDER_DISTANCE * 2 + 1)
@@ -24,7 +35,7 @@ const vec = new Vector3();
 const direction = new Vector3();
 const moveVector = new Vector3();
 
-export const Map = () => {
+export const Map = ({ sun }: MapProps) => {
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
@@ -150,7 +161,7 @@ export const Map = () => {
 
   return (
     <group>
-      <Instances ref={instancedMesh} limit={mapSize}>
+      <Instances ref={instancedMesh} limit={mapSize} castShadow receiveShadow>
         <boxBufferGeometry />
         <meshStandardMaterial
           onBeforeCompile={onBeforeCompile}
@@ -175,6 +186,7 @@ export const Map = () => {
         material={MATERIALS.water}
         onClick={(e) => e.stopPropagation()}
         ref={waterRef}
+        receiveShadow
       />
     </group>
   );

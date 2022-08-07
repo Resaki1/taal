@@ -6,7 +6,13 @@ interface OutpostProps {
 }
 
 const Outpost = ({ position }: OutpostProps) => (
-  <mesh material={water} geometry={building} position={position} />
+  <mesh
+    material={water}
+    geometry={building}
+    position={position}
+    castShadow
+    receiveShadow
+  />
 );
 
 export default Outpost;
