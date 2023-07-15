@@ -10,15 +10,15 @@ export const RessourceMenu = () => {
     <div className="ressource-menu">
       <ul>
         <li>
-          Gold: {Math.floor(ressources.gold)} | 
+          Gold: {Math.floor(ressources.gold)} |
           {Math.round(buildingOutputs.gold * 6000) / 100}/min
         </li>
         <li>
-          Wood: {Math.floor(ressources.wood)} | 
+          Wood: {Math.floor(ressources.wood)} |
           {Math.round(buildingOutputs.wood * 6000) / 100}/min
         </li>
         <li>
-          Stone: {Math.floor(ressources.stone)} | 
+          Stone: {Math.floor(ressources.stone)} |
           {Math.round(buildingOutputs.stone * 6000) / 100}/min
         </li>
         <li>Villagers: {Math.floor(ressources.villager)}</li>

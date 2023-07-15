@@ -65,7 +65,7 @@ const initialState: State = {
 export const useStore = create<State & Actions>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         ...initialState,
         addBuilding: (x, y, building) =>
           set((state) => {

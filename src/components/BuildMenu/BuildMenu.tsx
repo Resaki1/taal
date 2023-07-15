@@ -1,9 +1,8 @@
 import { getTerrainType, Terrain } from "../../helpers/terrain";
 import { Ressources, useStore } from "../../store/store";
 import { BuildingCosts, Buildings } from "../Building/Building";
+import classNames from "classnames";
 import "./BuildMenu.scss";
-
-var classNames = require("classnames");
 
 export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);

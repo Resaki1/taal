@@ -17,7 +17,7 @@ interface MapProps {
 const RENDER_DISTANCE = 32;
 const mapSize = 4225; // Math.sqrt(RENDER_DISTANCE * 2 + 1)
 
-let map: boolean[] = [];
+const map: boolean[] = [];
 for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
   map[x] = true;
 }
@@ -29,6 +29,7 @@ const direction = new Vector3();
 const moveVector = new Vector3();
 
 export const Map = ({ sun }: MapProps) => {
+  console.log(sun.current)
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
@@ -98,7 +99,6 @@ export const Map = ({ sun }: MapProps) => {
       "texIdx",
       new InstancedBufferAttribute(texIdx, 1)
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let updated = false;

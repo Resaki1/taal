@@ -1,4 +1,4 @@
-const noisejs = require("noisejs");
+import * as noisejs from "noisejs";
 const terrain = new noisejs.Noise(0);
 
 export enum Terrain {
