@@ -1,14 +1,7 @@
 import { Instances, Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useLayoutEffect, useRef } from "react";
-import {
-  CullFaceNone,
-  Euler,
-  Group,
-  InstancedBufferAttribute,
-  Shader,
-  Vector3,
-} from "three";
+import { Euler, Group, InstancedBufferAttribute, Shader, Vector3 } from "three";
 import {
   getTerrainHeight,
   getTerrainType,

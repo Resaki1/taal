@@ -64,114 +64,119 @@ const initialState: State = {
 
 export const useStore = create<State & Actions>()(
   devtools(
-    persist((set, get) => ({
-      ...initialState,
-      addBuilding: (x, y, building) =>
-        set((state) => {
-          state.removeRessources(BuildingCosts[building]);
+    persist(
+      (set, get) => ({
+        ...initialState,
+        addBuilding: (x, y, building) =>
+          set((state) => {
+            state.removeRessources(BuildingCosts[building]);
 
-          if (building === Buildings.Outpost) {
-            state.unlock(x, y, 8);
-          }
+            if (building === Buildings.Outpost) {
+              state.unlock(x, y, 8);
+            }
 
-          // add building output
-          const newBuildingOutputs = state.buildingOutputs;
-          Object.entries(BuildingOutputs[building]).forEach((ressource) => {
-            newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
-          });
+            // add building output
+            const newBuildingOutputs = state.buildingOutputs;
+            Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+              newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
+            });
 
-          // add new building
-          const newBuildings = state.buildings;
-          if (!newBuildings[x]) newBuildings[x] = {};
-          newBuildings[x][y] = building;
+            // add new building
+            const newBuildings = state.buildings;
+            if (!newBuildings[x]) newBuildings[x] = {};
+            newBuildings[x][y] = building;
 
-          return {
-            buildings: newBuildings,
-            buildingOutputs: newBuildingOutputs,
-          };
-        }),
-      removeBuilding: (x, y) =>
-        set((state) => {
-          const building = state.buildings[x][y];
-          state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
+            return {
+              buildings: newBuildings,
+              buildingOutputs: newBuildingOutputs,
+            };
+          }),
+        removeBuilding: (x, y) =>
+          set((state) => {
+            const building = state.buildings[x][y];
+            state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
 
-          if (building === Buildings.Outpost) {
-            state.lock(x, y, 8);
-          }
+            if (building === Buildings.Outpost) {
+              state.lock(x, y, 8);
+            }
 
-          // TODO: remove output froom state.buildingOutputs
-          const newBuildingOutputs = state.buildingOutputs;
-          Object.entries(BuildingOutputs[building]).forEach((ressource) => {
-            newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
-          });
+            // TODO: remove output froom state.buildingOutputs
+            const newBuildingOutputs = state.buildingOutputs;
+            Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+              newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
+            });
 
-          const newBuildings = state.buildings;
-          delete newBuildings[x][y];
-          return { buildings: newBuildings };
-        }),
-      addRessources: (
-        ressourcesToAdd: Partial<{ [key in Ressources]: number }>
-      ) =>
-        set((state: State) => {
-          const newRessources = state.ressources;
-          Object.entries(ressourcesToAdd).forEach((ressource) => {
-            newRessources[ressource[0] as Ressources] += ressource[1];
-          });
-          return {
-            ressources: newRessources,
-          };
-        }),
-      removeRessources: (
-        ressourcesToRemove: Partial<{ [key in Ressources]: number }>
-      ) =>
-        set((state: State) => {
-          const newRessources = state.ressources;
-          Object.entries(ressourcesToRemove).forEach((ressource) => {
-            newRessources[ressource[0] as Ressources] -= ressource[1];
-          });
-          return {
-            ressources: newRessources,
-          };
-        }),
-      lock: (x, y, range) =>
-        set((state: State) => {
-          const newUnlocked = state.unlocked;
-          let distance: number;
-          for (let i = x - range; i <= x + range; i++) {
-            for (let j = y - range; j <= y + range; j++) {
-              distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
-              if (distance < range) {
-                if (!newUnlocked[i]) newUnlocked[i] = {};
-                newUnlocked[i][j] = false;
+            const newBuildings = state.buildings;
+            delete newBuildings[x][y];
+            return { buildings: newBuildings };
+          }),
+        addRessources: (
+          ressourcesToAdd: Partial<{ [key in Ressources]: number }>
+        ) =>
+          set((state: State) => {
+            const newRessources = state.ressources;
+            Object.entries(ressourcesToAdd).forEach((ressource) => {
+              newRessources[ressource[0] as Ressources] += ressource[1];
+            });
+            return {
+              ressources: newRessources,
+            };
+          }),
+        removeRessources: (
+          ressourcesToRemove: Partial<{ [key in Ressources]: number }>
+        ) =>
+          set((state: State) => {
+            const newRessources = state.ressources;
+            Object.entries(ressourcesToRemove).forEach((ressource) => {
+              newRessources[ressource[0] as Ressources] -= ressource[1];
+            });
+            return {
+              ressources: newRessources,
+            };
+          }),
+        lock: (x, y, range) =>
+          set((state: State) => {
+            const newUnlocked = state.unlocked;
+            let distance: number;
+            for (let i = x - range; i <= x + range; i++) {
+              for (let j = y - range; j <= y + range; j++) {
+                distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
+                if (distance < range) {
+                  if (!newUnlocked[i]) newUnlocked[i] = {};
+                  newUnlocked[i][j] = false;
+                }
               }
             }
-          }
-          return {
-            unlocked: newUnlocked,
-          };
-        }),
-      unlock: (x, y, range) =>
-        set((state: State) => {
-          const newUnlocked = state.unlocked;
-          let distance: number;
-          for (let i = x - range; i <= x + range; i++) {
-            for (let j = y - range; j <= y + range; j++) {
-              distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
-              if (distance < range) {
-                if (!newUnlocked[i]) newUnlocked[i] = {};
-                newUnlocked[i][j] = true;
+            return {
+              unlocked: newUnlocked,
+            };
+          }),
+        unlock: (x, y, range) =>
+          set((state: State) => {
+            const newUnlocked = state.unlocked;
+            let distance: number;
+            for (let i = x - range; i <= x + range; i++) {
+              for (let j = y - range; j <= y + range; j++) {
+                distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
+                if (distance < range) {
+                  if (!newUnlocked[i]) newUnlocked[i] = {};
+                  newUnlocked[i][j] = true;
+                }
               }
             }
-          }
-          return {
-            unlocked: newUnlocked,
-          };
-        }),
-      setSelected: (object) =>
-        set(() => {
-          return { selected: object };
-        }),
-      reset: () => set({ ...initialState }),
-    }))
+            return {
+              unlocked: newUnlocked,
+            };
+          }),
+        setSelected: (object) =>
+          set(() => {
+            return { selected: object };
+          }),
+        reset: () => set({ ...initialState }),
+      }),
+      {
+        name: "game-state",
+      }
+    )
   )
 );

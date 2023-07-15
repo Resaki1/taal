@@ -20,10 +20,10 @@
     "react-detect-click-outside": "^1.1.7",
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
-    "sass": "^1.53.0",
+    "sass": "^1.63.6",
     "three": "^0.141.0",
-    "typescript": "^4.7.3",
-    "web-vitals": "^2.1.4",
+    "typescript": "^5.1.6",
+    "web-vitals": "^3.4.0",
     "workbox-background-sync": "^7.0.0",
     "workbox-broadcast-update": "^6.5.3",
     "workbox-cacheable-response": "^6.5.3",
@@ -36,7 +36,7 @@
     "workbox-routing": "^6.5.3",
     "workbox-strategies": "^6.5.3",
     "workbox-streams": "^6.5.3",
-    "zustand": "^4.0.0-rc.1"
+    "zustand": "^4.3.9"
   },
   "scripts": {
     "start": "react-scripts start",
