@@ -1,15 +1,20 @@
-import { Instances, Plane } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
-import { MutableRefObject, useLayoutEffect, useRef } from "react";
-import { DirectionalLight, Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Shader, Vector3 } from "three";
+import { Instances, Plane } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
+import { MutableRefObject, useLayoutEffect, useRef } from 'react';
 import {
-  getTerrainHeight,
-  getTerrainType,
-  Terrain,
-} from "../../helpers/terrain";
-import { Materials } from "../../materials/materials";
-import { Tile } from "../Tile/Tile";
-import { Position } from "@react-three/drei/helpers/Position";
+  DirectionalLight,
+  Euler,
+  Group,
+  InstancedBufferAttribute,
+  InstancedMesh,
+  Mesh,
+  Object3D,
+  Shader,
+  Vector3,
+} from 'three';
+import { getTerrainHeight, getTerrainType, Terrain } from '../../helpers/terrain';
+import { Materials } from '../../materials/materials';
+import { Tile } from '../Tile/Tile';
 
 interface MapProps {
   sun: MutableRefObject<DirectionalLight>;
@@ -31,11 +36,11 @@ const moveVector = new Vector3();
 
 export const Map = ({ sun }: MapProps) => {
   // TODO: remove console.log (issue #12)
-  console.log(sun)
+  console.log(sun);
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
-  const tileRef = useRef<Position[][]>([[]]);
+  const tileRef = useRef<Group[][]>([[]]);
   const instancedMesh = useRef<InstancedMesh>(null!);
   const waterRef = useRef<Mesh>(null!);
 
@@ -50,7 +55,7 @@ export const Map = ({ sun }: MapProps) => {
       `void main() {`,
       `void main() {
       	vTexIdx = texIdx;
-      `
+      `,
     );
     shader.fragmentShader = `
     	uniform sampler2D texAtlas;
@@ -63,7 +68,7 @@ export const Map = ({ sun }: MapProps) => {
        	vec2 blockUv = ${texStep} * (floor(vTexIdx + 0.1) + vUv); 
         vec4 blockColor = texture(texAtlas, blockUv);
         diffuseColor *= blockColor;
-      `
+      `,
     );
   };
 
@@ -79,7 +84,7 @@ export const Map = ({ sun }: MapProps) => {
 
     let posX = 0;
     let posY = 0;
-    let tile: Position;
+    let tile: Group;
     waterRef.current.position.x = centerBlock.current.x;
     waterRef.current.position.z = centerBlock.current.z;
 
@@ -97,10 +102,7 @@ export const Map = ({ sun }: MapProps) => {
       });
     });
 
-    instancedMesh.current.geometry.setAttribute(
-      "texIdx",
-      new InstancedBufferAttribute(texIdx, 1)
-    );
+    instancedMesh.current.geometry.setAttribute('texIdx', new InstancedBufferAttribute(texIdx, 1));
   }, []);
 
   let updated = false;
@@ -123,30 +125,25 @@ export const Map = ({ sun }: MapProps) => {
 
         texIdx = instancedMesh.current.geometry.attributes.texIdx.array as Float32Array;
 
-        instancedMesh.current.children.forEach(
-          (child: Object3D, index: number) => {
-            tile = child;
+        instancedMesh.current.children.forEach((child: Object3D, index: number) => {
+          tile = child;
 
-            updated = false;
-            if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
-              tile.position.x += moveVector.x;
-              updated = true;
-            }
-            if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
-              tile.position.z += moveVector.z;
-              updated = true;
-            }
-            if (updated) {
-              texIdx[index] = getTerrainType(tile.position.x, tile.position.z);
-              tile.userData.update && tile.userData.update();
-            }
+          updated = false;
+          if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
+            tile.position.x += moveVector.x;
+            updated = true;
           }
-        );
+          if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
+            tile.position.z += moveVector.z;
+            updated = true;
+          }
+          if (updated) {
+            texIdx[index] = getTerrainType(tile.position.x, tile.position.z);
+            tile.userData.update && tile.userData.update();
+          }
+        });
 
-        instancedMesh.current.geometry.setAttribute(
-          "texIdx",
-          new InstancedBufferAttribute(texIdx, 1)
-        );
+        instancedMesh.current.geometry.setAttribute('texIdx', new InstancedBufferAttribute(texIdx, 1));
       }
 
       waterRef.current.position.copy(newPosition);
@@ -156,22 +153,14 @@ export const Map = ({ sun }: MapProps) => {
 
   return (
     <group>
-      {/* TODO: fix type once r3f has been updated (issue #23) */}
+      {/* TODO: fix type */}
       <Instances ref={instancedMesh as any} limit={mapSize} castShadow receiveShadow>
-        <boxBufferGeometry />
-        <meshStandardMaterial
-          onBeforeCompile={onBeforeCompile}
-          defines={{ USE_UV: "" }}
-        />
+        <boxGeometry />
+        <meshStandardMaterial onBeforeCompile={onBeforeCompile} defines={{ USE_UV: '' }} />
         {map.map((_, x) => {
           return map.map((_, y) => {
             if (!tileRef.current[x]) tileRef.current[x] = [];
-            return (
-              <Tile
-                tileRef={(el: Position) => (tileRef.current[x][y] = el)}
-                key={`${x}/${y}`}
-              />
-            );
+            return <Tile tileRef={(el: Group) => (tileRef.current[x][y] = el)} key={`${x}/${y}`} />;
           });
         })}
       </Instances>

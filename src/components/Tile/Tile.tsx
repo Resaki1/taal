@@ -1,14 +1,13 @@
-import { Instance } from "@react-three/drei";
-import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { startTransition, Suspense, useRef, useState } from "react";
-import { useStore } from "../../store/store";
-import { Building } from "../Building/Building";
-import { Color } from "three";
-import { getTerrainHeight } from "../../helpers/terrain";
-import { Position } from "@react-three/drei/helpers/Position";
+import { Instance } from '@react-three/drei';
+import { ThreeEvent, useFrame } from '@react-three/fiber';
+import { startTransition, Suspense, useRef, useState } from 'react';
+import { useStore } from '../../store/store';
+import { Building } from '../Building/Building';
+import { Color, Group } from 'three';
+import { getTerrainHeight } from '../../helpers/terrain';
 
 export type TileProps = {
-  tileRef: (el: Position) => void;
+  tileRef: (el: Group) => void;
 };
 
 const gray = new Color(0x303030);
@@ -16,7 +15,7 @@ const lightGray = new Color(0xa0a0a0);
 const noColor = new Color();
 
 export const Tile = ({ tileRef }: TileProps) => {
-  const ref = useRef<Position>(null!);
+  const ref = useRef<Group>(null!);
 
   const [, setValue] = useState(0);
   const [selected, setSelected] = useState(false);
@@ -55,8 +54,7 @@ export const Tile = ({ tileRef }: TileProps) => {
   const onRefChange = () => {
     if (
       hasBuilding ||
-      (buildings[ref.current.position.x] &&
-        buildings[ref.current.position.x][ref.current.position.z] !== undefined)
+      (buildings[ref.current.position.x] && buildings[ref.current.position.x][ref.current.position.z] !== undefined)
     )
       startTransition(() => forceUpdate());
 
@@ -68,8 +66,7 @@ export const Tile = ({ tileRef }: TileProps) => {
     e.stopPropagation();
     e.intersections.forEach((intersection, index) => {
       if (index > 0)
-        intersection.object.userData.deselect &&
-          startTransition(() => intersection.object.userData.deselect());
+        intersection.object.userData.deselect && startTransition(() => intersection.object.userData.deselect());
     });
     if (!selected) {
       select();
@@ -79,7 +76,7 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   const select = () => {
-    setGlobalSelected({ type: "tile", object: ref.current });
+    setGlobalSelected({ type: 'tile', object: ref.current });
     setSelected(true);
   };
 
@@ -90,16 +87,9 @@ export const Tile = ({ tileRef }: TileProps) => {
   };
 
   useFrame(() => {
-    if (
-      !isUnlocked &&
-      unlocked[ref.current.position.x] &&
-      unlocked[ref.current.position.x][ref.current.position.z]
-    ) {
+    if (!isUnlocked && unlocked[ref.current.position.x] && unlocked[ref.current.position.x][ref.current.position.z]) {
       startTransition(() => setUnlocked(true));
-    } else if (
-      isUnlocked &&
-      !unlocked[ref.current.position.x]?.[ref.current.position.z]
-    ) {
+    } else if (isUnlocked && !unlocked[ref.current.position.x]?.[ref.current.position.z]) {
       startTransition(() => setUnlocked(false));
     }
   });
@@ -107,7 +97,7 @@ export const Tile = ({ tileRef }: TileProps) => {
   return (
     <Suspense>
       <Instance
-        ref={(el: Position) => {
+        ref={(el: Group) => {
           ref.current = el;
           tileRef(el);
         }}
@@ -116,11 +106,7 @@ export const Tile = ({ tileRef }: TileProps) => {
         onPointerMissed={() => selected && deselect()}
         color={selected ? noColor : isUnlocked ? lightGray : gray}
       >
-        {hasBuilding && (
-          <Building
-            type={buildings[ref.current.position.x][ref.current.position.z]}
-          />
-        )}
+        {hasBuilding && <Building type={buildings[ref.current.position.x][ref.current.position.z]} />}
       </Instance>
       {/* {ref?.current?.position && !hasBuilding && (
         <Foilage position={ref.current.position} />
