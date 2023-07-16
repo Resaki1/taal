@@ -1,5 +1,5 @@
 import { Object3D, Event } from "three";
-import create from "zustand";
+import { create } from "zustand";
 import { persist, devtools } from "zustand/middleware";
 import {
   Buildings,

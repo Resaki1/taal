@@ -30,6 +30,8 @@ const direction = new Vector3();
 const moveVector = new Vector3();
 
 export const Map = ({ sun }: MapProps) => {
+  // TODO: remove console.log (issue #12)
+  console.log(sun)
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
@@ -154,7 +156,7 @@ export const Map = ({ sun }: MapProps) => {
 
   return (
     <group>
-      {/* TODO: fix type once r3f has been updated */}
+      {/* TODO: fix type once r3f has been updated (issue #23) */}
       <Instances ref={instancedMesh as any} limit={mapSize} castShadow receiveShadow>
         <boxBufferGeometry />
         <meshStandardMaterial

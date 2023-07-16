@@ -43,4 +43,4 @@ export default function Model({ ...props }: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload("/house.gltf");
+useGLTF.preload("/gltf/house/house.gltf");
