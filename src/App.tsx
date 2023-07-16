@@ -12,9 +12,10 @@ import { BuildMenu } from "./components/BuildMenu/BuildMenu";
 import { RessourceMenu } from "./components/RessourceMenu/RessourceMenu";
 import { useStore } from "./store/store";
 import { useEffect, useRef } from "react";
+import { DirectionalLight } from "three";
 
 const App = () => {
-  const sun = useRef<any>();
+  const sun = useRef<DirectionalLight>(null!);
   const addRessources = useStore((state) => state.addRessources);
   const buildingOutputs = useStore((state) => state.buildingOutputs);
 

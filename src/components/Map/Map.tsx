@@ -1,7 +1,7 @@
 import { Instances, Plane } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useLayoutEffect, useRef } from "react";
-import { Euler, Group, InstancedBufferAttribute, Shader, Vector3 } from "three";
+import { DirectionalLight, Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Shader, Vector3 } from "three";
 import {
   getTerrainHeight,
   getTerrainType,
@@ -9,9 +9,10 @@ import {
 } from "../../helpers/terrain";
 import { Materials } from "../../materials/materials";
 import { Tile } from "../Tile/Tile";
+import { Position } from "@react-three/drei/helpers/Position";
 
 interface MapProps {
-  sun: MutableRefObject<any>;
+  sun: MutableRefObject<DirectionalLight>;
 }
 
 const RENDER_DISTANCE = 32;
@@ -29,13 +30,12 @@ const direction = new Vector3();
 const moveVector = new Vector3();
 
 export const Map = ({ sun }: MapProps) => {
-  console.log(sun.current)
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(new Vector3(9999, 0, 0));
-  const tileRef = useRef<any[][]>([[]]);
-  const instancedMesh = useRef<any>();
-  const waterRef = useRef<any>();
+  const tileRef = useRef<Position[][]>([[]]);
+  const instancedMesh = useRef<InstancedMesh>(null!);
+  const waterRef = useRef<Mesh>(null!);
 
   const texStep = 1 / (Terrain.MOUNTAIN + 1); // last value of Terrain enum + 1
   const onBeforeCompile = (shader: Shader) => {
@@ -77,7 +77,7 @@ export const Map = ({ sun }: MapProps) => {
 
     let posX = 0;
     let posY = 0;
-    let tile: any;
+    let tile: Position;
     waterRef.current.position.x = centerBlock.current.x;
     waterRef.current.position.z = centerBlock.current.z;
 
@@ -119,10 +119,10 @@ export const Map = ({ sun }: MapProps) => {
           .multiplyScalar(RENDER_DISTANCE * 2)
           .add(direction);
 
-        texIdx = instancedMesh.current.geometry.attributes.texIdx.array;
+        texIdx = instancedMesh.current.geometry.attributes.texIdx.array as Float32Array;
 
         instancedMesh.current.children.forEach(
-          (child: Group, index: number) => {
+          (child: Object3D, index: number) => {
             tile = child;
 
             updated = false;
@@ -154,7 +154,8 @@ export const Map = ({ sun }: MapProps) => {
 
   return (
     <group>
-      <Instances ref={instancedMesh} limit={mapSize} castShadow receiveShadow>
+      {/* TODO: fix type once r3f has been updated */}
+      <Instances ref={instancedMesh as any} limit={mapSize} castShadow receiveShadow>
         <boxBufferGeometry />
         <meshStandardMaterial
           onBeforeCompile={onBeforeCompile}
@@ -165,7 +166,7 @@ export const Map = ({ sun }: MapProps) => {
             if (!tileRef.current[x]) tileRef.current[x] = [];
             return (
               <Tile
-                tileRef={(el: any) => (tileRef.current[x][y] = el)}
+                tileRef={(el: Position) => (tileRef.current[x][y] = el)}
                 key={`${x}/${y}`}
               />
             );

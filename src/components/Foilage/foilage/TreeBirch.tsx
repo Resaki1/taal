@@ -6,7 +6,7 @@ source: https://sketchfab.com/3d-models/birch-tree-voxel-459f53f6981a4482834f770
 title: Birch Tree Voxel
 */
 
-import * as THREE from "three";
+import {Group} from "three";
 import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
@@ -23,7 +23,7 @@ type GLTFResult = GLTF & {
 export default function TreeBirch({
   ...props
 }: JSX.IntrinsicElements["group"]) {
-  const group = useRef<any>();
+  const group = useRef<Group>(null!);
   const { nodes, materials } = useGLTF(
     "gltf/tree_birch/tree_birch.glb"
   ) as GLTFResult;

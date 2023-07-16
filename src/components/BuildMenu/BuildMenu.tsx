@@ -4,6 +4,11 @@ import { BuildingCosts, Buildings } from "../Building/Building";
 import classNames from "classnames";
 import "./BuildMenu.scss";
 
+type BuildMenuBuilding = {
+  type: Buildings;
+  name: string;
+}
+
 export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);
   const buildings = useStore((state) => state.buildings);
@@ -39,7 +44,7 @@ export const BuildMenu = () => {
       const isUnlocked =
         unlocked[position.x] && unlocked[position.x][position.z];
 
-      const possibleBuildings: any[] = [];
+      const possibleBuildings: BuildMenuBuilding[] = [];
 
       if (Object.keys(unlocked).length === 0) {
         if (type !== Terrain.WATER && type !== Terrain.MOUNTAIN) {

@@ -5,9 +5,10 @@ import { useStore } from "../../store/store";
 import { Building } from "../Building/Building";
 import { Color } from "three";
 import { getTerrainHeight } from "../../helpers/terrain";
+import { Position } from "@react-three/drei/helpers/Position";
 
 export type TileProps = {
-  tileRef: (el: any) => any;
+  tileRef: (el: Position) => void;
 };
 
 const gray = new Color(0x303030);
@@ -15,7 +16,7 @@ const lightGray = new Color(0xa0a0a0);
 const noColor = new Color();
 
 export const Tile = ({ tileRef }: TileProps) => {
-  const ref = useRef<any>();
+  const ref = useRef<Position>(null!);
 
   const [, setValue] = useState(0);
   const [selected, setSelected] = useState(false);
@@ -42,7 +43,7 @@ export const Tile = ({ tileRef }: TileProps) => {
       if (!unlocked[x]?.[y]) {
         // tile is shown as unlocked but should be locked
         startTransition(() => setUnlocked(false));
-      } else console.log(); // unlocked tile is deselected
+      }
     } else if (!isUnlocked && unlocked[x]?.[y]) {
       // tile is shown as locked but should be unlocked
       startTransition(() => setUnlocked(true));
@@ -106,7 +107,7 @@ export const Tile = ({ tileRef }: TileProps) => {
   return (
     <Suspense>
       <Instance
-        ref={(el: any) => {
+        ref={(el: Position) => {
           ref.current = el;
           tileRef(el);
         }}

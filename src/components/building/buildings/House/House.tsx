@@ -9,7 +9,7 @@ title: Pixel House
 import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { Mesh, MeshStandardMaterial } from "three";
+import { Group, Mesh, MeshStandardMaterial } from "three";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -21,7 +21,7 @@ type GLTFResult = GLTF & {
 };
 
 export default function Model({ ...props }: JSX.IntrinsicElements["group"]) {
-  const group = useRef<any>();
+  const group = useRef<Group>(null!);
   const { nodes, materials } = useGLTF("/gltf/house/house.gltf") as GLTFResult;
   return (
     <group

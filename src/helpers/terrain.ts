@@ -1,5 +1,5 @@
-import * as noisejs from "noisejs";
-const terrain = new noisejs.Noise(0);
+import {Noise} from "noisejs";
+const terrain = new Noise(0);
 
 export enum Terrain {
   WATER,
