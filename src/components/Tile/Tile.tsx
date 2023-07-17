@@ -1,6 +1,6 @@
 import { Instance } from '@react-three/drei';
 import { ThreeEvent, useFrame } from '@react-three/fiber';
-import { startTransition, Suspense, useRef, useState } from 'react';
+import { memo, startTransition, Suspense, useRef, useState } from 'react';
 import { useStore } from '../../store/store';
 import { Building } from '../Building/Building';
 import { Color, Group } from 'three';
@@ -14,7 +14,7 @@ const gray = new Color(0x303030);
 const lightGray = new Color(0xa0a0a0);
 const noColor = new Color();
 
-export const Tile = ({ tileRef }: TileProps) => {
+const TileComponent = ({ tileRef }: TileProps) => {
   const ref = useRef<Group>(null!);
 
   const [, setValue] = useState(0);
@@ -114,3 +114,5 @@ export const Tile = ({ tileRef }: TileProps) => {
     </Suspense>
   );
 };
+
+export const Tile = memo(TileComponent);

@@ -1,4 +1,4 @@
-import {Noise} from "noisejs";
+import { Noise } from 'noisejs';
 const terrain = new Noise(0);
 
 export enum Terrain {
@@ -15,10 +15,16 @@ export const getTerrainValue = (x: number, y: number): number => {
 
 export const getTerrainType = (x: number, y: number): Terrain => {
   const value = getTerrainValue(x, y);
-  if (value < -0.1) return Terrain.BEACH;
-  if (value < 0.2) return Terrain.MEADOW;
-  if (value < 0.4) return Terrain.FOREST;
-  return Terrain.MOUNTAIN;
+  switch (true) {
+    case value < -0.1:
+      return Terrain.BEACH;
+    case value < 0.2:
+      return Terrain.MEADOW;
+    case value < 0.4:
+      return Terrain.FOREST;
+    default:
+      return Terrain.MOUNTAIN;
+  }
 };
 
 export const getTerrainHeight = (x: number, y: number): number => {

@@ -9,12 +9,12 @@ import {
   InstancedMesh,
   Mesh,
   Object3D,
-  Shader,
   Vector3,
 } from 'three';
 import { getTerrainHeight, getTerrainType, Terrain } from '../../helpers/terrain';
 import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
+import { tileShader } from '../../helpers/shader';
 
 interface MapProps {
   sun: MutableRefObject<DirectionalLight>;
@@ -23,64 +23,39 @@ interface MapProps {
 const RENDER_DISTANCE = 32;
 const mapSize = 4225; // Math.sqrt(RENDER_DISTANCE * 2 + 1)
 
-const map: boolean[] = [];
-for (let x = 0; x <= RENDER_DISTANCE * 2; x++) {
-  map[x] = true;
-}
+const map = Array.from({ length: RENDER_DISTANCE * 2 + 1 }, () => true);
 
+// initialize three.js objects outside of component to avoid re-creating them on every render => better performance
 const target = new Vector3();
 const newPosition = new Vector3();
 const vec = new Vector3();
 const direction = new Vector3();
 const moveVector = new Vector3();
+const waterRotation = new Euler(-Math.PI / 2, 0, 0);
+const texIdxArray = new Float32Array(mapSize).fill(0);
+const bufferAttribute = new InstancedBufferAttribute(texIdxArray, 1);
+const centerBlockVector = new Vector3(9999, 0, 0);
 
 export const Map = ({ sun }: MapProps) => {
   // TODO: remove console.log (issue #12)
   console.log(sun);
   const MATERIALS = Materials();
   const { camera } = useThree();
-  const centerBlock = useRef(new Vector3(9999, 0, 0));
+  const centerBlock = useRef(centerBlockVector);
   const tileRef = useRef<Group[][]>([[]]);
   const instancedMesh = useRef<InstancedMesh>(null!);
   const waterRef = useRef<Mesh>(null!);
 
   const texStep = 1 / (Terrain.MOUNTAIN + 1); // last value of Terrain enum + 1
-  const onBeforeCompile = (shader: Shader) => {
-    shader.uniforms.texAtlas = { value: MATERIALS.texture_atlas };
-    shader.vertexShader = `
-    	attribute float texIdx;
-    	varying float vTexIdx;
-      ${shader.vertexShader}
-    `.replace(
-      `void main() {`,
-      `void main() {
-      	vTexIdx = texIdx;
-      `,
-    );
-    shader.fragmentShader = `
-    	uniform sampler2D texAtlas;
-    	varying float vTexIdx;
-      ${shader.fragmentShader}
-    `.replace(
-      `#include <map_fragment>`,
-      `#include <map_fragment>
-      	
-       	vec2 blockUv = ${texStep} * (floor(vTexIdx + 0.1) + vUv); 
-        vec4 blockColor = texture(texAtlas, blockUv);
-        diffuseColor *= blockColor;
-      `,
-    );
-  };
 
   let texIdx = new Float32Array(mapSize).fill(0);
   let index = 0;
 
   useLayoutEffect(() => {
-    newPosition.set(camera.position.x, camera.position.y, camera.position.z);
-    direction.copy(camera.getWorldDirection(target));
-    vec.copy(direction.multiplyScalar(camera.position.y / direction.y));
-    // shift in direction of camera
-    centerBlock.current.copy(newPosition.sub(vec).round());
+    // calculate the coordinates of the block the camera is currently looking at. This will be the center of the map
+    newPosition.copy(camera.position); // set newPosition to camera position
+    vec.copy(camera.getWorldDirection(target).multiplyScalar(camera.position.y / camera.getWorldDirection(target).y));
+    centerBlock.current.copy(newPosition.sub(vec).round()); // shift in direction of camera
 
     let posX = 0;
     let posY = 0;
@@ -102,8 +77,9 @@ export const Map = ({ sun }: MapProps) => {
       });
     });
 
-    instancedMesh.current.geometry.setAttribute('texIdx', new InstancedBufferAttribute(texIdx, 1));
-  }, []);
+    bufferAttribute.array = texIdx;
+    instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
+  }, [camera.position]);
 
   let updated = false;
   let tile;
@@ -143,7 +119,8 @@ export const Map = ({ sun }: MapProps) => {
           }
         });
 
-        instancedMesh.current.geometry.setAttribute('texIdx', new InstancedBufferAttribute(texIdx, 1));
+        bufferAttribute.array = texIdx;
+        instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
       }
 
       waterRef.current.position.copy(newPosition);
@@ -152,11 +129,14 @@ export const Map = ({ sun }: MapProps) => {
   });
 
   return (
-    <group>
+    <>
       {/* TODO: fix type */}
       <Instances ref={instancedMesh as any} limit={mapSize} castShadow receiveShadow>
         <boxGeometry />
-        <meshStandardMaterial onBeforeCompile={onBeforeCompile} defines={{ USE_UV: '' }} />
+        <meshStandardMaterial
+          onBeforeCompile={(shader) => tileShader(shader, MATERIALS.texture_atlas, texStep)}
+          defines={{ USE_UV: '' }}
+        />
         {map.map((_, x) => {
           return map.map((_, y) => {
             if (!tileRef.current[x]) tileRef.current[x] = [];
@@ -166,13 +146,13 @@ export const Map = ({ sun }: MapProps) => {
       </Instances>
       <Plane
         args={[RENDER_DISTANCE * 2 + 1, RENDER_DISTANCE * 2 + 1]}
-        rotation={new Euler(-Math.PI / 2, 0, 0)}
+        rotation={waterRotation}
         position={[0, 0, 0]}
         material={MATERIALS.water}
         onClick={(e) => e.stopPropagation()}
         ref={waterRef}
         receiveShadow
       />
-    </group>
+    </>
   );
 };
