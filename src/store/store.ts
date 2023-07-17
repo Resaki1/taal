@@ -1,14 +1,10 @@
-import { Object3D, Event } from "three";
-import { create } from "zustand";
-import { persist, devtools } from "zustand/middleware";
-import {
-  Buildings,
-  BuildingCosts,
-  BuildingOutputs,
-  BuildingSellBenefits,
-} from "../components/Building/Building";
+import { Object3D, Event } from 'three';
+import { create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
+import { Buildings } from '../components/Building/Building';
+import { BuildingCosts, BuildingOutputs, BuildingSellBenefits } from '../components/Building/buildingFinancials';
 
-export type Ressources = "wood" | "stone" | "gold" | "villager";
+export type Ressources = 'wood' | 'stone' | 'gold' | 'villager';
 
 interface BuildingsState {
   [key: number]: { [key: number]: Buildings };
@@ -32,12 +28,8 @@ type State = {
 type Actions = {
   addBuilding: (x: number, y: number, building: Buildings) => void;
   removeBuilding: (x: number, y: number) => void;
-  addRessources: (
-    ressourcesToAdd: Partial<{ [key in Ressources]: number }>
-  ) => void;
-  removeRessources: (
-    ressourcesToRemove: Partial<{ [key in Ressources]: number }>
-  ) => void;
+  addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) => void;
+  removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) => void;
   lock: (x: number, y: number, range: number) => void;
   unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
@@ -110,9 +102,7 @@ export const useStore = create<State & Actions>()(
             delete newBuildings[x][y];
             return { buildings: newBuildings };
           }),
-        addRessources: (
-          ressourcesToAdd: Partial<{ [key in Ressources]: number }>
-        ) =>
+        addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {
             const newRessources = state.ressources;
             Object.entries(ressourcesToAdd).forEach((ressource) => {
@@ -122,9 +112,7 @@ export const useStore = create<State & Actions>()(
               ressources: newRessources,
             };
           }),
-        removeRessources: (
-          ressourcesToRemove: Partial<{ [key in Ressources]: number }>
-        ) =>
+        removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {
             const newRessources = state.ressources;
             Object.entries(ressourcesToRemove).forEach((ressource) => {
@@ -175,8 +163,8 @@ export const useStore = create<State & Actions>()(
         reset: () => set({ ...initialState }),
       }),
       {
-        name: "game-state",
-      }
-    )
-  )
+        name: 'game-state',
+      },
+    ),
+  ),
 );

@@ -1,13 +1,14 @@
-import { getTerrainType, Terrain } from "../../helpers/terrain";
-import { Ressources, useStore } from "../../store/store";
-import { BuildingCosts, Buildings } from "../Building/Building";
-import classNames from "classnames";
-import "./BuildMenu.scss";
+import { getTerrainType, Terrain } from '../../helpers/terrain';
+import { Ressources, useStore } from '../../store/store';
+import { Buildings } from '../Building/Building';
+import classNames from 'classnames';
+import './BuildMenu.scss';
+import { BuildingCosts } from '../Building/buildingFinancials';
 
 type BuildMenuBuilding = {
   type: Buildings;
   name: string;
-}
+};
 
 export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);
@@ -20,15 +21,10 @@ export const BuildMenu = () => {
   const hasBuilding =
     selected &&
     selected.object?.position &&
-    buildings[selected.object.position.x]?.[selected.object.position.z] !==
-      undefined;
+    buildings[selected.object.position.x]?.[selected.object.position.z] !== undefined;
 
   const handleAdd = (building: Buildings) => {
-    addBuilding(
-      selected!.object.position.x,
-      selected!.object.position.z,
-      building
-    );
+    addBuilding(selected!.object.position.x, selected!.object.position.z, building);
     selected!.object.userData.update();
   };
 
@@ -41,33 +37,37 @@ export const BuildMenu = () => {
     const position = selected?.object?.position;
     if (position) {
       const type = getTerrainType(position.x, position.z);
-      const isUnlocked =
-        unlocked[position.x] && unlocked[position.x][position.z];
+      const isUnlocked = unlocked[position.x] && unlocked[position.x][position.z];
 
       const possibleBuildings: BuildMenuBuilding[] = [];
 
       if (Object.keys(unlocked).length === 0) {
         if (type !== Terrain.WATER && type !== Terrain.MOUNTAIN) {
-          return [{ type: Buildings.Outpost, name: "Outpost" }];
+          return [{ type: Buildings.Outpost, name: 'Outpost' }];
         } else return [];
       } else if (!isUnlocked) return [];
       else {
-        if (type === Terrain.BEACH)
-          possibleBuildings.push(
-            { type: Buildings.Outpost, name: "Outpost" },
-            { type: Buildings.House, name: "House" }
-          );
-        if (type === Terrain.MEADOW)
-          possibleBuildings.push(
-            { type: Buildings.Outpost, name: "Outpost" },
-            { type: Buildings.House, name: "House" }
-          );
-        if (type === Terrain.FOREST)
-          possibleBuildings.push(
-            { type: Buildings.Outpost, name: "Outpost" },
-            { type: Buildings.House, name: "House" },
-            { type: Buildings.Lumberhut, name: "Lumberhut" }
-          );
+        switch (type) {
+          case Terrain.BEACH:
+            possibleBuildings.push(
+              { type: Buildings.Outpost, name: 'Outpost' },
+              { type: Buildings.House, name: 'House' },
+            );
+            break;
+          case Terrain.MEADOW:
+            possibleBuildings.push(
+              { type: Buildings.Outpost, name: 'Outpost' },
+              { type: Buildings.House, name: 'House' },
+            );
+            break;
+          case Terrain.FOREST:
+            possibleBuildings.push(
+              { type: Buildings.Outpost, name: 'Outpost' },
+              { type: Buildings.House, name: 'House' },
+              { type: Buildings.Lumberhut, name: 'Lumberhut' },
+            );
+            break;
+        }
       }
       return possibleBuildings;
     }
@@ -77,8 +77,7 @@ export const BuildMenu = () => {
     const recipe = BuildingCosts[building];
     let hasEnough = true;
     Object.entries(recipe).forEach((cost) => {
-      if (ressources[cost[0] as Ressources] < recipe[cost[0] as Ressources]!)
-        hasEnough = false;
+      if (ressources[cost[0] as Ressources] < recipe[cost[0] as Ressources]!) hasEnough = false;
     });
     return hasEnough;
   };
@@ -86,8 +85,8 @@ export const BuildMenu = () => {
   return (
     <div
       className={classNames({
-        "build-menu": true,
-        "build-menu--visible": selected,
+        'build-menu': true,
+        'build-menu--visible': selected,
       })}
     >
       {selected &&

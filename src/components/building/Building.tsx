@@ -1,9 +1,8 @@
-import { Suspense, useMemo } from "react";
-import { Vector3 } from "three";
-import { Ressources } from "../../store/store";
-import House from "./buildings/House/House";
-import Lumberhut from "./buildings/Lumberhut/Lumberhut";
-import Outpost from "./buildings/Outpost/Outpost";
+import { Suspense, memo } from 'react';
+import { Vector3 } from 'three';
+import House from './buildings/House/House';
+import Lumberhut from './buildings/Lumberhut/Lumberhut';
+import Outpost from './buildings/Outpost/Outpost';
 
 type BuildingProps = {
   type: Buildings;
@@ -15,71 +14,21 @@ export enum Buildings {
   House,
 }
 
-type BuildingRessourcesType = {
-  [key in Buildings]: Partial<{
-    [key in Ressources]: number;
-  }>;
-};
+const buildingPosition = new Vector3(0, 0.75, 0);
 
-export const BuildingCosts: BuildingRessourcesType = {
-  [Buildings.Outpost]: {
-    wood: 10,
-    gold: 100,
-  },
-  [Buildings.Lumberhut]: {
-    wood: 2,
-    gold: 10,
-    villager: 1,
-  },
-  [Buildings.House]: {
-    wood: 6,
-    gold: 100,
-    villager: -4,
-  },
-};
-
-const SELLFACTOR = 0.5;
-export const BuildingSellBenefits: BuildingRessourcesType = {
-  [Buildings.Outpost]: {
-    wood: Math.ceil(BuildingCosts[Buildings.Outpost].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.Outpost].gold! * SELLFACTOR),
-  },
-  [Buildings.Lumberhut]: {
-    wood: Math.ceil(BuildingCosts[Buildings.Lumberhut].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.Lumberhut].gold! * SELLFACTOR),
-    villager: BuildingCosts[Buildings.Lumberhut].villager!,
-  },
-  [Buildings.House]: {
-    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
-    villager: BuildingCosts[Buildings.House].villager!,
-  },
-};
-
-export const BuildingOutputs: BuildingRessourcesType = {
-  [Buildings.Outpost]: {
-    gold: -10 / 60,
-  },
-  [Buildings.Lumberhut]: {
-    wood: 2 / 60,
-    gold: -6 / 60,
-  },
-  [Buildings.House]: {
-    gold: 6 / 60,
-  },
-};
-
-export const Building = ({ type }: BuildingProps) => {
-  const buildingPosition = useMemo(() => new Vector3(0, 0.75, 0), []);
-
-  const getBuilding = () => {
-    if (type === Buildings.Outpost)
+const getBuilding = (type: Buildings) => {
+  switch (type) {
+    case Buildings.Outpost:
       return <Outpost position={buildingPosition} />;
-    if (type === Buildings.Lumberhut)
+    case Buildings.Lumberhut:
       return <Lumberhut position={buildingPosition} />;
-    if (type === Buildings.House) return <House position={buildingPosition} />;
-    return <mesh />;
-  };
-
-  return <Suspense>{getBuilding()}</Suspense>;
+    case Buildings.House:
+      return <House position={buildingPosition} />;
+    default:
+      return <mesh />;
+  }
 };
+
+const BuildingComponent = ({ type }: BuildingProps) => <Suspense>{getBuilding(type)}</Suspense>;
+
+export const Building = memo(BuildingComponent);
