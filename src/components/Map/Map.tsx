@@ -79,6 +79,7 @@ export const Map = ({ sun }: MapProps) => {
 
     bufferAttribute.array = texIdx;
     instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
+    instancedMesh.current.frustumCulled = false;
   }, [camera.position]);
 
   let updated = false;
