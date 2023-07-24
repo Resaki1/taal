@@ -13,7 +13,7 @@
     "react-detect-click-outside": "^1.1.7",
     "react-dom": "^18.2.0",
     "three": "^0.154.0",
-    "workbox-core": "^6.5.3",
+    "workbox-core": "^7.0.0",
     "workbox-expiration": "^7.0.0",
     "workbox-precaching": "^6.5.3",
     "workbox-routing": "^6.5.3",
