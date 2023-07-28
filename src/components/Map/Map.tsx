@@ -121,6 +121,7 @@ export const Map = ({ sun }: MapProps) => {
         });
 
         bufferAttribute.array = texIdx;
+        bufferAttribute.needsUpdate = true;
         instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
       }
 
