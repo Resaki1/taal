@@ -1,24 +1,11 @@
 import { Instances, Plane } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { MutableRefObject, useLayoutEffect, useRef } from 'react';
-import {
-  DirectionalLight,
-  Euler,
-  Group,
-  InstancedBufferAttribute,
-  InstancedMesh,
-  Mesh,
-  Object3D,
-  Vector3,
-} from 'three';
+import { useLayoutEffect, useRef } from 'react';
+import { Euler, Group, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3 } from 'three';
 import { getTerrainHeight, getTerrainType, Terrain } from '../../helpers/terrain';
 import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
 import { tileShader } from '../../helpers/shader';
-
-interface MapProps {
-  sun: MutableRefObject<DirectionalLight>;
-}
 
 const RENDER_DISTANCE = 32;
 const mapSize = 4225; // Math.sqrt(RENDER_DISTANCE * 2 + 1)
@@ -36,9 +23,7 @@ const texIdxArray = new Float32Array(mapSize).fill(0);
 const bufferAttribute = new InstancedBufferAttribute(texIdxArray, 1);
 const centerBlockVector = new Vector3(9999, 0, 0);
 
-export const Map = ({ sun }: MapProps) => {
-  // TODO: remove console.log (issue #12)
-  console.log(sun);
+export const Map = () => {
   const MATERIALS = Materials();
   const { camera } = useThree();
   const centerBlock = useRef(centerBlockVector);

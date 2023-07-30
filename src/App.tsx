@@ -40,7 +40,7 @@ const App = () => {
         />
         <Sky distance={4500000} sunPosition={[100, 15, 80]} inclination={0} azimuth={0} rayleigh={0} turbidity={0.5} />
         <MapControls />
-        <Map sun={sun} />
+        <Map />
         <Stats showPanel={0} className="stats" />
         <AdaptiveEvents />
         <AdaptiveDpr pixelated />
