@@ -1,12 +1,12 @@
 import { Canvas } from '@react-three/fiber';
 import { Map } from './components/Map/Map';
-import './App.css';
 import { AdaptiveDpr, AdaptiveEvents, MapControls, Sky, Stats } from '@react-three/drei';
 import { BuildMenu } from './components/BuildMenu/BuildMenu';
 import { RessourceMenu } from './components/RessourceMenu/RessourceMenu';
 import { useStore } from './store/store';
 import { useEffect, useRef } from 'react';
 import { DirectionalLight } from 'three';
+import './App.scss';
 
 const App = () => {
   const sun = useRef<DirectionalLight>(null!);

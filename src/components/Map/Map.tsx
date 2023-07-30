@@ -134,7 +134,7 @@ export const Map = ({ sun }: MapProps) => {
     <>
       {/* TODO: fix type */}
       <Instances ref={instancedMesh as any} limit={mapSize} castShadow receiveShadow>
-        <boxGeometry />
+        <boxGeometry args={[1, 2, 1]} />
         <meshStandardMaterial
           onBeforeCompile={(shader) => tileShader(shader, MATERIALS.texture_atlas, texStep)}
           defines={{ USE_UV: '' }}

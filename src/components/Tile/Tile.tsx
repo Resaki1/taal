@@ -48,7 +48,7 @@ const TileComponent = ({ tileRef }: TileProps) => {
       startTransition(() => setUnlocked(true));
     }
 
-    ref.current.position.y = getTerrainHeight(x, y);
+    ref.current.position.y = getTerrainHeight(x, y) - 0.5;
   };
 
   const onRefChange = () => {

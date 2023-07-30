@@ -14,7 +14,7 @@ export enum Buildings {
   House,
 }
 
-const buildingPosition = new Vector3(0, 0.75, 0);
+const buildingPosition = new Vector3(0, 1.25, 0);
 
 const getBuilding = (type: Buildings) => {
   switch (type) {
