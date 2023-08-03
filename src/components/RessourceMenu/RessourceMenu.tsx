@@ -1,5 +1,5 @@
-import { useStore } from "../../store/store";
-import "./RessourceMenu.scss";
+import { useStore } from '../../store/store';
+import './RessourceMenu.scss';
 
 export const RessourceMenu = () => {
   const ressources = useStore((state) => ({ ...state.ressources }));
@@ -10,16 +10,16 @@ export const RessourceMenu = () => {
     <div className="ressource-menu">
       <ul>
         <li>
-          Gold: {Math.floor(ressources.gold)} |
-          {Math.round(buildingOutputs.gold * 6000) / 100}/min
+          Gold: {Math.floor(ressources.gold)} |{Math.round(buildingOutputs.gold * 6000) / 100}/min
         </li>
         <li>
-          Wood: {Math.floor(ressources.wood)} |
-          {Math.round(buildingOutputs.wood * 6000) / 100}/min
+          Wood: {Math.floor(ressources.wood)} |{Math.round(buildingOutputs.wood * 6000) / 100}/min
         </li>
         <li>
-          Stone: {Math.floor(ressources.stone)} |
-          {Math.round(buildingOutputs.stone * 6000) / 100}/min
+          Stone: {Math.floor(ressources.stone)} |{Math.round(buildingOutputs.stone * 6000) / 100}/min
+        </li>
+        <li>
+          Food: {Math.floor(ressources.food)} |{Math.round(buildingOutputs.food * 6000) / 100}/min
         </li>
         <li>Villagers: {Math.floor(ressources.villager)}</li>
         <li>

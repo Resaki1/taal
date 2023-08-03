@@ -2,17 +2,17 @@ import { Vector3 } from '@react-three/fiber';
 import { building } from '../../../../materials/materials';
 import { MeshStandardMaterial } from 'three';
 
-interface LumberhutProps {
+interface StoneQuarryProps {
   position: Vector3;
 }
 
 const material = new MeshStandardMaterial({
-  color: '#5C4033',
+  color: 'black',
   emissiveIntensity: 0.2,
 });
 
-const Lumberhut = ({ position }: LumberhutProps) => (
+const StoneQuarry = ({ position }: StoneQuarryProps) => (
   <mesh material={material} geometry={building} position={position} castShadow receiveShadow />
 );
 
-export default Lumberhut;
+export default StoneQuarry;

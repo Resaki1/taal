@@ -3,6 +3,8 @@ import { Vector3 } from 'three';
 import House from './buildings/House/House';
 import Lumberhut from './buildings/Lumberhut/Lumberhut';
 import Outpost from './buildings/Outpost/Outpost';
+import Farm from './buildings/Farm/Farm';
+import StoneQuarry from './buildings/StoneQuarry/StoneQuarry';
 
 type BuildingProps = {
   type: Buildings;
@@ -12,6 +14,8 @@ export enum Buildings {
   Outpost,
   Lumberhut,
   House,
+  Farm,
+  StoneQuarry,
 }
 
 const buildingPosition = new Vector3(0, 1.25, 0);
@@ -24,6 +28,10 @@ const getBuilding = (type: Buildings) => {
       return <Lumberhut position={buildingPosition} />;
     case Buildings.House:
       return <House position={buildingPosition} />;
+    case Buildings.Farm:
+      return <Farm position={buildingPosition} />;
+    case Buildings.StoneQuarry:
+      return <StoneQuarry position={buildingPosition} />;
     default:
       return <mesh />;
   }

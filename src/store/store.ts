@@ -4,7 +4,7 @@ import { persist, devtools } from 'zustand/middleware';
 import { Buildings } from '../components/Building/Building';
 import { BuildingCosts, BuildingOutputs, BuildingSellBenefits } from '../components/Building/buildingFinancials';
 
-export type Ressources = 'wood' | 'stone' | 'gold' | 'villager';
+export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
 interface BuildingsState {
   [key: number]: { [key: number]: Buildings };
@@ -42,12 +42,14 @@ const initialState: State = {
     wood: 0,
     stone: 0,
     gold: 0,
+    food: 0,
     villager: 0,
   },
   ressources: {
     wood: 15,
     stone: 0,
     gold: 2000,
+    food: 20,
     villager: 2,
   },
   unlocked: {},

@@ -10,7 +10,7 @@ type BuildingRessourcesType = {
 export const BuildingCosts: BuildingRessourcesType = {
   [Buildings.Outpost]: {
     wood: 10,
-    gold: 100,
+    gold: 600,
   },
   [Buildings.Lumberhut]: {
     wood: 2,
@@ -21,6 +21,16 @@ export const BuildingCosts: BuildingRessourcesType = {
     wood: 6,
     gold: 100,
     villager: -4,
+  },
+  [Buildings.Farm]: {
+    wood: 4,
+    gold: 30,
+    villager: 2,
+  },
+  [Buildings.StoneQuarry]: {
+    wood: 6,
+    gold: 40,
+    villager: 4,
   },
 };
 
@@ -40,11 +50,22 @@ export const BuildingSellBenefits: BuildingRessourcesType = {
     gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
     villager: BuildingCosts[Buildings.House].villager!,
   },
+  [Buildings.Farm]: {
+    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
+    villager: BuildingCosts[Buildings.House].villager!,
+  },
+  [Buildings.StoneQuarry]: {
+    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
+    villager: BuildingCosts[Buildings.House].villager!,
+  },
 };
 
+// use negative values for costs (i.e. output 'gold: -10 / 60' means the building costs 10 gold per minute)
 export const BuildingOutputs: BuildingRessourcesType = {
   [Buildings.Outpost]: {
-    gold: -10 / 60,
+    gold: -20 / 60,
   },
   [Buildings.Lumberhut]: {
     wood: 2 / 60,
@@ -52,5 +73,14 @@ export const BuildingOutputs: BuildingRessourcesType = {
   },
   [Buildings.House]: {
     gold: 6 / 60,
+    food: -1 / 60,
+  },
+  [Buildings.Farm]: {
+    gold: -8 / 60,
+    food: 10 / 60,
+  },
+  [Buildings.StoneQuarry]: {
+    gold: -12 / 60,
+    stone: 2 / 60,
   },
 };
