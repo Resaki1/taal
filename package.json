@@ -56,7 +56,7 @@
     "web-vitals": "^3.4.0",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.1.0",
-    "@vitejs/plugin-react": "^4.0.3",
+    "@vitejs/plugin-react": "^4.0.4",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.33.1",
     "vite": "^4.4.7",
