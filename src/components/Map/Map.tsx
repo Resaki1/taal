@@ -2,10 +2,12 @@ import { Instances, Plane } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useLayoutEffect, useRef } from 'react';
 import { Euler, Group, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3 } from 'three';
+import debounce from 'lodash.debounce';
 import { getTerrainHeight, getTerrainType, Terrain } from '../../helpers/terrain';
 import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
 import { tileShader } from '../../helpers/shader';
+import { useStore } from '../../store/store';
 
 const RENDER_DISTANCE = 32;
 const mapSize = 4225; // Math.sqrt(RENDER_DISTANCE * 2 + 1)
@@ -21,7 +23,7 @@ const moveVector = new Vector3();
 const waterRotation = new Euler(-Math.PI / 2, 0, 0);
 const texIdxArray = new Float32Array(mapSize).fill(0);
 const bufferAttribute = new InstancedBufferAttribute(texIdxArray, 1);
-const centerBlockVector = new Vector3(9999, 0, 0);
+const centerBlockVector = new Vector3(0, 0, 0);
 
 export const Map = () => {
   const MATERIALS = Materials();
@@ -30,6 +32,12 @@ export const Map = () => {
   const tileRef = useRef<Group[][]>([[]]);
   const instancedMesh = useRef<InstancedMesh>(null!);
   const waterRef = useRef<Mesh>(null!);
+  const cameraHistory = useStore((state) => state.camera);
+  const setCamera = useStore((state) => state.setCamera);
+
+  const saveCameraPositionDebounced = debounce((cameraPosition: Vector3, centerBlock: Vector3) => {
+    setCamera(cameraPosition, centerBlock);
+  }, 2000);
 
   const texStep = 1 / (Terrain.MOUNTAIN + 1); // last value of Terrain enum + 1
 
@@ -37,21 +45,20 @@ export const Map = () => {
   let index = 0;
 
   useLayoutEffect(() => {
-    // calculate the coordinates of the block the camera is currently looking at. This will be the center of the map
-    newPosition.copy(camera.position); // set newPosition to camera position
-    vec.copy(camera.getWorldDirection(target).multiplyScalar(camera.position.y / camera.getWorldDirection(target).y));
-    centerBlock.current.copy(newPosition.sub(vec).round()); // shift in direction of camera
+    if (cameraHistory) {
+      camera.position.copy(cameraHistory.position);
+      centerBlock.current.copy(cameraHistory.lookAt);
+    }
 
     let posX = 0;
     let posY = 0;
     let tile: Group;
-    waterRef.current.position.x = centerBlock.current.x;
-    waterRef.current.position.z = centerBlock.current.z;
+    waterRef.current.position.copy(centerBlock.current);
 
     map.forEach((_, x) => {
       map.forEach((_, y) => {
-        posX = x - RENDER_DISTANCE;
-        posY = y - RENDER_DISTANCE;
+        posX = x - RENDER_DISTANCE + centerBlock.current.x;
+        posY = y - RENDER_DISTANCE + centerBlock.current.z;
         tile = tileRef.current[x][y];
 
         tile.position.set(posX, getTerrainHeight(posX, posY), posY);
@@ -65,10 +72,11 @@ export const Map = () => {
     bufferAttribute.array = texIdx;
     instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
     instancedMesh.current.frustumCulled = false;
-  }, [camera.position]);
+  }, []);
 
   let updated = false;
   let tile;
+
   useFrame(() => {
     newPosition.copy(camera.position); // set newPosition to camera position
     vec.copy(camera.getWorldDirection(target)); // set vec to camera direction
@@ -112,6 +120,8 @@ export const Map = () => {
 
       waterRef.current.position.copy(newPosition);
       centerBlock.current.copy(newPosition);
+
+      saveCameraPositionDebounced(camera.position, centerBlock.current);
     }
   });
 

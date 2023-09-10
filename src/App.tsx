@@ -4,14 +4,18 @@ import { AdaptiveDpr, AdaptiveEvents, MapControls, Sky, Stats } from '@react-thr
 import { BuildMenu } from './components/BuildMenu/BuildMenu';
 import { RessourceMenu } from './components/RessourceMenu/RessourceMenu';
 import { useStore } from './store/store';
-import { useEffect, useRef } from 'react';
-import { DirectionalLight } from 'three';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { DirectionalLight, Vector3 } from 'three';
 import './App.scss';
 
 const App = () => {
   const sun = useRef<DirectionalLight>(null!);
   const addRessources = useStore((state) => state.addRessources);
   const buildingOutputs = useStore((state) => state.buildingOutputs);
+  const cameraHistory = useStore((state) => state.camera);
+  const [target, setTarget] = useState(new Vector3(0, 0, 0));
+
+  useLayoutEffect(() => cameraHistory && setTarget(new Vector3().copy(cameraHistory.lookAt)), []);
 
   useEffect(() => {
     const tickWorker = new Worker('tickWorker.js');
@@ -39,7 +43,7 @@ const App = () => {
           shadow-camera-visible={true}
         />
         <Sky distance={4500000} sunPosition={[100, 15, 80]} inclination={0} azimuth={0} rayleigh={0} turbidity={0.5} />
-        <MapControls />
+        <MapControls target={target} />
         <Map />
         <Stats showPanel={0} className="stats" />
         <AdaptiveEvents />

@@ -1,4 +1,4 @@
-import { Object3D, Event } from 'three';
+import { Object3D, Event, Vector3 } from 'three';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { Buildings } from '../components/Building/Building';
@@ -15,7 +15,7 @@ interface SelectedObject {
   object: Object3D<Event>;
 }
 
-type State = {
+export type State = {
   buildings: BuildingsState;
   buildingOutputs: { [key in Ressources]: number };
   ressources: {
@@ -23,9 +23,15 @@ type State = {
   };
   unlocked: { [key: number]: { [key: number]: boolean } };
   selected: SelectedObject | undefined;
+  camera:
+    | {
+        position: Vector3;
+        lookAt: Vector3;
+      }
+    | undefined;
 };
 
-type Actions = {
+export type Actions = {
   addBuilding: (x: number, y: number, building: Buildings) => void;
   removeBuilding: (x: number, y: number) => void;
   addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) => void;
@@ -33,6 +39,7 @@ type Actions = {
   lock: (x: number, y: number, range: number) => void;
   unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
+  setCamera: (position: Vector3, lookAt: Vector3) => void;
   reset: () => void;
 };
 
@@ -54,6 +61,7 @@ const initialState: State = {
   },
   unlocked: {},
   selected: undefined,
+  camera: undefined,
 };
 
 export const useStore = create<State & Actions>()(
@@ -161,6 +169,10 @@ export const useStore = create<State & Actions>()(
         setSelected: (object) =>
           set(() => {
             return { selected: object };
+          }),
+        setCamera: (position, lookAt) =>
+          set(() => {
+            return { camera: { position, lookAt } };
           }),
         reset: () => set({ ...initialState }),
       }),
