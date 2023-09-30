@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-three/drei": "^9.79.3",
+    "@react-three/drei": "^9.86.3",
     "@react-three/fiber": "^8.13.6",
     "@types/lodash.debounce": "^4.0.7",
     "eslint-config-prettier": "^8.8.0",
