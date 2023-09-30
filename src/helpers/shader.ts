@@ -1,6 +1,7 @@
 import { Shader, Texture } from 'three';
+import { Terrain } from './terrain';
 
-export const tileShader = (shader: Shader, texture: Texture, texStep: number) => {
+export const tileShader = (shader: Shader, texture: Texture) => {
   shader.uniforms.texAtlas = { value: texture };
   shader.vertexShader = `
     	attribute float texIdx;
@@ -20,7 +21,9 @@ export const tileShader = (shader: Shader, texture: Texture, texStep: number) =>
     `#include <map_fragment>`,
     `#include <map_fragment>
       	
-       	vec2 blockUv = ${texStep} * (floor(vTexIdx + 0.1) + vUv); 
+       	vec2 blockUv = ${
+          1 / (Terrain.MOUNTAIN + 1) /* last value of Terrain enum + 1 */
+        } * (floor(vTexIdx + 0.1) + vUv); 
         vec4 blockColor = texture(texAtlas, blockUv);
         diffuseColor *= blockColor;
       `,

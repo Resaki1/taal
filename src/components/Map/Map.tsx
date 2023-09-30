@@ -103,9 +103,7 @@ export const Map = () => {
       <Instances ref={instancedMesh as any} limit={MAP_SIZE} castShadow receiveShadow>
         <boxGeometry args={[1, 2, 1]} />
         <meshStandardMaterial
-          onBeforeCompile={(shader) =>
-            tileShader(shader, MATERIALS.texture_atlas, 1 / (Terrain.MOUNTAIN + 1) /* last value of Terrain enum + 1 */)
-          }
+          onBeforeCompile={(shader) => tileShader(shader, MATERIALS.texture_atlas)}
           defines={{ USE_UV: '' }}
         />
         {[...Array(MAP_SIZE)].map((_, index) => (
