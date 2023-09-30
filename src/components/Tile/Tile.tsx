@@ -6,15 +6,11 @@ import { Building } from '../Building/Building';
 import { Color, Group } from 'three';
 import { getTerrainHeight } from '../../helpers/terrain';
 
-export type TileProps = {
-  tileRef: (el: Group) => void;
-};
-
 const gray = new Color(0x303030);
 const lightGray = new Color(0xa0a0a0);
 const noColor = new Color();
 
-const TileComponent = ({ tileRef }: TileProps) => {
+const TileComponent = () => {
   const ref = useRef<Group>(null!);
 
   const [, setValue] = useState(0);
@@ -99,7 +95,6 @@ const TileComponent = ({ tileRef }: TileProps) => {
       <Instance
         ref={(el: Group) => {
           ref.current = el;
-          tileRef(el);
         }}
         userData={{ update: () => onRefChange(), deselect: () => deselect() }}
         onClick={(e) => handleClick(e)}

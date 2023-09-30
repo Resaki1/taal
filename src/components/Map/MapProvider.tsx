@@ -69,15 +69,15 @@ export const MapContextProvider = ({ children }: { children: ReactNode }) => {
     // TODO: can this be removed?
     newPosition.copy(camera.position); // set newPosition to camera position
     vec.copy(camera.getWorldDirection(target).multiplyScalar(camera.position.y / camera.getWorldDirection(target).y));
-    centerBlock.current.copy(newPosition.sub(vec).round()); // shift in direction of camera
+    waterRef.current.position.copy(newPosition.sub(vec).round()); // shift in direction of camera
 
-    console.log('centerBlock.current is ', JSON.stringify(centerBlock.current));
+    console.log('waterRef.current.position is ', JSON.stringify(waterRef.current.position));
 
     let posX = 0;
     let posY = 0;
     let tile: Group;
-    waterRef.current.position.x = centerBlock.current.x;
-    waterRef.current.position.z = centerBlock.current.z;
+    waterRef.current.position.x = waterRef.current.position.x;
+    waterRef.current.position.z = waterRef.current.position.z;
 
     map.forEach((_, x) => {
       map.forEach((_, y) => {
@@ -123,9 +123,9 @@ export const MapContextProvider = ({ children }: { children: ReactNode }) => {
     vec.multiplyScalar(camera.position.y / vec.y); // magic
     newPosition.sub(vec).round(); // set newPosition to tile in center of view
 
-    if (centerBlock.current.distanceTo(newPosition) > 0) {
+    if (waterRef.current.position.distanceTo(newPosition) > 0) {
       console.log('frame update with camera update ', JSON.stringify(newPosition));
-      direction.copy(newPosition).sub(centerBlock.current); // set direction to where the camera has moved
+      direction.copy(newPosition).sub(waterRef.current.position); // set direction to where the camera has moved
       // only update if camera has moved less than 1 tile to fix distorted map
       if (Math.abs(direction.x) <= 1 && Math.abs(direction.z) <= 1) {
         moveVector
@@ -161,7 +161,7 @@ export const MapContextProvider = ({ children }: { children: ReactNode }) => {
       }
 
       waterRef.current.position.copy(newPosition);
-      centerBlock.current.copy(newPosition);
+      waterRef.current.position.copy(newPosition);
     }
   });
 
