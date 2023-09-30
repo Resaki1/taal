@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useLayoutEffect, useRef } from 'react';
 import { Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3 } from 'three';
 import debounce from 'lodash.debounce';
-import { getTerrainHeight, getTerrainType, Terrain } from '../../helpers/terrain';
+import { getTerrainHeight, getTerrainType } from '../../helpers/terrain';
 import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
 import { tileShader } from '../../helpers/shader';
