@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@react-three/drei": "^9.86.3",
-    "@react-three/fiber": "^8.13.6",
+    "@react-three/fiber": "^8.14.4",
     "@types/lodash.debounce": "^4.0.7",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
@@ -23,7 +23,7 @@
     "zustand": "^4.4.1"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "deploy": "tsc && vite build && firebase deploy --only hosting:taal",
@@ -42,10 +42,10 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
+    "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^29.5.3",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.8.3",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/three": "^0.154.0",
@@ -59,10 +59,10 @@
     "prettier": "^3.0.3",
     "sass": "^1.68.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.7",
+    "vite": "^4.4.11",
     "vite-plugin-checker": "^0.6.1",
     "vite-plugin-svgr": "^3.2.0",
-    "vite-tsconfig-paths": "^4.2.0",
+    "vite-tsconfig-paths": "^4.2.1",
     "web-vitals": "^3.4.0"
   }
 }
