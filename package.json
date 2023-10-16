@@ -5,10 +5,6 @@
   "dependencies": {
     "@react-three/drei": "^9.86.3",
     "@react-three/fiber": "^8.14.4",
-    "@types/lodash.debounce": "^4.0.7",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
     "lodash.debounce": "^4.0.8",
     "noisejs": "^2.1.0",
     "react": "^18.2.0",
@@ -20,7 +16,7 @@
     "workbox-precaching": "^6.5.3",
     "workbox-routing": "^6.5.3",
     "workbox-strategies": "^7.0.0",
-    "zustand": "^4.4.1"
+    "zustand": "^4.4.3"
   },
   "scripts": {
     "start": "vite --host",
@@ -49,12 +45,16 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/three": "^0.154.0",
+    "@types/lodash.debounce": "^4.0.7",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.1.0",
     "@vitejs/plugin-react": "^4.1.0",
     "classnames": "^2.3.2",
     "eslint": "^8.45.0",
-    "eslint-plugin-react": "^7.33.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
     "firebase": "^10.1.0",
     "prettier": "^3.0.3",
     "sass": "^1.68.0",
@@ -63,6 +63,6 @@
     "vite-plugin-checker": "^0.6.1",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.1",
-    "web-vitals": "^3.4.0"
+    "web-vitals": "^3.5.0"
   }
 }
