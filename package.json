@@ -63,6 +63,6 @@
     "vite-plugin-checker": "^0.6.1",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.1",
-    "web-vitals": "^3.4.0"
+    "web-vitals": "^3.5.0"
   }
 }
