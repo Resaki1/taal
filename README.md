@@ -23,7 +23,7 @@ Explore the world of Taal by checking out the [**demo**](taal.web.app)!
 
 ## How to Contribute
 
-Contributions to Taal are highly encouraged! Whether you're a developer, designer, or a gaming enthusiast, your input is valuable. There is a [list of beginner-friendly issues labeled as Good First Issue](https://github.com/Resaki1/taal/issues?q=is:open+is:issue+label:%22good+first+issue%22) to help you get started. Feel free to start discussions, propose new features, or directly open pull requests. Your creativity and expertise are welcome!
+Contributions to Taal are highly encouraged! Whether you're a developer, designer, or a gaming enthusiast, your input is valuable. There is a [list of beginner-friendly issues labeled as Good First Issue](https://github.com/Resaki1/taal/contribute) to help you get started. Feel free to start discussions, propose new features, or directly open pull requests. Your creativity and expertise are welcome!
 
 <br/>
 
