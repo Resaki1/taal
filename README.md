@@ -14,7 +14,7 @@ Explore the world of Taal by checking out the [**demo**](taal.web.app)!
 
 ## Technologies
 
-- **Framework**: React (TypeScript)
+- **Framework**: React (TypeScript) with Vite
 - **3D Rendering**: react-three-fiber
 - **State Management**: Zustand
 - **Hosting**: Currently Firebase (will probably change in the future)
@@ -45,4 +45,14 @@ However, the direction of Taal is not set in stone. I am open to new ideas and p
 
 ## Get Involved
 
-IYour creativity, feedback, and ideas are really welcomed here. Join the Taal community today, and let's build an incredible gaming experience together!
+Your creativity, feedback, and ideas are really welcomed here. Join the Taal community today, and let's build an incredible gaming experience together!
+
+<br />
+
+## Installation
+
+To start Taal locally, clone the project and then run:
+
+    cd taal
+    npm i
+    npm start
