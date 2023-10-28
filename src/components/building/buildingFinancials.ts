@@ -22,10 +22,8 @@ export const BuildingCosts: BuildingRessourcesType = {
     gold: 100,
     villager: -4,
   },
-  [Buildings.Farm]: {
-    wood: 4,
+  [Buildings.CornField]: {
     gold: 30,
-    villager: 2,
   },
   [Buildings.StoneQuarry]: {
     wood: 6,
@@ -50,10 +48,8 @@ export const BuildingSellBenefits: BuildingRessourcesType = {
     gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
     villager: BuildingCosts[Buildings.House].villager!,
   },
-  [Buildings.Farm]: {
-    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
+  [Buildings.CornField]: {
     gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
-    villager: BuildingCosts[Buildings.House].villager!,
   },
   [Buildings.StoneQuarry]: {
     wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
@@ -75,9 +71,9 @@ export const BuildingOutputs: BuildingRessourcesType = {
     gold: 6 / 60,
     food: -1 / 60,
   },
-  [Buildings.Farm]: {
+  [Buildings.CornField]: {
     gold: -8 / 60,
-    food: 10 / 60,
+    food: 4 / 60,
   },
   [Buildings.StoneQuarry]: {
     gold: -12 / 60,

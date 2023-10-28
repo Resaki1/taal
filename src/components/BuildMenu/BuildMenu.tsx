@@ -58,7 +58,7 @@ export const BuildMenu = () => {
             possibleBuildings.push(
               { type: Buildings.Outpost, name: 'Outpost' },
               { type: Buildings.House, name: 'House' },
-              { type: Buildings.Farm, name: 'Farm' },
+              { type: Buildings.CornField, name: 'CornField' },
             );
             break;
           case Terrain.FOREST:
