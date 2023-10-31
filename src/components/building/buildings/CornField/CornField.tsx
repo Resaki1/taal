@@ -17,12 +17,12 @@ type GLTFResult = GLTF & {
   };
 };
 
-const position = new Vector3(0, -1.67, 0);
+const position = new Vector3(0, -2.1, 0);
 
 const CornField = (props: JSX.IntrinsicElements['group']) => {
   const { nodes, materials } = useGLTF('/glb/CornField.glb') as GLTFResult;
   return (
-    <group {...props} dispose={null} scale={0.15}>
+    <group {...props} dispose={null} scale={0.12}>
       <mesh castShadow receiveShadow geometry={nodes.Node.geometry} material={materials.palette} position={position} />
     </group>
   );
