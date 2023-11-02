@@ -57,7 +57,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "firebase": "^10.1.0",
     "prettier": "^3.0.3",
-    "sass": "^1.68.0",
+    "sass": "^1.69.5",
     "typescript": "^5.1.6",
     "vite": "^4.4.11",
     "vite-plugin-checker": "^0.6.1",
