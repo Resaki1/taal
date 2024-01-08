@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-three/drei": "^9.86.3",
+    "@react-three/drei": "^9.93.0",
     "@react-three/fiber": "^8.14.4",
     "lodash.debounce": "^4.0.8",
     "noisejs": "^2.1.0",
