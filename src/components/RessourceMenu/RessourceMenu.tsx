@@ -9,23 +9,40 @@ export const RessourceMenu = () => {
   return (
     <div className="ressource-menu">
       <ul>
-        <li>
-          Gold: {Math.floor(ressources.gold)} |{Math.round(buildingOutputs.gold * 6000) / 100}/min
-        </li>
-        <li>
-          Wood: {Math.floor(ressources.wood)} |{Math.round(buildingOutputs.wood * 6000) / 100}/min
-        </li>
-        <li>
-          Stone: {Math.floor(ressources.stone)} |{Math.round(buildingOutputs.stone * 6000) / 100}/min
-        </li>
-        <li>
-          Food: {Math.floor(ressources.food)} |{Math.round(buildingOutputs.food * 6000) / 100}/min
-        </li>
-        <li>Villagers: {Math.floor(ressources.villager)}</li>
-        <li>
-          <button onClick={() => reset()}>reset</button>
-        </li>
+        <table>
+          <tr>
+            <th></th>
+            <th>💵</th>
+            <th>🪵</th>
+            <th>🪨</th>
+            <th>🍟</th>
+            <th></th>
+            <th>🧑‍🦱</th>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>{Math.floor(ressources.gold)} </td>
+            <td>{Math.floor(ressources.wood)}</td>
+            <td>{Math.floor(ressources.stone)}</td>
+            <td>{Math.floor(ressources.food)}</td>
+            <td></td>
+            <td>{Math.floor(ressources.villager)}</td>
+          </tr>
+          <tr>
+            <td>Every Minute</td>
+            <td>{Math.round(buildingOutputs.gold * 6000) / 100}</td>
+            <td>{Math.round(buildingOutputs.wood * 6000) / 100}</td>
+            <td>{Math.round(buildingOutputs.stone * 6000) / 100}</td>
+            <td>{Math.round(buildingOutputs.food * 6000) / 100}</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <button onClick={() => reset()}>Restart</button>
+          </tr>
+        </table>
       </ul>
     </div>
   );
 };
+

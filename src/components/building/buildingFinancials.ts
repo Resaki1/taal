@@ -68,7 +68,7 @@ export const BuildingOutputs: BuildingRessourcesType = {
     gold: -6 / 60,
   },
   [Buildings.House]: {
-    gold: 6 / 60,
+    gold: 12 / 60,
     food: -1 / 60,
   },
   [Buildings.CornField]: {

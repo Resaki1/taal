@@ -1,19 +1,36 @@
 .ressource-menu {
   position: absolute;
-  top: 0;
-  right: 0;
-  background: white;
+  top: 5%;
+  right: 12%;
+  background: #fff6;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: 128px;
+  width: 280px;
   padding: 8px;
   font-size: 12px;
+  backdrop-filter: saturate(180%) blur(30px);
+  border-radius: 8px;
 
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+
+  th {
+    font-size: 30px;
+  }
+
+  td {
+    font-size: medium;
+    align-content: center;
+  }
+
+  button{
+    background-color: #fff6;
+    backdrop-filter: saturate(180%) blur(30px);
+
   }
 }
