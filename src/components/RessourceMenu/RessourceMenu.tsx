@@ -7,9 +7,9 @@ export const RessourceMenu = () => {
   const buildingOutputs = useStore((state) => state.buildingOutputs);
   const reset = useStore((state) => state.reset);
 
-  const valueSmoothener: (m: number) => number = function (
-    m): number {
-    return (Math.round((m * 6000) / 100))
+  const valueSmoothener: (buildingsOutputValue: number) => number = function (
+    buildingsOutputValue): number {
+    return (Math.round((buildingsOutputValue * 6000) / 100))
   }
 
   const remainingRessources: (ressourcesPerMinute: number, totalRessources: number) => string = function (
