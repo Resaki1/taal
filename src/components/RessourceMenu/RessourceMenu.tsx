@@ -2,37 +2,29 @@ import { useStore } from '../../store/store';
 
 import './RessourceMenu.scss';
 
-
-
-//const test = Math.floor(ressources.gold)
-
 export const RessourceMenu = () => {
   const ressources = useStore((state) => ({ ...state.ressources }));
   const buildingOutputs = useStore((state) => state.buildingOutputs);
   const reset = useStore((state) => state.reset);
 
-
   const valueSmoothener: (m: number) => number = function (
     m): number {
-
     return (Math.round((m * 6000) / 100))
   }
 
+  const remainingRessources: (ressourcesPerMinute: number, totalRessources: number) => string = function (
+    ressourcesPerMinute: number,
+    totalRessources: number,
 
-  const remainingRessources: (v: number, t: number) => any = function (
-    v: number,
-    t: number,
+  ): string {
+    if (ressourcesPerMinute < 0) {
 
-  ): any {
-    if (v < 0) {
-
-      return (Math.ceil(t / (v * -1)) + "min")
+      return (Math.ceil(totalRessources / (ressourcesPerMinute * -1)) + "min")
 
     }
 
     return ("♾");
   };
-
 
   return (
     <div className="ressource-menu">
@@ -46,7 +38,7 @@ export const RessourceMenu = () => {
           <th></th>
           <th>🧑‍🦱</th>
         </tr>
-       
+
         <tr>
           <td><b>Total</b></td>
           <td>{Math.floor(ressources.gold)} </td>
