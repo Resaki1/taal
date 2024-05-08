@@ -8,7 +8,7 @@ export type Building = {
   terrains: Terrain[];
 };
 
-export const buildings: Building[] = [
+export const allBuildings: Building[] = [
   {
     type: BuildingType.Outpost,
     name: 'Outpost',
@@ -42,4 +42,4 @@ export const buildings: Building[] = [
 ];
 
 export const getPossibleBuildingsForTerrain = (terrain: Terrain) =>
-  buildings.filter((building) => building.terrains.includes(terrain));
+  allBuildings.filter((building) => building.terrains.includes(terrain));

@@ -4,7 +4,8 @@ import { BuildingType } from '../Building/Building';
 import classNames from 'classnames';
 import './BuildMenu.scss';
 import { BuildingCosts } from '../Building/buildingFinancials';
-import { getPossibleBuildingsForTerrain } from '../Building/buildings';
+import { allBuildings, getPossibleBuildingsForTerrain } from '../Building/buildings';
+import BuildingMenuEntry from './BuildMenuEntry/BuildMenuEntry';
 
 export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);
@@ -31,18 +32,20 @@ export const BuildMenu = () => {
 
   const getPossibleBuildingType = () => {
     const position = selected?.object?.position;
-    if (!position) return;
+    if (!position) return [];
 
     const terrain = getTerrainType(position.x, position.z);
     const isUnlocked = unlocked[position.x] && unlocked[position.x][position.z];
 
     if (Object.keys(unlocked).length === 0) {
       if (terrain !== Terrain.WATER && terrain !== Terrain.MOUNTAIN) {
-        return [{ type: BuildingType.Outpost, name: 'Outpost' }];
+        return [allBuildings.find((building) => building.type === BuildingType.Outpost)];
       }
     } else if (isUnlocked) {
       return getPossibleBuildingsForTerrain(terrain);
     }
+
+    return [];
   };
 
   const hasEnoughRessources = (building: BuildingType) => {
@@ -63,16 +66,18 @@ export const BuildMenu = () => {
     >
       {selected &&
         !hasBuilding &&
-        getPossibleBuildingType()?.map((building) => (
-          <button
-            key={building.type}
-            onClick={() => handleAdd(building.type)}
-            disabled={!hasEnoughRessources(building.type)}
-          >
-            {building.name}
-          </button>
-        ))}
-      {hasBuilding && <button onClick={() => handleDelete()}>delete</button>}
+        getPossibleBuildingType()?.map(
+          (building) =>
+            building && (
+              <BuildingMenuEntry
+                key={building.type}
+                building={building}
+                handleAdd={handleAdd}
+                hasEnoughRessources={hasEnoughRessources}
+              />
+            ),
+        )}
+      {hasBuilding && <BuildingMenuEntry handleDelete={handleDelete} hasEnoughRessources={hasEnoughRessources} />}
     </div>
   );
 };
