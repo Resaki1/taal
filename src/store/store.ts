@@ -1,13 +1,13 @@
 import { Object3D, Event, Vector3 } from 'three';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
-import { Buildings } from '../components/Building/Building';
+import { BuildingType } from '../components/Building/Building';
 import { BuildingCosts, BuildingOutputs, BuildingSellBenefits } from '../components/Building/buildingFinancials';
 
 export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
-interface BuildingsState {
-  [key: number]: { [key: number]: Buildings };
+interface BuildingTypeState {
+  [key: number]: { [key: number]: BuildingType };
 }
 
 interface SelectedObject {
@@ -16,7 +16,7 @@ interface SelectedObject {
 }
 
 export type State = {
-  buildings: BuildingsState;
+  buildings: BuildingTypeState;
   buildingOutputs: { [key in Ressources]: number };
   ressources: {
     [key in Ressources]: number;
@@ -32,7 +32,7 @@ export type State = {
 };
 
 export type Actions = {
-  addBuilding: (x: number, y: number, building: Buildings) => void;
+  addBuilding: (x: number, y: number, building: BuildingType) => void;
   removeBuilding: (x: number, y: number) => void;
   addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) => void;
   removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) => void;
@@ -73,7 +73,7 @@ export const useStore = create<State & Actions>()(
           set((state) => {
             state.removeRessources(BuildingCosts[building]);
 
-            if (building === Buildings.Outpost) {
+            if (building === BuildingType.Outpost) {
               state.unlock(x, y, 8);
             }
 
@@ -84,12 +84,12 @@ export const useStore = create<State & Actions>()(
             });
 
             // add new building
-            const newBuildings = state.buildings;
-            if (!newBuildings[x]) newBuildings[x] = {};
-            newBuildings[x][y] = building;
+            const newBuildingType = state.buildings;
+            if (!newBuildingType[x]) newBuildingType[x] = {};
+            newBuildingType[x][y] = building;
 
             return {
-              buildings: newBuildings,
+              buildings: newBuildingType,
               buildingOutputs: newBuildingOutputs,
             };
           }),
@@ -98,7 +98,7 @@ export const useStore = create<State & Actions>()(
             const building = state.buildings[x][y];
             state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
 
-            if (building === Buildings.Outpost) {
+            if (building === BuildingType.Outpost) {
               state.lock(x, y, 8);
             }
 
@@ -108,9 +108,9 @@ export const useStore = create<State & Actions>()(
               newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
             });
 
-            const newBuildings = state.buildings;
-            delete newBuildings[x][y];
-            return { buildings: newBuildings };
+            const newBuildingType = state.buildings;
+            delete newBuildingType[x][y];
+            return { buildings: newBuildingType };
           }),
         addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {

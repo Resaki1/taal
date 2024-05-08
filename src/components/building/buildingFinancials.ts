@@ -1,31 +1,31 @@
 import { Ressources } from '../../store/store';
-import { Buildings } from './Building';
+import { BuildingType } from './Building';
 
 type BuildingRessourcesType = {
-  [key in Buildings]: Partial<{
+  [key in BuildingType]: Partial<{
     [key in Ressources]: number;
   }>;
 };
 
 export const BuildingCosts: BuildingRessourcesType = {
-  [Buildings.Outpost]: {
+  [BuildingType.Outpost]: {
     wood: 10,
     gold: 600,
   },
-  [Buildings.Lumberhut]: {
+  [BuildingType.Lumberhut]: {
     wood: 2,
     gold: 10,
     villager: 1,
   },
-  [Buildings.House]: {
+  [BuildingType.House]: {
     wood: 6,
     gold: 100,
     villager: -4,
   },
-  [Buildings.CornField]: {
+  [BuildingType.CornField]: {
     gold: 30,
   },
-  [Buildings.StoneQuarry]: {
+  [BuildingType.StoneQuarry]: {
     wood: 6,
     gold: 40,
     villager: 4,
@@ -34,48 +34,48 @@ export const BuildingCosts: BuildingRessourcesType = {
 
 const SELLFACTOR = 0.5;
 export const BuildingSellBenefits: BuildingRessourcesType = {
-  [Buildings.Outpost]: {
-    wood: Math.ceil(BuildingCosts[Buildings.Outpost].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.Outpost].gold! * SELLFACTOR),
+  [BuildingType.Outpost]: {
+    wood: Math.ceil(BuildingCosts[BuildingType.Outpost].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[BuildingType.Outpost].gold! * SELLFACTOR),
   },
-  [Buildings.Lumberhut]: {
-    wood: Math.ceil(BuildingCosts[Buildings.Lumberhut].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.Lumberhut].gold! * SELLFACTOR),
-    villager: BuildingCosts[Buildings.Lumberhut].villager!,
+  [BuildingType.Lumberhut]: {
+    wood: Math.ceil(BuildingCosts[BuildingType.Lumberhut].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[BuildingType.Lumberhut].gold! * SELLFACTOR),
+    villager: BuildingCosts[BuildingType.Lumberhut].villager!,
   },
-  [Buildings.House]: {
-    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
-    villager: BuildingCosts[Buildings.House].villager!,
+  [BuildingType.House]: {
+    wood: Math.ceil(BuildingCosts[BuildingType.House].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[BuildingType.House].gold! * SELLFACTOR),
+    villager: BuildingCosts[BuildingType.House].villager!,
   },
-  [Buildings.CornField]: {
-    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
+  [BuildingType.CornField]: {
+    gold: Math.ceil(BuildingCosts[BuildingType.House].gold! * SELLFACTOR),
   },
-  [Buildings.StoneQuarry]: {
-    wood: Math.ceil(BuildingCosts[Buildings.House].wood! * SELLFACTOR),
-    gold: Math.ceil(BuildingCosts[Buildings.House].gold! * SELLFACTOR),
-    villager: BuildingCosts[Buildings.House].villager!,
+  [BuildingType.StoneQuarry]: {
+    wood: Math.ceil(BuildingCosts[BuildingType.House].wood! * SELLFACTOR),
+    gold: Math.ceil(BuildingCosts[BuildingType.House].gold! * SELLFACTOR),
+    villager: BuildingCosts[BuildingType.House].villager!,
   },
 };
 
 // use negative values for costs (i.e. output 'gold: -10 / 60' means the building costs 10 gold per minute)
 export const BuildingOutputs: BuildingRessourcesType = {
-  [Buildings.Outpost]: {
+  [BuildingType.Outpost]: {
     gold: -20 / 60,
   },
-  [Buildings.Lumberhut]: {
+  [BuildingType.Lumberhut]: {
     wood: 2 / 60,
     gold: -6 / 60,
   },
-  [Buildings.House]: {
+  [BuildingType.House]: {
     gold: 12 / 60,
     food: -1 / 60,
   },
-  [Buildings.CornField]: {
+  [BuildingType.CornField]: {
     gold: -8 / 60,
     food: 4 / 60,
   },
-  [Buildings.StoneQuarry]: {
+  [BuildingType.StoneQuarry]: {
     gold: -12 / 60,
     stone: 2 / 60,
   },
