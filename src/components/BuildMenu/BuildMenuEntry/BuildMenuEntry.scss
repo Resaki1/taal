@@ -1,0 +1,28 @@
+.building-menu__entry {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  height: 100%;
+  width: fit-content;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover .building-menu__entry-icon {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.building-menu__entry-icon {
+  height: 32px;
+  width: 32px;
+  font-size: 20px;
+  line-height: 30px;
+  margin: 0;
+  border: 1px solid white;
+  border-radius: 100%;
+  text-align: center;
+  transition: background 0.2s ease-out;
+}

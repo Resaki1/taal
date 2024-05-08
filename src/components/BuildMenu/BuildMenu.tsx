@@ -1,14 +1,11 @@
 import { getTerrainType, Terrain } from '../../helpers/terrain';
 import { Ressources, useStore } from '../../store/store';
-import { Buildings } from '../Building/Building';
+import { BuildingType } from '../Building/Building';
 import classNames from 'classnames';
 import './BuildMenu.scss';
 import { BuildingCosts } from '../Building/buildingFinancials';
-
-type BuildMenuBuilding = {
-  type: Buildings;
-  name: string;
-};
+import { allBuildings, getPossibleBuildingsForTerrain } from '../Building/buildings';
+import BuildingMenuEntry from './BuildMenuEntry/BuildMenuEntry';
 
 export const BuildMenu = () => {
   const selected = useStore((state) => state.selected);
@@ -23,7 +20,7 @@ export const BuildMenu = () => {
     selected.object?.position &&
     buildings[selected.object.position.x]?.[selected.object.position.z] !== undefined;
 
-  const handleAdd = (building: Buildings) => {
+  const handleAdd = (building: BuildingType) => {
     addBuilding(selected!.object.position.x, selected!.object.position.z, building);
     selected!.object.userData.update();
   };
@@ -33,51 +30,25 @@ export const BuildMenu = () => {
     selected!.object.userData.update();
   };
 
-  const getPossibleBuildings = () => {
+  const getPossibleBuildingType = () => {
     const position = selected?.object?.position;
-    if (position) {
-      const type = getTerrainType(position.x, position.z);
-      const isUnlocked = unlocked[position.x] && unlocked[position.x][position.z];
+    if (!position) return [];
 
-      const possibleBuildings: BuildMenuBuilding[] = [];
+    const terrain = getTerrainType(position.x, position.z);
+    const isUnlocked = unlocked[position.x] && unlocked[position.x][position.z];
 
-      if (Object.keys(unlocked).length === 0) {
-        if (type !== Terrain.WATER && type !== Terrain.MOUNTAIN) {
-          return [{ type: Buildings.Outpost, name: 'Outpost' }];
-        } else return [];
-      } else if (!isUnlocked) return [];
-      else {
-        switch (type) {
-          case Terrain.BEACH:
-            possibleBuildings.push(
-              { type: Buildings.Outpost, name: 'Outpost' },
-              { type: Buildings.House, name: 'House' },
-            );
-            break;
-          case Terrain.MEADOW:
-            possibleBuildings.push(
-              { type: Buildings.Outpost, name: 'Outpost' },
-              { type: Buildings.House, name: 'House' },
-              { type: Buildings.CornField, name: 'CornField' },
-            );
-            break;
-          case Terrain.FOREST:
-            possibleBuildings.push(
-              { type: Buildings.Outpost, name: 'Outpost' },
-              { type: Buildings.House, name: 'House' },
-              { type: Buildings.Lumberhut, name: 'Lumberhut' },
-            );
-            break;
-          case Terrain.MOUNTAIN:
-            possibleBuildings.push({ type: Buildings.StoneQuarry, name: 'Quarry' });
-            break;
-        }
+    if (Object.keys(unlocked).length === 0) {
+      if (terrain !== Terrain.WATER && terrain !== Terrain.MOUNTAIN) {
+        return [allBuildings.find((building) => building.type === BuildingType.Outpost)];
       }
-      return possibleBuildings;
+    } else if (isUnlocked) {
+      return getPossibleBuildingsForTerrain(terrain);
     }
+
+    return [];
   };
 
-  const hasEnoughRessources = (building: Buildings) => {
+  const hasEnoughRessources = (building: BuildingType) => {
     const recipe = BuildingCosts[building];
     let hasEnough = true;
     Object.entries(recipe).forEach((cost) => {
@@ -95,16 +66,18 @@ export const BuildMenu = () => {
     >
       {selected &&
         !hasBuilding &&
-        getPossibleBuildings()?.map((building) => (
-          <button
-            key={building.type}
-            onClick={() => handleAdd(building.type)}
-            disabled={!hasEnoughRessources(building.type)}
-          >
-            {building.name}
-          </button>
-        ))}
-      {hasBuilding && <button onClick={() => handleDelete()}>delete</button>}
+        getPossibleBuildingType()?.map(
+          (building) =>
+            building && (
+              <BuildingMenuEntry
+                key={building.type}
+                building={building}
+                handleAdd={handleAdd}
+                hasEnoughRessources={hasEnoughRessources}
+              />
+            ),
+        )}
+      {hasBuilding && <BuildingMenuEntry handleDelete={handleDelete} hasEnoughRessources={hasEnoughRessources} />}
     </div>
   );
 };

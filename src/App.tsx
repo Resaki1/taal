@@ -27,10 +27,10 @@ const App = () => {
   return (
     <div className="App">
       <Canvas frameloop="demand" camera={{ fov: 25, near: 0.1, far: 1000, position: [6, 5, 6] }} flat shadows>
-        <ambientLight intensity={0.2} color={'#91AFFF'} />
+        <ambientLight intensity={0.6} color={'#91AFFF'} />
         <directionalLight
           color="#ffdf91"
-          position={[100, 60, 100]}
+          position={[100, 80, 100]}
           ref={sun}
           intensity={3}
           castShadow

@@ -6,11 +6,7 @@ import Outpost from './buildings/Outpost/Outpost';
 import CornField from './buildings/CornField/CornField';
 import StoneQuarry from './buildings/StoneQuarry/StoneQuarry';
 
-type BuildingProps = {
-  type: Buildings;
-};
-
-export enum Buildings {
+export enum BuildingType {
   Outpost,
   Lumberhut,
   House,
@@ -18,19 +14,28 @@ export enum Buildings {
   StoneQuarry,
 }
 
+type Building = {
+  type: BuildingType;
+  name: string;
+  icon: string;
+};
+
+type BuildingProps = {
+  type: BuildingType;
+};
 const buildingPosition = new Vector3(0, 1.25, 0);
 
-const getBuilding = (type: Buildings) => {
+const getBuilding = (type: BuildingType) => {
   switch (type) {
-    case Buildings.Outpost:
+    case BuildingType.Outpost:
       return <Outpost position={buildingPosition} />;
-    case Buildings.Lumberhut:
+    case BuildingType.Lumberhut:
       return <Lumberhut position={buildingPosition} />;
-    case Buildings.House:
+    case BuildingType.House:
       return <House position={buildingPosition} />;
-    case Buildings.CornField:
+    case BuildingType.CornField:
       return <CornField position={buildingPosition} />;
-    case Buildings.StoneQuarry:
+    case BuildingType.StoneQuarry:
       return <StoneQuarry position={buildingPosition} />;
     default:
       return <mesh />;
