@@ -8,7 +8,6 @@ export const RessourceMenu = () => {
 
   return (
     <div className="ressource-menu">
-      <ul>
         <table>
           <tr>
             <th></th>
@@ -20,16 +19,7 @@ export const RessourceMenu = () => {
             <th>🧑‍🦱</th>
           </tr>
           <tr>
-            <td>Total</td>
-            <td>{Math.floor(ressources.gold)} </td>
-            <td>{Math.floor(ressources.wood)}</td>
-            <td>{Math.floor(ressources.stone)}</td>
-            <td>{Math.floor(ressources.food)}</td>
-            <td></td>
-            <td>{Math.floor(ressources.villager)}</td>
-          </tr>
-          <tr>
-            <td>Every Minute</td>
+            <td>Per Minute</td>
             <td>{Math.round(buildingOutputs.gold * 6000) / 100}</td>
             <td>{Math.round(buildingOutputs.wood * 6000) / 100}</td>
             <td>{Math.round(buildingOutputs.stone * 6000) / 100}</td>
@@ -38,10 +28,18 @@ export const RessourceMenu = () => {
             <td></td>
           </tr>
           <tr>
-            <button onClick={() => reset()}>Restart</button>
+            <td><b>Total</b></td>
+            <td>{Math.floor(ressources.gold)} </td>
+            <td>{Math.floor(ressources.wood)}</td>
+            <td>{Math.floor(ressources.stone)}</td>
+            <td>{Math.floor(ressources.food)}</td>
+            <td></td>
+            <td>{Math.floor(ressources.villager)}</td>
           </tr>
+          <td colSpan="7">
+         <button onClick={() => reset()}>Restart</button>
+          </td>
         </table>
-      </ul>
     </div>
   );
 };
