@@ -1,36 +1,31 @@
 .ressource-menu {
+  margin: 0 auto;
   position: absolute;
-  top: 5%;
-  right: 12%;
-  background: #fff6;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  width: 280px;
-  padding: 8px;
+  top: 0%;
+  left: 12%;
+
+  background: rgba(211, 197, 122, 0.4);
+  padding: 4px;
+
   font-size: 12px;
   backdrop-filter: saturate(180%) blur(30px);
-  border-radius: 8px;
+  -webkit-backdrop-filter: saturate(180%) blur(30px);
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+  border-radius: 0 0 8px 8px;
 
   th {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   td {
-    font-size: medium;
-    align-content: center;
+    align-content: left;
   }
-
-  button{
-    background-color: #fff6;
-    backdrop-filter: saturate(180%) blur(30px);
-
-  }
+}
+.ressource-menu button {
+  width: 100%;
+  height: 20px;
+  font-size: 10px;
+  border-radius: 3px;
+  background: rgba(98, 94, 71, 0.4);
+  color: wheat;
 }
