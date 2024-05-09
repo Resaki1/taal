@@ -16,15 +16,18 @@ export const Materials = () => {
 
   const water = new MeshStandardMaterial({
     color: new Color(0x0055ff),
-    emissiveIntensity: 0.2,
+    emissive: new Color(0x0055ff),
+    emissiveIntensity: 0.4,
     transparent: true,
     opacity: 0.9,
     metalness: 0.7,
     roughness: 0.5,
+    wireframe: false,
   });
 
   const atlas = new MeshStandardMaterial({
     map: texture_atlas,
+    
   });
 
   return {

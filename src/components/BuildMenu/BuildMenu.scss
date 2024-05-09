@@ -8,11 +8,13 @@
   flex-direction: row;
   justify-content: center;
   padding: 8px;
-  gap: 16px;
+  gap: 64px;
   box-sizing: border-box;
   backdrop-filter: saturate(180%) blur(30px);
 
   &--visible {
     transform: translateY(-64px);
   }
+
+  
 }

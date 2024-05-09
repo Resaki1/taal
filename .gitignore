@@ -23,3 +23,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 node_modules
+src/textures/dungeon-stone1-bl/dungeon-stone1-roughness.png
+src/textures/dungeon-stone1-bl/dungeon-stone1-normal.png
+src/textures/dungeon-stone1-bl/dungeon-stone1-metalness.png
+src/textures/dungeon-stone1-bl/dungeon-stone1-height.png
+src/textures/dungeon-stone1-bl/dungeon-stone1-ao.png
+src/textures/dungeon-stone1-bl/dungeon-stone1-albedo2.png
+src/textures/dungeon-stone1-bl/desktop.ini
+src/textures/dungeon-stone1-bl/About these PBR files.txt
