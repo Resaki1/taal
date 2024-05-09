@@ -41,10 +41,10 @@ export const RessourceMenu = () => {
 
         <tr>
           <td><b>Total</b></td>
-          <td>{Math.floor(ressources.gold)} </td>
-          <td>{Math.floor(ressources.wood)}</td>
-          <td>{Math.floor(ressources.stone)}</td>
-          <td>{Math.floor(ressources.food)}</td>
+          <td><b>{Math.floor(ressources.gold)}</b> ({valueSmoothener(buildingOutputs.gold)})</td>
+          <td><b>{Math.floor(ressources.wood)}</b> ({valueSmoothener(buildingOutputs.wood)})</td>
+          <td><b>{Math.floor(ressources.stone)}</b> ({valueSmoothener(buildingOutputs.stone)})</td>
+          <td><b>{Math.floor(ressources.food)}</b> ({valueSmoothener(buildingOutputs.food)})</td>
           <td></td>
           <td>{Math.floor(ressources.villager)}</td>
         </tr>

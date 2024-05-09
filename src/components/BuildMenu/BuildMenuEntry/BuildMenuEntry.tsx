@@ -23,7 +23,7 @@ const BuildingMenuEntry = ({ building, handleAdd, handleDelete, hasEnoughRessour
   ) : (
     <button className="building-menu__entry" onClick={handleDelete}>
       <figure className="building-menu__entry-icon">❌</figure>
-      delete
+      remove building
     </button>
   );
 };
