@@ -22,15 +22,13 @@
   line-height: 30px;
   margin: 0;
   border: 1px solid rgb(47, 192, 57);
-  color:rgb(47, 192, 57);
+  color: rgb(47, 192, 57);
   border-radius: 100%;
   text-align: center;
   transition: background 0.2s ease-out;
-  
 }
-.building-menu__entry[disabled] {
 
- filter: grayscale(1);
- color:rgb(133, 129, 129);
-  
+.building-menu__entry[disabled] {
+  filter: grayscale(1);
+  color: rgb(133, 129, 129);
 }
