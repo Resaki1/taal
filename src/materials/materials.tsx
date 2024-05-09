@@ -27,7 +27,6 @@ export const Materials = () => {
 
   const atlas = new MeshStandardMaterial({
     map: texture_atlas,
-    
   });
 
   return {

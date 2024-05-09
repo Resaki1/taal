@@ -2,7 +2,8 @@ import { Object3D, Event, Vector3 } from 'three';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { BuildingType } from '../components/Building/Building';
-import { BuildingCosts, BuildingOutputs, BuildingSellBenefits } from '../components/Building/buildingFinancials';
+import { BuildingOutputs, BuildingSellBenefits } from '../components/Building/buildingFinancials';
+import { getCostsOfBuilding } from '../components/Building/buildings';
 
 export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
@@ -71,7 +72,7 @@ export const useStore = create<State & Actions>()(
         ...initialState,
         addBuilding: (x, y, building) =>
           set((state) => {
-            state.removeRessources(BuildingCosts[building]);
+            state.removeRessources(getCostsOfBuilding(building));
 
             if (building === BuildingType.Outpost) {
               state.unlock(x, y, 8);
