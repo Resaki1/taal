@@ -33,26 +33,3 @@ export const BuildingSellBenefits: BuildingRessourcesType = {
     villager: getCostsOfBuilding(BuildingType.House).villager!,
   },
 };
-
-// use negative values for costs (i.e. output 'gold: -10 / 60' means the building costs 10 gold per minute)
-export const BuildingOutputs: BuildingRessourcesType = {
-  [BuildingType.Outpost]: {
-    gold: -20 / 60,
-  },
-  [BuildingType.Lumberhut]: {
-    wood: 2 / 60,
-    gold: -6 / 60,
-  },
-  [BuildingType.House]: {
-    gold: 12 / 60,
-    food: -1 / 60,
-  },
-  [BuildingType.CornField]: {
-    gold: -8 / 60,
-    food: 4 / 60,
-  },
-  [BuildingType.StoneQuarry]: {
-    gold: -12 / 60,
-    stone: 2 / 60,
-  },
-};
