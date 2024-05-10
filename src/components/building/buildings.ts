@@ -99,5 +99,5 @@ export const getPossibleBuildingsForTerrain = (terrain: Terrain) =>
 export const getCostsOfBuilding = (buildingType: BuildingType) =>
   allBuildings.find((building) => building.type === buildingType)!.costs;
 
-export const getOutputOfBuildings = (buildingType: BuildingType) =>
+export const getOutputOfBuilding = (buildingType: BuildingType) =>
   allBuildings.find((building) => building.type === buildingType)!.output;

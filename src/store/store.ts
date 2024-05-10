@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { BuildingType } from '../components/Building/Building';
 import { BuildingSellBenefits } from '../components/Building/buildingFinancials';
-import { getCostsOfBuilding, getOutputOfBuildings } from '../components/Building/buildings';
+import { getCostsOfBuilding, getOutputOfBuilding } from '../components/Building/buildings';
 
 export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
@@ -80,7 +80,7 @@ export const useStore = create<State & Actions>()(
 
             // add building output
             const newBuildingOutputs = state.buildingOutputs;
-            Object.entries(getOutputOfBuildings(building)).forEach((ressource) => {
+            Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
               newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
             });
 
@@ -105,7 +105,7 @@ export const useStore = create<State & Actions>()(
 
             // TODO: remove output froom state.buildingOutputs
             const newBuildingOutputs = state.buildingOutputs;
-            Object.entries(getOutputOfBuildings(building)).forEach((ressource) => {
+            Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
               newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
             });
 
