@@ -14,10 +14,10 @@ export const BuildMenu = () => {
   const addBuilding = useStore((state) => state.addBuilding);
   const removeBuilding = useStore((state) => state.removeBuilding);
 
-  const hasBuilding =
-    selected &&
-    selected.object?.position &&
-    buildings[selected.object.position.x]?.[selected.object.position.z] !== undefined;
+  const existingBuilding =
+    selected && selected.object?.position
+      ? buildings[selected.object.position.x]?.[selected.object.position.z]
+      : undefined;
 
   const handleAdd = (building: BuildingType) => {
     addBuilding(selected!.object.position.x, selected!.object.position.z, building);
@@ -63,8 +63,7 @@ export const BuildMenu = () => {
         'build-menu--visible': selected,
       })}
     >
-      {selected &&
-        !hasBuilding &&
+      {selected && existingBuilding === undefined ? (
         getPossibleBuildingType()?.map(
           (building) =>
             building && (
@@ -75,8 +74,14 @@ export const BuildMenu = () => {
                 hasEnoughRessources={hasEnoughRessources}
               />
             ),
-        )}
-      {hasBuilding && <BuildingMenuEntry handleDelete={handleDelete} hasEnoughRessources={hasEnoughRessources} />}
+        )
+      ) : (
+        <BuildingMenuEntry
+          handleDelete={handleDelete}
+          buildingTypeToRemove={existingBuilding}
+          hasEnoughRessources={hasEnoughRessources}
+        />
+      )}
     </div>
   );
 };

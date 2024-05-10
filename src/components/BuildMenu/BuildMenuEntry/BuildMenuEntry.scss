@@ -46,7 +46,7 @@
   backdrop-filter: saturate(180%) blur(30px);
   border-radius: 8px;
   width: 196px;
-  height: 196px;
+  min-height: 196px;
 
   display: flex;
   flex-direction: column;

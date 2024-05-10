@@ -8,7 +8,7 @@ type BuildingRessourcesType = {
   }>;
 };
 
-const SELLFACTOR = 0.5;
+export const SELLFACTOR = 0.5;
 export const BuildingSellBenefits: BuildingRessourcesType = {
   [BuildingType.Outpost]: {
     wood: Math.ceil(getCostsOfBuilding(BuildingType.Outpost).wood! * SELLFACTOR),

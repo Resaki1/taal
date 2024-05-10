@@ -93,6 +93,8 @@ export const allBuildings: Building[] = [
   },
 ];
 
+export const getBuildingByType = (type: BuildingType) => allBuildings.find((building) => building.type === type);
+
 export const getPossibleBuildingsForTerrain = (terrain: Terrain) =>
   allBuildings.filter((building) => building.terrains.includes(terrain));
 
