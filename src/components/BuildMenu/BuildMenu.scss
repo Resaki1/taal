@@ -1,18 +1,25 @@
+$build-menu-height: 64px;
+
 .build-menu {
+  position: absolute;
+  bottom: 0;
+  bottom: env(safe-area-inset-bottom);
   width: 100%;
   background-color: #21494db3;
   color: white;
-  height: 64px;
+  height: 0;
   transition: transform 0.2s cubic-bezier(0.59, 0.33, 0.16, 1.29);
   display: flex;
   flex-direction: row;
   justify-content: center;
   padding: 8px;
-  gap: 64px;
+  gap: 32px;
   box-sizing: border-box;
   backdrop-filter: saturate(180%) blur(30px);
+  transform: translateY($build-menu-height);
 
   &--visible {
-    transform: translateY(-64px);
+    transform: translateY(0);
+    height: $build-menu-height;
   }
 }

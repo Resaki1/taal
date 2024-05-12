@@ -2,7 +2,8 @@ import { Object3D, Event, Vector3 } from 'three';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { BuildingType } from '../components/Building/Building';
-import { BuildingCosts, BuildingOutputs, BuildingSellBenefits } from '../components/Building/buildingFinancials';
+import { BuildingSellBenefits } from '../components/Building/buildingFinancials';
+import { getCostsOfBuilding, getOutputOfBuilding } from '../components/Building/buildings';
 
 export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
@@ -71,7 +72,7 @@ export const useStore = create<State & Actions>()(
         ...initialState,
         addBuilding: (x, y, building) =>
           set((state) => {
-            state.removeRessources(BuildingCosts[building]);
+            state.removeRessources(getCostsOfBuilding(building));
 
             if (building === BuildingType.Outpost) {
               state.unlock(x, y, 8);
@@ -79,7 +80,7 @@ export const useStore = create<State & Actions>()(
 
             // add building output
             const newBuildingOutputs = state.buildingOutputs;
-            Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+            Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
               newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
             });
 
@@ -104,7 +105,7 @@ export const useStore = create<State & Actions>()(
 
             // TODO: remove output froom state.buildingOutputs
             const newBuildingOutputs = state.buildingOutputs;
-            Object.entries(BuildingOutputs[building]).forEach((ressource) => {
+            Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
               newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
             });
 
