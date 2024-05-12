@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BuildingType } from '../../Building/Building';
-import { Building, allBuildings, getBuildingByType } from '../../Building/buildings';
+import { Building, getBuildingByType } from '../../Building/buildings';
 
 import './BuildMenuEntry.scss';
 import { createPortal } from 'react-dom';
