@@ -6,8 +6,8 @@ import { Building } from '../Building/Building';
 import { Color, Group } from 'three';
 import { getTerrainHeight } from '../../helpers/terrain';
 
-const gray = new Color(0x303030);
 const lightGray = new Color(0xa0a0a0);
+const grayScale = new Color('hsla(62, 0%, 20%)');
 const noColor = new Color();
 
 const TileComponent = () => {
@@ -30,6 +30,7 @@ const TileComponent = () => {
 
   let x: number;
   let y: number;
+
   const updateTile = () => {
     x = ref.current.position.x;
     y = ref.current.position.z;
@@ -99,7 +100,7 @@ const TileComponent = () => {
         userData={{ update: () => onRefChange(), deselect: () => deselect() }}
         onClick={(e) => handleClick(e)}
         onPointerMissed={() => selected && deselect()}
-        color={selected ? noColor : isUnlocked ? lightGray : gray}
+        color={selected ? noColor : isUnlocked ? lightGray : grayScale}
       >
         {hasBuilding && <Building type={buildings[ref.current.position.x][ref.current.position.z]} />}
       </Instance>
