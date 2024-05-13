@@ -6,6 +6,7 @@ export type Building = {
   type: BuildingType;
   name: string;
   icon: string;
+  description: string;
   costs: {
     // how much of each ressource is consumed when placing the building
     [key in Ressources]?: number;
@@ -24,6 +25,7 @@ export const allBuildings: Building[] = [
     type: BuildingType.Outpost,
     name: 'Outpost',
     icon: '🗼',
+    description: 'Unlocks new areas for your town to grow.',
     costs: {
       wood: 10,
       gold: 600,
@@ -37,6 +39,7 @@ export const allBuildings: Building[] = [
     type: BuildingType.House,
     name: 'House',
     icon: '🛖',
+    description: 'Adds 4 villagers to your town. Villagers pay taxes but require food.',
     costs: {
       wood: 6,
       gold: 100,
@@ -52,6 +55,7 @@ export const allBuildings: Building[] = [
     type: BuildingType.Lumberhut,
     name: 'Lumberhut',
     icon: '🪚',
+    description: 'A villager works here to produce wood needed to build new buildings, but costs money to maintain.',
     costs: {
       wood: 2,
       gold: 10,
@@ -67,6 +71,7 @@ export const allBuildings: Building[] = [
     type: BuildingType.CornField,
     name: 'Cornfield',
     icon: '🌽',
+    description: 'Produces low amounts of food. Costs money to maintain.',
     costs: {
       gold: 30,
     },
@@ -80,6 +85,8 @@ export const allBuildings: Building[] = [
     type: BuildingType.StoneQuarry,
     name: 'Quarry',
     icon: '⛏️',
+    description:
+      'Villagers work here to produces stone needed for more advanced buildings, but it costs money to maintain.',
     costs: {
       wood: 6,
       gold: 40,

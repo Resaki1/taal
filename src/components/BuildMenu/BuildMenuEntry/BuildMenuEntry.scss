@@ -85,6 +85,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.67, 0.38, 0.09, 2.1);
+    margin-top: 8px;
 
     &:hover {
       transform: scale(1.05);
@@ -107,4 +108,8 @@
       transform: scale(1.05);
     }
   }
+}
+
+h3 {
+  margin: 0;
 }
