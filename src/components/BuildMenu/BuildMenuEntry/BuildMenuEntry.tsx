@@ -45,6 +45,8 @@ const BuildingMenuEntry = ({
               <figure>{building.icon}</figure>
               {building.name}
             </h2>
+            <p>{building.description}</p>
+            <h3>Costs to build:</h3>
             <ul>
               {Object.entries(building.costs).map((cost) => (
                 <li key={cost[0]}>
