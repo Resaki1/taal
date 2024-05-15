@@ -32,7 +32,6 @@ export type State = {
     | undefined;
 };
 
-
 export type Actions = {
   addBuilding: (x: number, y: number, building: BuildingType) => void;
   removeBuilding: (x: number, y: number) => void;
@@ -136,7 +135,6 @@ export const useStore = create<State & Actions>()(
           }),
         lock: (x, y, range) =>
           set((state: State) => {
-            
             const newUnlocked = state.unlocked;
             let distance: number;
             for (let i = x - range; i <= x + range; i++) {
@@ -161,11 +159,12 @@ export const useStore = create<State & Actions>()(
                 distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
                 if (distance < range) {
                   if (!newUnlocked[i]) newUnlocked[i] = {};
-                  newUnlocked[i][j] += 1;
+                  if (!newUnlocked[i][j]) newUnlocked[i][j] = 1;
+                  else newUnlocked[i][j] += 1;
                 }
               }
             }
-            
+
             return {
               unlocked: newUnlocked,
             };

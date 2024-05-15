@@ -36,11 +36,11 @@ const TileComponent = () => {
     y = ref.current.position.z;
 
     if (isUnlocked) {
-      if (Number(unlocked[x]?.[y]) < 1) {
+      if (unlocked[x][y] < 1) {
         // tile is shown as unlocked but should be locked
         startTransition(() => setUnlocked(false));
       }
-    } else if (!isUnlocked && Number(unlocked[x]?.[y]) > 0 ) {
+    } else if (!isUnlocked && unlocked[x]?.[y] > 0) {
       // tile is shown as locked but should be unlocked
       startTransition(() => setUnlocked(true));
     }
@@ -84,9 +84,13 @@ const TileComponent = () => {
   };
 
   useFrame(() => {
-    if (!isUnlocked && Number(unlocked[ref.current.position.x])> 0 && Number(unlocked[ref.current.position.x][ref.current.position.z])>0) {
+    if (
+      !isUnlocked &&
+      unlocked[ref.current.position.x] &&
+      unlocked[ref.current.position.x][ref.current.position.z] > 0
+    ) {
       startTransition(() => setUnlocked(true));
-    } else if (isUnlocked && Number(unlocked[ref.current.position.x]?.[ref.current.position.z])< 1) {
+    } else if (isUnlocked && unlocked[ref.current.position.x]?.[ref.current.position.z] < 1) {
       startTransition(() => setUnlocked(false));
     }
   });
