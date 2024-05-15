@@ -38,8 +38,8 @@ export type Actions = {
   removeBuilding: (x: number, y: number) => void;
   addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) => void;
   removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) => void;
-  lock: (x: number, y: number, range: number, unlockCount: number) => void;
-  unlock: (x: number, y: number, range: number, unlockCount: number) => void;
+  lock: (x: number, y: number, range: number) => void;
+  unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
   setCamera: (position: Vector3, lookAt: Vector3) => void;
   reset: () => void;
@@ -76,8 +76,7 @@ export const useStore = create<State & Actions>()(
             state.removeRessources(getCostsOfBuilding(building));
 
             if (building === BuildingType.Outpost) {
-              let temp: number = 0;
-              state.unlock(x, y, 8, temp++);
+              state.unlock(x, y, 8);
             }
 
             // add building output
@@ -102,8 +101,7 @@ export const useStore = create<State & Actions>()(
             state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
 
             if (building === BuildingType.Outpost) {
-              let temp: number = 0;
-              state.lock(x, y, 8, temp--);
+              state.lock(x, y, 8);
             }
 
             // TODO: remove output froom state.buildingOutputs
@@ -146,7 +144,7 @@ export const useStore = create<State & Actions>()(
                 distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
                 if (distance < range) {
                   if (!newUnlocked[i]) newUnlocked[i] = {};
-                  newUnlocked[i][j] = false;
+                  newUnlocked[i][j] -= 1;
                 }
               }
             }
@@ -163,7 +161,7 @@ export const useStore = create<State & Actions>()(
                 distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
                 if (distance < range) {
                   if (!newUnlocked[i]) newUnlocked[i] = {};
-                  newUnlocked[i][j] = true;
+                  newUnlocked[i][j] += 1;
                 }
               }
             }
