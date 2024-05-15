@@ -22,7 +22,7 @@ export type State = {
   ressources: {
     [key in Ressources]: number;
   };
-  unlocked: { [key: number]: { [key: number]: boolean } };
+  unlocked: { [key: number]: { [key: number]: number } };
   selected: SelectedObject | undefined;
   camera:
     | {
@@ -32,13 +32,14 @@ export type State = {
     | undefined;
 };
 
+
 export type Actions = {
   addBuilding: (x: number, y: number, building: BuildingType) => void;
   removeBuilding: (x: number, y: number) => void;
   addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) => void;
   removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) => void;
-  lock: (x: number, y: number, range: number) => void;
-  unlock: (x: number, y: number, range: number) => void;
+  lock: (x: number, y: number, range: number, unlockCount: number) => void;
+  unlock: (x: number, y: number, range: number, unlockCount: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
   setCamera: (position: Vector3, lookAt: Vector3) => void;
   reset: () => void;
@@ -75,7 +76,8 @@ export const useStore = create<State & Actions>()(
             state.removeRessources(getCostsOfBuilding(building));
 
             if (building === BuildingType.Outpost) {
-              state.unlock(x, y, 8);
+              let temp: number = 0;
+              state.unlock(x, y, 8, temp++);
             }
 
             // add building output
@@ -100,7 +102,8 @@ export const useStore = create<State & Actions>()(
             state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
 
             if (building === BuildingType.Outpost) {
-              state.lock(x, y, 8);
+              let temp: number = 0;
+              state.lock(x, y, 8, temp--);
             }
 
             // TODO: remove output froom state.buildingOutputs
@@ -135,6 +138,7 @@ export const useStore = create<State & Actions>()(
           }),
         lock: (x, y, range) =>
           set((state: State) => {
+            
             const newUnlocked = state.unlocked;
             let distance: number;
             for (let i = x - range; i <= x + range; i++) {
@@ -163,6 +167,7 @@ export const useStore = create<State & Actions>()(
                 }
               }
             }
+            
             return {
               unlocked: newUnlocked,
             };
