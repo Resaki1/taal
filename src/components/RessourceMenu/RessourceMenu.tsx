@@ -23,7 +23,7 @@ export const RessourceMenu = () => {
         <thead>
           <tr>
             <th></th>
-            <th>💵</th>
+            <th>💰</th>
             <th>🪵</th>
             <th>🪨</th>
             <th>🍟</th>
