@@ -33,7 +33,7 @@ const BuildingMenuEntry = ({
       <button
         className="building-menu__entry"
         onClick={() => setModalOpen(true)}
-        disabled={!hasEnoughRessources(building.type)}
+       
       >
         <figure className="building-menu__entry-icon">{building.icon}</figure>
         {building.name}
@@ -56,15 +56,16 @@ const BuildingMenuEntry = ({
             </ul>
             <button
               className="building-menu__modal-accept"
+              disabled={!hasEnoughRessources(building.type)}
               onClick={() => {
                 handleAdd(building.type);
                 setModalOpen(false);
               }}
             >
-              build
+              🔨
             </button>
             <button className="building-menu__modal-close" onClick={() => setModalOpen(false)}>
-              close
+            ⭕
             </button>
           </div>,
           document.body,
@@ -75,7 +76,7 @@ const BuildingMenuEntry = ({
       <>
         <button className="building-menu__entry" onClick={() => setModalOpen(true)}>
           <figure className="building-menu__entry-icon">❌</figure>
-          remove building
+          remove {buildingToRemove.name}
         </button>
         {modalOpen &&
           createPortal(
@@ -95,7 +96,7 @@ const BuildingMenuEntry = ({
                 remove
               </button>
               <button className="building-menu__modal-close" onClick={() => setModalOpen(false)}>
-                close
+              ⭕
               </button>
             </div>,
             document.body,
