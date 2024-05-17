@@ -16,6 +16,7 @@ $build-menu-height: 64px;
   gap: 32px;
   box-sizing: border-box;
   backdrop-filter: saturate(180%) blur(30px);
+  -webkit-backdrop-filter: saturate(180%) blur(30px);
   transform: translateY($build-menu-height);
 
   &--visible {
