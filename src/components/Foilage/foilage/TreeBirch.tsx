@@ -16,7 +16,7 @@ export default function TreeBirch({
   ...props
 }: JSX.IntrinsicElements["group"]) {
   const group = useRef<Group>(null!);
-  const { nodes, materials } = useGLTF(
+  const { nodes } = useGLTF(
     "gltf/tree_birch/tree_birch.glb"
   ) as GLTFResult;
 

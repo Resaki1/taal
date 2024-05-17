@@ -1,6 +1,5 @@
 import { useTexture } from '@react-three/drei';
-import { Water } from 'three/examples/jsm/objects/Water.js';
-import { BoxGeometry, Color, LinearFilter, MeshPhysicalMaterial,MeshStandardMaterial, NearestFilter, LinearMipmapLinearFilter } from 'three';
+import { BoxGeometry, Color, LinearFilter, MeshPhysicalMaterial,MeshStandardMaterial } from 'three';
 import textureAtlas from '../textures/textureAtlas.jpg';
 
 export const water = new MeshPhysicalMaterial({
