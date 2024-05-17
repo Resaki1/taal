@@ -108,10 +108,10 @@ const TileComponent = () => {
         color={selected ? noColor : isUnlocked ? lightGray : grayScale}
       >
         {hasBuilding && <Building type={buildings[ref.current.position.x][ref.current.position.z]} />}
-      </Instance>
-      { ref?.current?.position && !hasBuilding && (
+        </Instance>
+      {/* {ref?.current?.position && !hasBuilding && (
         <Foilage position={ref.current.position} />
-      )} 
+      )} */}
     </Suspense>
   );
 };

@@ -1,6 +1,6 @@
 import { useTexture } from '@react-three/drei';
 import { Water } from 'three/examples/jsm/objects/Water.js';
-import { BoxGeometry, Color, LinearFilter, MeshPhysicalMaterial, NearestFilter, PlaneGeometry } from 'three';
+import { BoxGeometry, Color, LinearFilter, MeshPhysicalMaterial,MeshStandardMaterial, NearestFilter, LinearMipmapLinearFilter } from 'three';
 import textureAtlas from '../textures/textureAtlas.jpg';
 
 export const water = new MeshPhysicalMaterial({
@@ -30,8 +30,10 @@ export const Materials = () => {
 
   
 
-  const atlas = new MeshPhysicalMaterial({
+  const atlas = new MeshStandardMaterial({
     map: texture_atlas,
+    roughness: 0.5, // Mittlere Rauheit für ein ausgewogenes Aussehen
+    metalness: 0.1, // Geringer Metallgehalt für natürliche Oberflächen
   });
 
   return {
