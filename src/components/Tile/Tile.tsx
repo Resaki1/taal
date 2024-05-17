@@ -5,6 +5,7 @@ import { useStore } from '../../store/store';
 import { Building } from '../Building/Building';
 import { Color, Group } from 'three';
 import { getTerrainHeight } from '../../helpers/terrain';
+import { Foilage } from '../Foilage/Foilage';
 
 const lightGray = new Color(0xa0a0a0);
 const grayScale = new Color('hsla(62, 0%, 20%)');
@@ -108,9 +109,9 @@ const TileComponent = () => {
       >
         {hasBuilding && <Building type={buildings[ref.current.position.x][ref.current.position.z]} />}
       </Instance>
-      {/* {ref?.current?.position && !hasBuilding && (
+      { ref?.current?.position && !hasBuilding && (
         <Foilage position={ref.current.position} />
-      )} */}
+      )} 
     </Suspense>
   );
 };

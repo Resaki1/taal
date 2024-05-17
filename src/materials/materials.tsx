@@ -1,9 +1,10 @@
 import { useTexture } from '@react-three/drei';
-import { BoxGeometry, Color, MeshStandardMaterial, NearestFilter } from 'three';
+import { Water } from 'three/examples/jsm/objects/Water.js';
+import { BoxGeometry, Color, LinearFilter, MeshPhysicalMaterial, NearestFilter, PlaneGeometry } from 'three';
 import textureAtlas from '../textures/textureAtlas.jpg';
 
-export const water = new MeshStandardMaterial({
-  color: 'blue',
+export const water = new MeshPhysicalMaterial({
+  color: 'DeepBlue',
   emissiveIntensity: 0.2,
 });
 
@@ -11,21 +12,25 @@ export const building = new BoxGeometry(0.5, 0.5, 0.5);
 
 export const Materials = () => {
   const [texture_atlas] = useTexture([textureAtlas]);
-  texture_atlas.minFilter = NearestFilter;
-  texture_atlas.magFilter = NearestFilter;
+  texture_atlas.minFilter = LinearFilter;
+  texture_atlas.magFilter = LinearFilter;
 
-  const water = new MeshStandardMaterial({
+  const water = new MeshPhysicalMaterial({
     color: new Color(0x0055ff),
     emissive: new Color(0x0055ff),
     emissiveIntensity: 0.4,
     transparent: true,
-    opacity: 0.9,
-    metalness: 0.7,
-    roughness: 0.5,
-    wireframe: false,
+    opacity: 0.8,
+    metalness: 0.1,
+    roughness: 0.1, // Niedrigere Rauheit für glänzenderes Wasser
+    clearcoat: 1.0, // Klarlack für zusätzliche Glanzschicht
+    clearcoatRoughness: 0.1, // Rauheit der Klarlackschicht
+    reflectivity: 0.9, // Hohe Reflektivität für Spiegelungen
   });
 
-  const atlas = new MeshStandardMaterial({
+  
+
+  const atlas = new MeshPhysicalMaterial({
     map: texture_atlas,
   });
 

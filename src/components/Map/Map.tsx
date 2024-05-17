@@ -102,7 +102,7 @@ export const Map = () => {
       {/* TODO: fix type */}
       <Instances ref={instancedMesh as any} limit={MAP_SIZE} castShadow receiveShadow>
         <boxGeometry args={[1, 2, 1]} />
-        <meshStandardMaterial
+        <meshPhysicalMaterial
           onBeforeCompile={(shader) => tileShader(shader, MATERIALS.texture_atlas)}
           defines={{ USE_UV: '' }}
         />
