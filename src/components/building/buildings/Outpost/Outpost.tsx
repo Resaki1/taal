@@ -6,14 +6,14 @@ Files: Outpost.vox.gltf [328.09KB] > Outpost.vox-transformed.glb [33.67KB] (90%)
 
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { Vector3 } from 'three';
+import { Mesh, MeshStandardMaterial, Vector3 } from 'three';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Node: THREE.Mesh;
+    Node: Mesh;
   };
   materials: {
-    palette: THREE.MeshStandardMaterial;
+    palette: MeshStandardMaterial;
   };
 };
 

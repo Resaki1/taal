@@ -1,4 +1,4 @@
-import { Object3D, Event, Vector3 } from 'three';
+import { Object3D, Vector3, Object3DEventMap } from 'three';
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 import { BuildingType } from '../components/Building/Building';
@@ -13,7 +13,7 @@ interface BuildingTypeState {
 
 interface SelectedObject {
   type: string;
-  object: Object3D<Event>;
+  object: Object3D<Object3DEventMap>;
 }
 
 export type State = {
