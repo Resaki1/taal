@@ -44,7 +44,7 @@
     "@types/node": "^20.8.9",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.7",
-    "@types/three": "^0.164.0",
+    "@types/three": "^0.164.1",
     "@types/lodash.debounce": "^4.0.7",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.10.0",
