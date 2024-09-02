@@ -21,18 +21,18 @@ export const Materials = () => {
     transparent: true,
     opacity: 0.8,
     metalness: 0.1,
-    roughness: 0.1, // Niedrigere Rauheit für glänzenderes Wasser
-    clearcoat: 1.0, // Klarlack für zusätzliche Glanzschicht
-    clearcoatRoughness: 0.1, // Rauheit der Klarlackschicht
-    reflectivity: 0.9, // Hohe Reflektivität für Spiegelungen
+    roughness: 0.1, 
+    clearcoat: 1.0, 
+    clearcoatRoughness: 0.1, 
+    reflectivity: 0.9, 
   });
 
   
 
   const atlas = new MeshStandardMaterial({
     map: texture_atlas,
-    roughness: 0.5, // Mittlere Rauheit für ein ausgewogenes Aussehen
-    metalness: 0.1, // Geringer Metallgehalt für natürliche Oberflächen
+    roughness: 0.5, 
+    metalness: 0.1, 
   });
 
   return {
