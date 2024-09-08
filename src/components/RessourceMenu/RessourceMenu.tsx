@@ -23,19 +23,19 @@ export const RessourceMenu = () => {
         <thead>
           <tr>
             <th></th>
-            <th>💰</th>
-            <th>🪵</th>
-            <th>🪨</th>
-            <th>🍟</th>
+            <th title="Gold for buying">💰</th>
+            <th title="Wood from your Lumberhut">🪵</th>
+            <th title="Stones produced by Quarry">🪨</th>
+            <th title="Food for you villagers">🍟</th>
             <th></th>
-            <th>🧑‍🦱</th>
+            <th title="Amazing villagers">🧑‍🦱</th>
           </tr>
         </thead>
 
         <tbody>
           <tr>
             <td>
-              <b>Total</b>
+              <b>∑</b>
             </td>
             <td>
               <b>{Math.floor(ressources.gold)}</b> ({valueSmoothener(buildingOutputs.gold)})
@@ -52,9 +52,10 @@ export const RessourceMenu = () => {
             <td></td>
             <td>{Math.floor(ressources.villager)}</td>
           </tr>
+          
           <tr>
             <td>
-              <b>Remaining</b>
+              <b>⏳</b>
             </td>
             <td>{remainingRessources(valueSmoothener(buildingOutputs.gold), Math.floor(ressources.gold))} </td>
             <td>{remainingRessources(valueSmoothener(buildingOutputs.wood), Math.floor(ressources.wood))}</td>

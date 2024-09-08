@@ -1,31 +1,56 @@
 .ressource-menu {
   margin: 0 auto;
-  position: absolute;
-  top: 0%;
-  left: 12%;
-
-  background: rgba(211, 197, 122, 0.4);
+  position: fixed;
+  top: 1cqb;
+  left: 50cqi;
+  height: min-content;
   padding: 4px;
+  width:fit-content;
+  background-color: rgba(33, 73, 77, 0.702); 
+  @media (prefers-color-scheme: light) {
+  background-color: #d3c57a66; 
+  }
+  @media (prefers-color-scheme: dark) {
+  background-color: rgba(33, 73, 77, 0.702); 
+  }
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
   font-size: 12px;
+  color: #E6E6E6;
   backdrop-filter: saturate(180%) blur(30px);
   -webkit-backdrop-filter: saturate(180%) blur(30px);
-
-  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+  transform: translateX(-50%); 
+  border-radius: 20px;
 
   th {
-    font-size: 25px;
+    font-size: 20px;
+    padding: 4px; 
+    text-align: left; 
+  }
+
+  table {
+    width: 100%; 
+    border-collapse: collapse;
   }
 
   td {
-    align-content: left;
+    padding: 8px;
+    text-align: left;
   }
 }
 .ressource-menu button {
-  width: 100%;
+  position: relative;
+  top:2px;
+  width: 30%;
   height: 20px;
   font-size: 10px;
   border-radius: 3px;
-  background: rgba(98, 94, 71, 0.4);
+  border-style:hidden;
+  background: rgba(255, 94, 71, 0.7);
   color: wheat;
 }
