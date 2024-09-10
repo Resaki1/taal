@@ -1,0 +1,108 @@
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      background-color: rgba(33, 73, 77, 0.702);
+    }
+    50% {
+      background-color: rgba(33, 100, 77, 0.702);
+    }
+    100% {
+      background-color: rgba(33, 73, 77, 0.702);
+    }
+  }
+  
+  @keyframes successAnimation {
+    0% {
+      background-color: rgba(33, 73, 77, 0.702); /* Ursprungsfarbe */
+    }
+    50% {
+      background-color: rgba(33, 150, 77, 0.702); /* Subtilerer Grünton */
+    }
+    100% {
+      background-color: rgba(33, 73, 77, 0.702); /* Ursprungsfarbe */
+    }
+  }
+  
+  .TilePropertiesMenu__button {
+    position: fixed;
+    top: 46cqi;
+    left: 5cqi;
+    background: rgba(211, 197, 122, 0.4);
+    background-color: rgba(33, 73, 77, 0.702);
+    backdrop-filter: saturate(180%) blur(30px);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+    padding: 10px 10px;
+    border-radius: 25px;
+    border-width: 0px;
+    font-size: 16px;
+    z-index: 1000; /* Sicherstellen, dass es über anderen Elementen liegt */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, filter 0.3s ease;
+  
+    &:disabled {
+      background-color: rgba(0, 0, 0, 0.645);
+      cursor: not-allowed;
+      animation: none;
+      filter: grayscale(100%);
+    }
+  
+    &:hover {
+      background-color: #405368;
+    }
+  
+    &:not(:disabled) {
+      animation: pulse 4s ease-in-out infinite;
+    }
+  
+    &.success {
+      animation: successAnimation 1s ease-in-out; /* Erfolgsanimation anwenden */
+    }
+  }
+  
+  .TilePropertiesMenu__modal {
+    position: fixed;
+    top: 64cqi;
+    left: 34cqi;
+    width: fit-content;
+    height: fit-content;
+    transform: translate(-50%, -50%);
+    padding: 0px;
+    border: 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1001; /* Sicherstellen, dass es über dem Button liegt */
+    opacity: 0; /* Start mit 0 Opazität */
+    animation: fadeIn 0.5s forwards ease-in-out; /* Animation anwenden */
+  }
+  
+  .TilePropertiesMenu__modal-confirm {
+    border-radius: 15px;
+    border: none;
+    padding: 10px 20px;
+    color: whitesmoke;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background: rgba(211, 197, 122, 0.4);
+    background-color: rgba(33, 73, 77, 0.702);
+    backdrop-filter: saturate(180%) blur(30px);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+  
+    &:disabled {
+      background-color: #6c757d; /* Grau */
+      cursor: not-allowed;
+    }
+  
+    &:hover:not(:disabled) {
+      background-color: #218838; /* Dunkleres Grün beim Hover */
+    }
+  }

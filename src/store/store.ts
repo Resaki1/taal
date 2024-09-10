@@ -4,6 +4,7 @@ import { persist, devtools } from 'zustand/middleware';
 import { BuildingType } from '../components/Building/Building';
 import { BuildingSellBenefits } from '../components/Building/buildingFinancials';
 import { getCostsOfBuilding, getOutputOfBuilding } from '../components/Building/buildings';
+import { title } from 'process';
 
 export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
@@ -24,6 +25,7 @@ export type State = {
   };
   unlocked: { [key: number]: { [key: number]: number } };
   selected: SelectedObject | undefined;
+  locations: { [key: string]: { positionX: number; positionY: number } };
   camera:
     | {
         position: Vector3;
@@ -40,6 +42,8 @@ export type Actions = {
   lock: (x: number, y: number, range: number) => void;
   unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
+  saveLocation: (title: string, x: number, y: number) => void;
+  removeLocation: (title: string, x: number, y: number) => void;
   setCamera: (position: Vector3, lookAt: Vector3) => void;
   reset: () => void;
 };
@@ -61,6 +65,7 @@ const initialState: State = {
     villager: 2,
   },
   unlocked: {},
+  locations: {},
   selected: undefined,
   camera: undefined,
 };
@@ -94,6 +99,25 @@ export const useStore = create<State & Actions>()(
               buildingOutputs: newBuildingOutputs,
             };
           }),
+          // add new saved location
+          saveLocation: (t, x, y) =>
+            set((state) => {
+              const newLocationType = { ...state.locations };
+              newLocationType[t] = { positionX: x, positionY: y };
+              return {
+                locations: newLocationType,
+              };
+            }),
+          // remove saved location
+            removeLocation: (t, x, y) =>
+              set((state) => {
+                const newLocationType = { ...state.locations };
+                newLocationType[t] = { positionX: x, positionY: y };
+                delete newLocationType[t];
+                return {
+                  locations: newLocationType, };
+              }),
+
         removeBuilding: (x, y) =>
           set((state) => {
             const building = state.buildings[x][y];

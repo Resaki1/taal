@@ -3,9 +3,9 @@ $build-menu-height: 64px;
 .build-menu {
   position: fixed;
   left: 50cqi;
-  bottom: calc(env(safe-area-inset-bottom) + 10%);  
+  bottom: calc(env(safe-area-inset-bottom) + 8%);  
   border-radius: 20px;
-  height: 0;
+  height: min-content;
   width: fit-content;
 
   background-color: rgba(33, 73, 77, 0.702); 
@@ -37,5 +37,11 @@ $build-menu-height: 64px;
     opacity: 1;
     transform: translateX(-50%) translateY(0); 
     height: $build-menu-height;
+  }
+
+  @media (orientation: landscape) {
+    max-height: 30%;
+    left: 20cqi;
+    top: 36cqi;   
   }
 }

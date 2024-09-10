@@ -23,18 +23,16 @@ export const RessourceMenu = () => {
         <thead>
           <tr>
             <th></th>
-            <th title="Gold for buying">💰</th>
+            <th title="Gold for buying">💰</th> 
             <th title="Wood from your Lumberhut">🪵</th>
             <th title="Stones produced by Quarry">🪨</th>
             <th title="Food for you villagers">🍟</th>
-            <th></th>
             <th title="Amazing villagers">🧑‍🦱</th>
           </tr>
         </thead>
-
         <tbody>
-          <tr>
-            <td>
+          <tr className="portrait-view">
+            <td className="key-column">
               <b>∑</b>
             </td>
             <td>
@@ -49,11 +47,25 @@ export const RessourceMenu = () => {
             <td>
               <b>{Math.floor(ressources.food)}</b> ({valueSmoothener(buildingOutputs.food)})
             </td>
-            <td></td>
             <td>{Math.floor(ressources.villager)}</td>
           </tr>
-          
-          <tr>
+          <tr className="landscape-view">
+            <td className="key-column"><b>∑</b></td>
+            <td>
+              <b>{Math.floor(ressources.gold)}</b> 
+            </td>
+            <td>
+              <b>{Math.floor(ressources.wood)}</b> 
+            </td>
+            <td>
+              <b>{Math.floor(ressources.stone)}</b> 
+            </td>
+            <td>
+              <b>{Math.floor(ressources.food)}</b> 
+            </td>
+            <td>{Math.floor(ressources.villager)}</td>
+          </tr>
+          <tr className="portrait-view">
             <td>
               <b>⏳</b>
             </td>
@@ -62,11 +74,10 @@ export const RessourceMenu = () => {
             <td>{remainingRessources(valueSmoothener(buildingOutputs.stone), Math.floor(ressources.stone))}</td>
             <td>{remainingRessources(valueSmoothener(buildingOutputs.food), Math.floor(ressources.food))}</td>
             <td></td>
-            <td></td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr>
+        <tfoot className="portrait-view">
+          <tr >
             <td colSpan={7}>
               <button onClick={() => reset()}>Restart</button>
             </td>

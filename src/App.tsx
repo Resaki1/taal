@@ -7,6 +7,7 @@ import { useStore } from './store/store';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DirectionalLight, Vector3 } from 'three';
 import './App.scss';
+import { TilePropertiesMenu } from './components/TilePropertiesMenu/TilePropertiesMenu';
 
 const App = () => {
   const sun = useRef<DirectionalLight>(null!);
@@ -51,6 +52,7 @@ const App = () => {
       </Canvas>
       <BuildMenu />
       <RessourceMenu />
+      <TilePropertiesMenu />
     </div>
   );
 };
