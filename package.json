@@ -10,7 +10,7 @@
     "react": "^18.3.1",
     "react-detect-click-outside": "^1.1.7",
     "react-dom": "^18.3.1",
-    "three": "^0.164.1",
+    "three": "^0.165.0",
     "workbox-core": "^7.0.0",
     "workbox-expiration": "^7.0.0",
     "workbox-precaching": "^7.1.0",
@@ -41,10 +41,10 @@
     "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.11",
-    "@types/node": "^20.8.9",
+    "@types/node": "^22.5.4",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.7",
-    "@types/three": "^0.164.0",
+    "@types/three": "^0.165.0",
     "@types/lodash.debounce": "^4.0.7",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.10.0",
@@ -57,12 +57,11 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "firebase": "^10.12.5",
     "prettier": "^3.0.3",
-    "sass": "^1.77.1",
+    "sass": "^1.77.8",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vite-plugin-checker": "^0.6.4",
     "vite-plugin-svgr": "^4.2.0",
-    "vite-tsconfig-paths": "^4.3.2",
-    "web-vitals": "^3.5.0"
+    "vite-tsconfig-paths": "^4.3.2"
   }
 }
