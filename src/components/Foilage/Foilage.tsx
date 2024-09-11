@@ -1,7 +1,7 @@
-import { Suspense } from "react";
-import { Vector3 } from "three";
-import { getTerrainType, Terrain } from "../../helpers/terrain";
-import TreeBirch from "./foilage/TreeBirch";
+import { Suspense } from 'react';
+import { Vector3 } from 'three';
+import { getTerrainType, Terrain } from '../../helpers/terrain';
+import TreeBirch from './foilage/TreeBirch';
 
 interface FoilageProps {
   position: Vector3;

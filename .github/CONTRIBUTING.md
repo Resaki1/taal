@@ -36,7 +36,7 @@ Please note that this project is released with a Contributor Code of Conduct. By
 
 ## Community
 
-- Join the discussions on [GitHub Discussions]([https://github.com/Resaki1/taal/issues](https://github.com/Resaki1/taal/discussions)).
+- Join the discussions on [GitHub Discussions](<[https://github.com/Resaki1/taal/issues](https://github.com/Resaki1/taal/discussions)>).
 - There are no social media accounts for now, everything happens here on GitHub.
 
 ## License

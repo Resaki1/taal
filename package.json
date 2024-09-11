@@ -23,7 +23,8 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "deploy": "tsc && vite build && firebase deploy --only hosting:taal",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier . --write"
   },
   "browserslist": {
     "production": [
