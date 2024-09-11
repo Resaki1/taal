@@ -32,46 +32,41 @@ fade-out {
   will-change: opacity, transform, filter;
 }
 
-
-
 .build-menu {
   position: fixed;
   left: 50cqi;
-  bottom: calc(env(safe-area-inset-bottom) + 8%);  
+  bottom: calc(env(safe-area-inset-bottom) + 8%);
   border-radius: 20px;
   height: min-content;
   width: fit-content;
 
-  background-color: rgba(33, 73, 77, 0.702); 
+  background-color: rgba(33, 73, 77, 0.702);
   @media (prefers-color-scheme: light) {
-  background-color: #d3c57a66;
+    background-color: #d3c57a66;
   }
   @media (prefers-color-scheme: dark) {
-  background-color: rgba(33, 73, 77, 0.702); 
+    background-color: rgba(33, 73, 77, 0.702);
   }
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  color:#E6E6E6;
+  color: #e6e6e6;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items:baseline;
+  align-items: baseline;
   padding: 8px;
   gap: 32px;
   box-sizing: border-box;
   backdrop-filter: saturate(180%) blur(30px);
   -webkit-backdrop-filter: saturate(180%) blur(30px);
 
-  
-  animation: fadeOut 0.20s forwards ease-in-out;
-  transform: translateX(50%); 
-
-
+  animation: fadeOut 0.2s forwards ease-in-out;
+  transform: translateX(50%);
 
   &--visible {
     opacity: 1;
     animation: fadeIn 0.18s forwards ease-in-out;
-    transform: translateX(-50%) translateY(0); 
+    transform: translateX(-50%) translateY(0);
     height: $build-menu-height;
   }
 
@@ -85,8 +80,6 @@ fade-out {
   @media (orientation: landscape) {
     max-height: 30%;
     left: 20cqi;
-    top: 36cqi;   
+    top: 36cqi;
   }
-
-  
 }

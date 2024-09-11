@@ -6,20 +6,17 @@ import { useClickOutside } from '../../hooks';
 import { useState } from 'react';
 import { Vector3, Mesh } from 'three';
 
-
 export const TilePropertiesMenu = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [locationTitle, setLocationTitle] = useState(''); 
+  const [locationTitle, setLocationTitle] = useState('');
 
   const selected = useStore((state) => state.selected);
   const modalRef = useClickOutside(() => setModalOpen(false));
   const setCamera = useStore((state) => state.setCamera);
-  
 
   const locations = useStore((state) => state.locations);
-  const waterRef = useRef<Mesh>(null!); 
-
+  const waterRef = useRef<Mesh>(null!);
 
   const saveLocation = useStore((state) => state.saveLocation);
 
@@ -29,19 +26,19 @@ export const TilePropertiesMenu = () => {
     setModalOpen(false);
     setLocationTitle('');
   };
-  
+
   return (
     <>
       <button
         className={`TilePropertiesMenu__button ${success ? 'success' : ''}`}
-        disabled={!selected }
+        disabled={!selected}
         onClick={() => {
           setModalOpen(true);
         }}
       >
-       📍 
+        📍
       </button>
-  
+
       {modalOpen &&
         createPortal(
           <div className="TilePropertiesMenu__modal" ref={modalRef}>
@@ -60,11 +57,11 @@ export const TilePropertiesMenu = () => {
                 handleAdd(locationTitle, x, y);
               }}
             >
-             💾
+              💾
             </button>
-            
+
             <h3>Saved Locations</h3>
-                
+
             <ul>
               {Object.entries(locations).map(([title, { positionX, positionY }]) => (
                 <li key={title} className="TilePropertiesMenu__locations-item">
@@ -72,20 +69,18 @@ export const TilePropertiesMenu = () => {
                   <button
                     onClick={() => {
                       const newPosition = new Vector3(positionX, positionY, 10);
-                      setCamera(new Vector3(positionX, positionY, 20), new Vector3(2, 2, 20))
-                      
+                      setCamera(new Vector3(positionX, positionY, 20), new Vector3(2, 2, 20));
                     }}
                     className="TilePropertiesMenu__locations-button"
                   >
-                   ▶
+                    ▶
                   </button>
                 </li>
               ))}
             </ul>
           </div>,
           document.body,
-        )
-        }
+        )}
     </>
   );
 };
