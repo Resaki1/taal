@@ -33,7 +33,7 @@ const BuildingMenuEntry = ({
       <button
         className="building-menu__entry"
         onClick={() => setModalOpen(true)}
-       
+        disabled={!hasEnoughRessources(building.type)}
       >
         <figure className="building-menu__entry-icon">{building.icon}</figure>
         {building.name}

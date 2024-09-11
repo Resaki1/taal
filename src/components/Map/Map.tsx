@@ -8,10 +8,20 @@ import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
 import { tileShader } from '../../helpers/shader';
 import { useStore } from '../../store/store';
+import * as THREE from 'three';
+
+
 
 const RENDER_DISTANCE = 32;
 const MAP_LENGTH = RENDER_DISTANCE * 2 + 1;
 const MAP_SIZE = Math.pow(MAP_LENGTH, 2);
+
+const waterMaterial = new THREE.MeshPhongMaterial({
+  color: 0x006994,
+  shininess: 60, 
+  transparent: true,
+  opacity: 0.7, 
+});
 
 // initialize three.js objects outside of component to avoid re-creating them on every render => better performance
 const newPosition = new Vector3();
@@ -99,6 +109,9 @@ export const Map = () => {
 
   return (
     <>
+     <ambientLight intensity={0.5} />
+     <directionalLight position={[10, 10, 10]} intensity={0.1} />
+
       {/* TODO: fix type */}
       <Instances ref={instancedMesh as any} limit={MAP_SIZE} castShadow receiveShadow>
         <boxGeometry args={[1, 2, 1]} />
@@ -114,7 +127,7 @@ export const Map = () => {
         args={[MAP_LENGTH, MAP_LENGTH]}
         rotation={waterRotation}
         position={[0, 0, 0]}
-        material={MATERIALS.water}
+        material={waterMaterial}
         onClick={(e) => e.stopPropagation()}
         ref={waterRef}
         receiveShadow

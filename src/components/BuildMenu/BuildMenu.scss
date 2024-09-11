@@ -1,5 +1,33 @@
 $build-menu-height: 64px;
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  will-change: opacity, transform, filter;
+}
+
+
 .build-menu {
   position: fixed;
   left: 50cqi;
@@ -28,14 +56,23 @@ $build-menu-height: 64px;
   backdrop-filter: saturate(180%) blur(30px);
   -webkit-backdrop-filter: saturate(180%) blur(30px);
 
-  opacity: 0;
-  transition: opacity 0.2s ease-out, transform 0.5s ease-out 0.2s;
-  transform: translateX(-50%); 
+  
+  animation: fadeOut 0.20s forwards ease-in-out;
+  transform: translateX(50%); 
+
 
 
   &--visible {
     opacity: 1;
+    animation: fadeIn 0.18s forwards ease-in-out;
     transform: translateX(-50%) translateY(0); 
+    height: $build-menu-height;
+  }
+
+  &--hidden {
+    opacity: 0;
+    animation: fadeOut 0.18s forwards ease-in-out;
+    transform: translateX(0) translateY(10px);
     height: $build-menu-height;
   }
 
@@ -44,4 +81,6 @@ $build-menu-height: 64px;
     left: 20cqi;
     top: 36cqi;   
   }
+
+  
 }

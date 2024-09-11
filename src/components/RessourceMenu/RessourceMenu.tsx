@@ -1,10 +1,11 @@
 import { useStore } from '../../store/store';
-
+import classNames from 'classnames';
 import './RessourceMenu.scss';
 
 export const RessourceMenu = () => {
   const ressources = useStore((state) => ({ ...state.ressources }));
   const buildingOutputs = useStore((state) => state.buildingOutputs);
+  const selected = useStore((state) => state.selected);
   const reset = useStore((state) => state.reset);
 
   const valueSmoothener = (buildingsOutputValue: number) => Math.round((buildingsOutputValue * 6000) / 100);
@@ -31,59 +32,56 @@ export const RessourceMenu = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="portrait-view">
-            <td className="key-column">
-              <b>∑</b>
-            </td>
-            <td>
-              <b>{Math.floor(ressources.gold)}</b> ({valueSmoothener(buildingOutputs.gold)})
-            </td>
-            <td>
-              <b>{Math.floor(ressources.wood)}</b> ({valueSmoothener(buildingOutputs.wood)})
-            </td>
-            <td>
-              <b>{Math.floor(ressources.stone)}</b> ({valueSmoothener(buildingOutputs.stone)})
-            </td>
-            <td>
-              <b>{Math.floor(ressources.food)}</b> ({valueSmoothener(buildingOutputs.food)})
-            </td>
-            <td>{Math.floor(ressources.villager)}</td>
-          </tr>
-          <tr className="landscape-view">
-            <td className="key-column"><b>∑</b></td>
-            <td>
-              <b>{Math.floor(ressources.gold)}</b> 
-            </td>
-            <td>
-              <b>{Math.floor(ressources.wood)}</b> 
-            </td>
-            <td>
-              <b>{Math.floor(ressources.stone)}</b> 
-            </td>
-            <td>
-              <b>{Math.floor(ressources.food)}</b> 
-            </td>
-            <td>{Math.floor(ressources.villager)}</td>
-          </tr>
-          <tr className="portrait-view">
-            <td>
-              <b>⏳</b>
-            </td>
-            <td>{remainingRessources(valueSmoothener(buildingOutputs.gold), Math.floor(ressources.gold))} </td>
-            <td>{remainingRessources(valueSmoothener(buildingOutputs.wood), Math.floor(ressources.wood))}</td>
-            <td>{remainingRessources(valueSmoothener(buildingOutputs.stone), Math.floor(ressources.stone))}</td>
-            <td>{remainingRessources(valueSmoothener(buildingOutputs.food), Math.floor(ressources.food))}</td>
-            <td></td>
-          </tr>
+          {selected && (
+            <tr className={classNames({
+              'default-view': true,
+              'default-view--visible': true,
+            })}>
+              <td className="key-column">
+                <b>∑</b>
+              </td>
+              <td>
+                <b>{Math.floor(ressources.gold)}</b> ({valueSmoothener(buildingOutputs.gold)})
+              </td>
+              <td>
+                <b>{Math.floor(ressources.wood)}</b> ({valueSmoothener(buildingOutputs.wood)})
+              </td>
+              <td>
+                <b>{Math.floor(ressources.stone)}</b> ({valueSmoothener(buildingOutputs.stone)})
+              </td>
+              <td>
+                <b>{Math.floor(ressources.food)}</b> ({valueSmoothener(buildingOutputs.food)})
+              </td>
+              <td>{Math.floor(ressources.villager)}</td>
+            </tr>
+            
+          )}
+            <>
+              <tr>
+                <td>
+                  <b>⏳</b>
+                </td>
+                <td>{remainingRessources(valueSmoothener(buildingOutputs.gold), Math.floor(ressources.gold))} </td>
+                <td>{remainingRessources(valueSmoothener(buildingOutputs.wood), Math.floor(ressources.wood))}</td>
+                <td>{remainingRessources(valueSmoothener(buildingOutputs.stone), Math.floor(ressources.stone))}</td>
+                <td>{remainingRessources(valueSmoothener(buildingOutputs.food), Math.floor(ressources.food))}</td>
+                <td></td>
+              </tr>
+            </>
         </tbody>
-        <tfoot className="portrait-view">
+      </table>
+        {selected && (
+            <tfoot className={classNames({
+              'default-view': true,
+              'default-view--visible': true,
+            })}>
           <tr >
             <td colSpan={7}>
               <button onClick={() => reset()}>Restart</button>
             </td>
           </tr>
         </tfoot>
-      </table>
+          )}
     </div>
   );
 };

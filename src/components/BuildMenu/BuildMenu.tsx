@@ -60,7 +60,7 @@ export const BuildMenu = () => {
     <div
       className={classNames({
         'build-menu': true,
-        'build-menu--visible': selected,
+        'build-menu--visible': selected && (existingBuilding !== undefined || getPossibleBuildingType().length > 0),
       })}
     >
       {selected && existingBuilding === undefined ? (
