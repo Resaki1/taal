@@ -1,108 +1,236 @@
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translate(-50%, -60%);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%);
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, -100%);
+  }
+  to {
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgba(33, 73, 77, 0.702);
+  }
+  50% {
+    background-color: rgba(33, 100, 77, 0.702);
+  }
+  100% {
+    background-color: rgba(33, 73, 77, 0.702);
+  }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+
+@keyframes successAnimation {
+  0% {
+    background-color: rgba(33, 73, 77, 0.702); 
+  }
+  50% {
+    background-color: rgba(33, 150, 77, 0.702); 
+  }
+  100% {
+    background-color: rgba(33, 73, 77, 0.702); 
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  will-change: opacity, transform, filter;
+}
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.TilePropertiesMenu__button {
+  position: fixed;
+  top: 56cqi;
+  left: 5cqi;
+  background: rgba(211, 197, 122, 0.4);
+  background-color: rgba(33, 73, 77, 0.702);
+  backdrop-filter: saturate(180%) blur(30px);
+  -webkit-backdrop-filter: saturate(180%) blur(30px);
+  padding: 10px 10px;
+  border-radius: 25px;
+  border-width: 0px;
+  font-size: 16px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease, filter 0.3s ease;
+
+  &:disabled {
+    background-color: rgba(33, 73, 77, 0.3);
+    cursor: not-allowed;
+    animation: none;
+    filter: grayscale(100%);
+    transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
+
+    &:active {
+      animation: shake 0.5s ease;
     }
   }
-  
-  @keyframes pulse {
-    0% {
-      background-color: rgba(33, 73, 77, 0.702);
-    }
-    50% {
-      background-color: rgba(33, 100, 77, 0.702);
-    }
-    100% {
-      background-color: rgba(33, 73, 77, 0.702);
-    }
+
+  &:not(:disabled):not(.selected) {
+    animation: pulse 4s ease-in-out infinite;
   }
-  
-  @keyframes successAnimation {
-    0% {
-      background-color: rgba(33, 73, 77, 0.702); /* Ursprungsfarbe */
-    }
-    50% {
-      background-color: rgba(33, 150, 77, 0.702); /* Subtilerer Grünton */
-    }
-    100% {
-      background-color: rgba(33, 73, 77, 0.702); /* Ursprungsfarbe */
-    }
+}
+
+.TilePropertiesMenu__modal {
+  margin: 0 auto;
+  position: fixed;
+  top: 6cqb;
+  left: 50cqi;
+  position: fixed;
+  transform: translate(-50%, 0);
+  width: 300px;
+  height: auto;
+  min-height: 132px;
+  max-height: 90vh;
+  overflow: hidden; 
+  padding: 10px;
+  border: 0;
+  background-color: rgb(33, 73, 77);
+  backdrop-filter: saturate(180%) blur(30px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  z-index: 1001;
+  opacity: 0;
+  animation: fadeIn 0.25s forwards ease-in-out;
+
+  h3 {
+    color: beige;
+    margin-bottom: 3px;
+    font-size: 13px;
   }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 50px; 
+    overflow-y: scroll; 
+    color: beige;
+    flex-grow: 1; 
+
   
-  .TilePropertiesMenu__button {
-    position: fixed;
-    top: 46cqi;
-    left: 5cqi;
+  }
+
+  li {
+    padding: 5px 0;
+    display: flex;
+    font-size: 11px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  input {
+    -webkit-autocomplete: off;
+    -webkit-autocorrect: off;
+    -webkit-spellcheck: false;
+    outline: none;
+    width: calc(100% - 80px);
+    padding: 4px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    border: none;
     background: rgba(211, 197, 122, 0.4);
     background-color: rgba(33, 73, 77, 0.702);
     backdrop-filter: saturate(180%) blur(30px);
     -webkit-backdrop-filter: saturate(180%) blur(30px);
-    padding: 10px 10px;
+    color: whitesmoke;
+    font-size: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-shadw: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, filter 0.3s ease;
+
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+
+  button {
+    background: rgba(211, 197, 122, 0.4);
+    background-color: rgba(33, 73, 77, 0.702);
+    backdrop-filter: saturate(180%) blur(30px);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+    padding: 5px 5px;
     border-radius: 25px;
-    border-width: 0px;
-    font-size: 16px;
-    z-index: 1000; /* Sicherstellen, dass es über anderen Elementen liegt */
+    border-width: 0;
+    font-size: 10px;
+    z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transition: background-color 0.3s ease, filter 0.3s ease;
-  
-    &:disabled {
-      background-color: rgba(0, 0, 0, 0.645);
-      cursor: not-allowed;
-      animation: none;
-      filter: grayscale(100%);
-    }
-  
-    &:hover {
-      background-color: #405368;
-    }
-  
-    &:not(:disabled) {
-      animation: pulse 4s ease-in-out infinite;
-    }
-  
-    &.success {
-      animation: successAnimation 1s ease-in-out; /* Erfolgsanimation anwenden */
-    }
   }
   
+}
+
+.TilePropertiesMenu__modal-confirm {
+  position: fixed;
+  top: 1cqb;
+  right: 2cqb;
+  width: 50px;
+  border-radius: 15px;
+  border: none;
+  padding: 10px 15px;
+  color: rgb(196, 31, 31);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: rgba(0, 255, 26, 0.4);
+  filter: grayscale(0%);
+
+
+
+  &:disabled {
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+    background-color: rgb(140, 36, 36);
+    cursor: not-allowed;
+    filter: grayscale(50%);
+    transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
+
+    &:active {
+      animation: shake 0.5s ease;
+    }
+  }
+}
+
+@media (orientation: landscape) {
   .TilePropertiesMenu__modal {
     position: fixed;
-    top: 64cqi;
-    left: 34cqi;
-    width: fit-content;
-    height: fit-content;
-    transform: translate(-50%, -50%);
-    padding: 0px;
-    border: 0px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1001; /* Sicherstellen, dass es über dem Button liegt */
-    opacity: 0; /* Start mit 0 Opazität */
-    animation: fadeIn 0.5s forwards ease-in-out; /* Animation anwenden */
+    top: 30cqi;
+    right: 0; 
+    max-height: 250px; 
+    width: 300px; 
+    background-color: rgba(33, 73, 77, 0.9); 
+    padding: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: 0 10px 10px 0;
+    overflow-y: auto; 
+    z-index: 1001; 
   }
-  
-  .TilePropertiesMenu__modal-confirm {
-    border-radius: 15px;
-    border: none;
-    padding: 10px 20px;
-    color: whitesmoke;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    background: rgba(211, 197, 122, 0.4);
-    background-color: rgba(33, 73, 77, 0.702);
-    backdrop-filter: saturate(180%) blur(30px);
-    -webkit-backdrop-filter: saturate(180%) blur(30px);
-  
-    &:disabled {
-      background-color: #6c757d; /* Grau */
-      cursor: not-allowed;
-    }
-  
-    &:hover:not(:disabled) {
-      background-color: #218838; /* Dunkleres Grün beim Hover */
-    }
+
+  .TilePropertiesMenu__button {
+    top: 7cqi;
+    left: 5cqi;
   }
+}

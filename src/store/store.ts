@@ -4,7 +4,6 @@ import { persist, devtools } from 'zustand/middleware';
 import { BuildingType } from '../components/Building/Building';
 import { BuildingSellBenefits } from '../components/Building/buildingFinancials';
 import { getCostsOfBuilding, getOutputOfBuilding } from '../components/Building/buildings';
-import { title } from 'process';
 
 export type Ressources = 'wood' | 'stone' | 'gold' | 'food' | 'villager';
 
@@ -43,7 +42,8 @@ export type Actions = {
   unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
   saveLocation: (title: string, x: number, y: number) => void;
-  removeLocation: (title: string, x: number, y: number) => void;
+  listLocations: () => {};
+  removeLocation: (title: string) => void;
   setCamera: (position: Vector3, lookAt: Vector3) => void;
   reset: () => void;
 };
@@ -73,7 +73,7 @@ const initialState: State = {
 export const useStore = create<State & Actions>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         ...initialState,
         addBuilding: (x, y, building) =>
           set((state) => {
@@ -99,25 +99,28 @@ export const useStore = create<State & Actions>()(
               buildingOutputs: newBuildingOutputs,
             };
           }),
-          // add new saved location
-          saveLocation: (t, x, y) =>
-            set((state) => {
-              const newLocationType = { ...state.locations };
-              newLocationType[t] = { positionX: x, positionY: y };
-              return {
-                locations: newLocationType,
-              };
-            }),
-          // remove saved location
-            removeLocation: (t, x, y) =>
-              set((state) => {
-                const newLocationType = { ...state.locations };
-                newLocationType[t] = { positionX: x, positionY: y };
-                delete newLocationType[t];
-                return {
-                  locations: newLocationType, };
-              }),
-
+        // add new saved location
+        saveLocation: (t, x, y) =>
+          set((state) => {
+            const newLocationType = { ...state.locations };
+            newLocationType[t] = { positionX: x, positionY: y };
+            return {
+              locations: newLocationType,
+            };
+          }),
+        // remove saved location
+        removeLocation: (t) =>
+          set((state) => {
+            const newLocationType = { ...state.locations };
+            delete newLocationType[t];
+            return {
+              locations: newLocationType,
+            };
+          }),
+        // list saved locations
+        listLocations: () => {
+          return get().locations;
+        },
         removeBuilding: (x, y) =>
           set((state) => {
             const building = state.buildings[x][y];
@@ -127,7 +130,7 @@ export const useStore = create<State & Actions>()(
               state.lock(x, y, 8);
             }
 
-            // TODO: remove output froom state.buildingOutputs
+            // TODO: remove output from state.buildingOutputs
             const newBuildingOutputs = state.buildingOutputs;
             Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
               newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
