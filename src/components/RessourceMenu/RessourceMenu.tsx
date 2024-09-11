@@ -19,12 +19,17 @@ export const RessourceMenu = () => {
   };
 
   return (
-    <div className="ressource-menu">
+    <div
+      className={classNames({
+        'ressource-menu': true,
+        'ressource-menu-extended': selected,
+      })}
+    >
       <table>
         <thead>
           <tr>
             <th></th>
-            <th title="Gold for buying">💰</th> 
+            <th title="Gold for buying">💰</th>
             <th title="Wood from your Lumberhut">🪵</th>
             <th title="Stones produced by Quarry">🪨</th>
             <th title="Food for you villagers">🍟</th>
@@ -32,32 +37,29 @@ export const RessourceMenu = () => {
           </tr>
         </thead>
         <tbody>
-          {selected && (
-            <tr className={classNames({
-              'default-view': true,
-              'default-view--visible': true,
-            })}>
-              <td className="key-column">
-                <b>∑</b>
-              </td>
-              <td>
-                <b>{Math.floor(ressources.gold)}</b> ({valueSmoothener(buildingOutputs.gold)})
-              </td>
-              <td>
-                <b>{Math.floor(ressources.wood)}</b> ({valueSmoothener(buildingOutputs.wood)})
-              </td>
-              <td>
-                <b>{Math.floor(ressources.stone)}</b> ({valueSmoothener(buildingOutputs.stone)})
-              </td>
-              <td>
-                <b>{Math.floor(ressources.food)}</b> ({valueSmoothener(buildingOutputs.food)})
-              </td>
-              <td>{Math.floor(ressources.villager)}</td>
-            </tr>
-            
-          )}
-            <>
-              <tr>
+          <tr>
+            <td className="key-column">
+              <b>∑</b>
+            </td>
+            <td>
+              <b>{Math.floor(ressources.gold)}</b> ({valueSmoothener(buildingOutputs.gold)})
+            </td>
+            <td>
+              <b>{Math.floor(ressources.wood)}</b> ({valueSmoothener(buildingOutputs.wood)})
+            </td>
+            <td>
+              <b>{Math.floor(ressources.stone)}</b> ({valueSmoothener(buildingOutputs.stone)})
+            </td>
+            <td>
+              <b>{Math.floor(ressources.food)}</b> ({valueSmoothener(buildingOutputs.food)})
+            </td>
+            <td>
+              <b>{Math.floor(ressources.villager)}</b>
+            </td>
+          </tr>
+          <>
+            {selected && (
+              <tr className="ressource-menu-extended-items">
                 <td>
                   <b>⏳</b>
                 </td>
@@ -67,21 +69,19 @@ export const RessourceMenu = () => {
                 <td>{remainingRessources(valueSmoothener(buildingOutputs.food), Math.floor(ressources.food))}</td>
                 <td></td>
               </tr>
-            </>
+            )}
+          </>
         </tbody>
       </table>
-        {selected && (
-            <tfoot className={classNames({
-              'default-view': true,
-              'default-view--visible': true,
-            })}>
-          <tr >
+      {selected && (
+        <tfoot>
+          <tr>
             <td colSpan={7}>
               <button onClick={() => reset()}>Restart</button>
             </td>
           </tr>
         </tfoot>
-          )}
+      )}
     </div>
   );
 };

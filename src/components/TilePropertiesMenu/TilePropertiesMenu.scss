@@ -5,7 +5,7 @@
   }
   to {
     opacity: 1;
-    filter: blur(0);
+    filter: blur(0px);
   }
 }
 
@@ -31,23 +31,32 @@
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
-
 
 @keyframes successAnimation {
   0% {
-    background-color: rgba(33, 73, 77, 0.702); 
+    background-color: rgba(33, 73, 77, 0.702);
   }
   50% {
-    background-color: rgba(33, 150, 77, 0.702); 
+    background-color: rgba(33, 150, 77, 0.702);
   }
   100% {
-    background-color: rgba(33, 73, 77, 0.702); 
+    background-color: rgba(33, 73, 77, 0.702);
   }
 }
 
@@ -63,7 +72,7 @@
 
 .TilePropertiesMenu__button {
   position: fixed;
-  top: 56cqi;
+  top: 36cqi;
   left: 5cqi;
   background: rgba(211, 197, 122, 0.4);
   background-color: rgba(33, 73, 77, 0.702);
@@ -76,14 +85,11 @@
   z-index: 1000;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  transition: background-color 0.3s ease, filter 0.3s ease;
+  transition: display 0.3s ease-in-out;
 
   &:disabled {
-    background-color: rgba(33, 73, 77, 0.3);
-    cursor: not-allowed;
-    animation: none;
-    filter: grayscale(100%);
-    transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
+    animation: fadeOut 0.18s forwards ease-out;
+    transition: background 0.2s ease-in-out;
 
     &:active {
       animation: shake 0.5s ease;
@@ -98,7 +104,8 @@
 .TilePropertiesMenu__modal {
   margin: 0 auto;
   position: fixed;
-  top: 6cqb;
+
+  top: 2cqb;
   left: 50cqi;
   position: fixed;
   transform: translate(-50%, 0);
@@ -106,7 +113,7 @@
   height: auto;
   min-height: 132px;
   max-height: 90vh;
-  overflow: hidden; 
+  overflow: hidden;
   padding: 10px;
   border: 0;
   background-color: rgb(33, 73, 77);
@@ -127,12 +134,10 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-    max-height: 50px; 
-    overflow-y: scroll; 
+    max-height: 50px;
+    overflow-y: scroll;
     color: beige;
-    flex-grow: 1; 
-
-  
+    flex-grow: 1;
   }
 
   li {
@@ -160,8 +165,9 @@
     color: whitesmoke;
     font-size: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-shadw: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease, filter 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      filter 0.3s ease;
 
     &::placeholder {
       color: #ccc;
@@ -180,9 +186,7 @@
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease, filter 0.3s ease;
   }
-  
 }
 
 .TilePropertiesMenu__modal-confirm {
@@ -199,14 +203,14 @@
   background-color: rgba(0, 255, 26, 0.4);
   filter: grayscale(0%);
 
-
-
   &:disabled {
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
     background-color: rgb(140, 36, 36);
     cursor: not-allowed;
     filter: grayscale(50%);
-    transition: background-color 0.3s ease-in-out, filter 0.3s ease-in-out;
+    transition:
+      background-color 0.3s ease-in-out,
+      filter 0.3s ease-in-out;
 
     &:active {
       animation: shake 0.5s ease;
@@ -218,15 +222,15 @@
   .TilePropertiesMenu__modal {
     position: fixed;
     top: 30cqi;
-    right: 0; 
-    max-height: 250px; 
-    width: 300px; 
-    background-color: rgba(33, 73, 77, 0.9); 
-    padding: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    right: 0;
+    max-height: 250px;
+    width: 300px;
+    background-color: rgba(33, 73, 77, 0.9);
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 0 10px 10px 0;
-    overflow-y: auto; 
-    z-index: 1001; 
+    overflow-y: auto;
+    z-index: 1001;
   }
 
   .TilePropertiesMenu__button {
