@@ -1,14 +1,12 @@
 import { useStore } from '../../store/store';
-import { useRef } from 'react';
+import { useState } from 'react';
 import './TilePropertiesMenu.scss';
 import { createPortal } from 'react-dom';
 import { useClickOutside } from '../../hooks';
-import { useState } from 'react';
-import { Vector3, Mesh } from 'three';
+import { Vector3 } from 'three';
 
 export const TilePropertiesMenu = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [locationTitle, setLocationTitle] = useState('');
 
   const selected = useStore((state) => state.selected);
@@ -16,7 +14,6 @@ export const TilePropertiesMenu = () => {
   const setCamera = useStore((state) => state.setCamera);
 
   const locations = useStore((state) => state.locations);
-  const waterRef = useRef<Mesh>(null!);
 
   const saveLocation = useStore((state) => state.saveLocation);
 
@@ -30,7 +27,7 @@ export const TilePropertiesMenu = () => {
   return (
     <>
       <button
-        className={`TilePropertiesMenu__button ${success ? 'success' : ''}`}
+        className="TilePropertiesMenu__button"
         disabled={!selected}
         onClick={() => {
           setModalOpen(true);
@@ -69,7 +66,7 @@ export const TilePropertiesMenu = () => {
                   <button
                     onClick={() => {
                       const newPosition = new Vector3(positionX, positionY, 10);
-                      setCamera(new Vector3(positionX, positionY, 20), new Vector3(2, 2, 20));
+                      setCamera(newPosition as Vector3, new Vector3(positionX, positionY, 0) as Vector3);
                     }}
                     className="TilePropertiesMenu__locations-button"
                   >
