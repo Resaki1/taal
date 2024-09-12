@@ -106,7 +106,7 @@ $border-radius: 50px;
 }
 
 .ressource-menu {
-  margin: 0 auto;
+  margin: 0;
   position: fixed;
   top: 2cqb; //Temp position for gpu overlay
   left: 50cqi;
@@ -126,9 +126,9 @@ $border-radius: 50px;
   transform: translateX(-50%);
   transition:
     height 1s ease-in-out,
-    max-height 1s ease-in-out,
+    //max-height 1s ease-in-out,
     border-radius 0.4s ease-in-out,
-    padding 1s ease-out,
+    //padding 1s ease-out,
     width 1s ease-in-out;
   border-radius: 45px;
   z-index: 1000;
@@ -159,6 +159,7 @@ $border-radius: 50px;
     border-style: hidden;
     background: rgba(255, 94, 71, 0.7);
     color: wheat;
+    animation-delay: 2s;
     animation: fadeIn 0.6s forwards ease-in-out;
   }
 

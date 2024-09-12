@@ -49,7 +49,8 @@ const BuildingMenuEntry = ({
             <ul>
               {Object.entries(building.costs).map(([key, value]) => (
                 <li key={key}>
-                  <span className = "value-symbol">{value.emoji}</span> <span className = "value-amount">{value.amount * -1}</span> 
+                  <span className="value-symbol">{value.emoji}</span>{' '}
+                  <span className="value-amount">{value.amount * -1}</span>
                 </li>
               ))}
             </ul>
@@ -75,25 +76,23 @@ const BuildingMenuEntry = ({
       <>
         <button className="building-menu__entry" onClick={() => setModalOpen(true)}>
           <figure className="building-menu__entry-icon">💥</figure>
-         delete {buildingToRemove.name}
+          Dismantle
         </button>
         {modalOpen &&
           createPortal(
             <div className="building-menu__modal" ref={modalRef}>
-              <h2>remove {buildingToRemove.name}?</h2>
+              <h2>Delete {buildingToRemove.name}?</h2>
               <p>
-                Are you sure you want to remove this {buildingToRemove.name}? You will be refunded {SELLFACTOR * 100}%
-                of the building costs.
+                Do you wish to dismantle the {buildingToRemove.name}? You will reclaim {SELLFACTOR * 100}% of its
+                resources.
               </p>
               <button
-                className="building-menu__modal-accept"
+                className="building-menu__modal-accept-delete"
                 onClick={() => {
                   handleDelete && handleDelete();
                   setModalOpen(false);
                 }}
-              >
-                remove
-              </button>
+              >💲</button>
               <button className="building-menu__modal-close" onClick={() => setModalOpen(false)}>
                 ⭕
               </button>

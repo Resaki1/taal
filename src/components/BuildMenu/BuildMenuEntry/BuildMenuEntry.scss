@@ -20,15 +20,27 @@
   }
 }
 
-@keyframes blink {
+@keyframes rgbPulse {
   0% {
-    opacity: 1;
+    background-color: rgb(255, 0, 0); /* Rot */
+  }
+  16% {
+    background-color: rgb(255, 255, 0); /* Gelb */
+  }
+  33% {
+    background-color: rgb(0, 255, 0); /* Grün */
   }
   50% {
-    opacity: 0;
+    background-color: rgb(0, 255, 255); /* Cyan */
+  }
+  66% {
+    background-color: rgb(0, 0, 255); /* Blau */
+  }
+  83% {
+    background-color: rgb(255, 0, 255); /* Magenta */
   }
   100% {
-    opacity: 1;
+    background-color: rgb(255, 0, 0); /* Zurück zu Rot */
   }
 }
 
@@ -118,6 +130,24 @@
       flex-direction: row;
       justify-content:flex-start;
     }
+  }
+
+  .building-menu__modal-accept-delete {
+    all: unset;
+    background: rgba(185, 12, 12, 0.439);
+    padding: 8px;
+    color:blueviolet;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 20px;
+    height: 48px;
+    width: 48px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    align-self: center;
+    animation: fadeIn 0.4s forwards ease-in-out, rgbPulse 3s infinite;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.67, 0.38, 0.09, 2.1);
+    margin-top: 8px;
   }
 
   .building-menu__modal-accept {
@@ -211,6 +241,7 @@
       border-radius: 6px;
       background: rgba(16, 162, 58, 0.645);
     }
+  
 
     .building-menu__modal-close {
       all: unset;
@@ -242,6 +273,9 @@
   cursor: pointer;
   user-select: none;
 
+  
+
+ 
   &:disabled {
     filter: grayscale(1);
     color: rgba(114, 110, 110, 0.5);
