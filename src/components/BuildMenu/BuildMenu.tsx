@@ -50,9 +50,8 @@ export const BuildMenu = () => {
   const hasEnoughRessources = (building: BuildingType) => {
     const recipe = getCostsOfBuilding(building);
     let hasEnough = true;
-    Object.entries(recipe).forEach((cost) => {
-      if (ressources[cost[0] as Ressources] < recipe[cost[0] as Ressources]!) hasEnough = false;
-    });
+    Object.entries(recipe).forEach(([key, value]) => {
+      if (ressources[key as Ressources] < value.amount) hasEnough = false;    });
     return hasEnough;
   };
 
