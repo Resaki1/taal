@@ -1,3 +1,47 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes subtleRing {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 .building-menu__modal {
   position: fixed;
   top: 45%;
@@ -28,31 +72,51 @@
   gap: 16px;
   color: #d5d5d5;
 
+  animation: fadeIn 0.18s forwards ease-in-out;
+
+  .value-symbol {
+    font-size: 1.5em; /* Größerer Schriftgrad für das Emoji */
+    margin-right: 55px;
+    display: inline-block;
+    animation: subtleRing 1s infinite; /* Animation für das Emoji */
+  }
+
+  .value-amount {
+    
+  }
+
   p {
     font-size: 0.9em;
+    animation: fadeIn 0.4s forwards ease-in-out;
     overflow-y: auto;
     min-height: 30%;
   }
 
   h2 {
     margin: 0;
+    animation: fadeIn 0.4s forwards ease-in-out;
 
     figure {
       display: inline-block;
       margin: 0 16px 0 0;
-      font-size: 1.2em;
+      font-size: 2em;
     }
+  }
+
+  h3 {
+    animation: fadeIn 0.4s forwards ease-in-out;
   }
 
   ul {
     all: unset;
     list-style: none;
+    animation: fadeIn 0.4s forwards ease-in-out;
 
     li {
       width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content:flex-start;
     }
   }
 
@@ -67,6 +131,7 @@
     width: 48px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     align-self: center;
+    animation: fadeIn 0.4s forwards ease-in-out;
 
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.67, 0.38, 0.09, 2.1);
@@ -115,17 +180,17 @@
     p {
       font-size: 0.9em;
       overflow-y: auto;
-      min-height: 30%;
+      height: 30px;
     }
     width: fit-content;
-    height: 60%;
-    top: 50%;
+    top: 55%;
     gap: 0px;
     max-width: 42%;
-    max-height: 60%;
+    max-height: 65%;
 
     ul li {
       width: 20%;
+      
     }
     ul {
       display: flex;
@@ -140,9 +205,9 @@
       padding: 6px;
       width: 35%;
       position: relative;
-      top: -31px;
+      top: 5cqb;
       left: 35%;
-      height: 20px;
+      height: 50px;
       border-radius: 6px;
       background: rgba(16, 162, 58, 0.645);
     }
@@ -179,8 +244,7 @@
 
   &:disabled {
     filter: grayscale(1);
-    animation: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(114, 110, 110, 0.5);
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.6);
     text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
   }
@@ -194,8 +258,8 @@
     color: rgb(47, 192, 57);
     border-radius: 100%;
     text-align: center;
-    transition: background 0.2s ease-out;
     background-color: rgb(47, 192, 57);
+    //animation: pulse 2s infinite; animation disabled for now
   }
 
   &:hover .building-menu__entry-icon {
