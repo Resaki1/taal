@@ -108,7 +108,7 @@
 
 .TilePropertiesMenu__button {
   position: fixed;
-  top: 36cqi;
+  top: 41cqi;
   left: 5cqi;
   //background: rgba(211, 197, 122, 0.4); Never used since infinite animation is active. Change global value instead
   //background-color: rgba(33, 73, 77, 0.702); Never used since infinite animation is active. Change global value instead
@@ -156,12 +156,12 @@
   left: 50cqi;
   position: fixed;
   transform: translate(-50%, 0);
-  width: 300px;
+  width: 339px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: auto;
   min-height: 132px;
   max-height: 90vh;
   overflow: hidden;
-  padding: 10px;
   border: 0;
   background-color: rgb(33, 73, 77);
   backdrop-filter: saturate(180%) blur(30px);

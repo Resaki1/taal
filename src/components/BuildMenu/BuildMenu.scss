@@ -23,13 +23,13 @@ $build-menu-height: 64px;
 }
 
 .fade-in {
-  animation: fadeIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
-  will-change: opacity, transform, filter;
+  animation: fadeIn 0.5s ;
+  will-change: opacity, filter;
 }
 
 .fade-out {
-  animation: fadeOut 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) both;
-  will-change: opacity, transform, filter;
+  animation: fadeOut 0.5s ;
+  will-change: opacity, filter;
 }
 
 .build-menu {
@@ -37,7 +37,7 @@ $build-menu-height: 64px;
   left: 50cqi;
   bottom: calc(env(safe-area-inset-bottom) + 8%);
   border-radius: 20px;
-  height: min-content;
+  height: fit-content;
   width: fit-content;
 
   background-color: rgba(33, 73, 77, 0.702);
@@ -54,18 +54,18 @@ $build-menu-height: 64px;
   flex-direction: row;
   justify-content: center;
   align-items: baseline;
-  padding: 8px;
-  gap: 32px;
-  box-sizing: border-box;
+  padding: 10px 48px;
+  gap: 38px;
+  box-sizing: content-box;
   backdrop-filter: saturate(180%) blur(30px);
   -webkit-backdrop-filter: saturate(180%) blur(30px);
 
-  animation: fadeOut 0.4s forwards ease-in-out;
+  animation: fadeOut 0.4s forwards ease-out;
   transform: translateX(50%);
 
   &--visible {
     opacity: 1;
-    animation: fadeIn 0.3s forwards ease-in-out;
+    animation: fadeIn 0.3s forwards ease-in;
 
     transform: translateX(-50%) translateY(0);
     height: $build-menu-height;

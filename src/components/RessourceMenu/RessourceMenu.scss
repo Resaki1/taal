@@ -110,7 +110,7 @@ $border-radius: 50px;
   position: fixed;
   top: 2cqb; //Temp position for gpu overlay
   left: 50cqi;
-  height: 60px;
+  height: auto;
   padding: 8px 16px;
   width: fit-content;
   background-color: rgba(33, 73, 77, 0.702);
@@ -138,17 +138,21 @@ $border-radius: 50px;
     width: 100%;
     border-collapse: collapse;
     white-space: nowrap;
-  }
-  th {
-    animation: subtleBounce 2s infinite ease-in-out;
-    font-size: 16px;
-    text-align: center;
-  }
 
+    th {
+      animation: subtleBounce 2s infinite ease-in-out;
+      font-size: 28px;
+      text-align: center;
+      padding: 6px 12px;
+      line-height: 30px;
+    }
+  
+  }
+  
   td {
     text-align: center;
-    font-size: 10px;
-    padding: 4px 8px;
+    font-size: 12px;
+    padding: 4px;
   }
 
   button {
@@ -174,14 +178,14 @@ $border-radius: 50px;
   @media (orientation: landscape) {
     th {
       font-size: 16px;
-      padding: 4px;
-      text-align: left;
     }
 
     height: auto;
 
+
+
     button {
-      display: none;
+      display:none;
     }
 
     .landscape-view {
@@ -195,7 +199,6 @@ $border-radius: 50px;
 }
 
 .ressource-menu-extended {
-  height: fit-content;
   border-radius: 20px;
 }
 .ressource-menu-extended-items {
