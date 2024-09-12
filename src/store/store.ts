@@ -77,20 +77,25 @@ export const useStore = create<State & Actions>()(
         ...initialState,
         addBuilding: (x, y, building) =>
           set((state) => {
-            state.removeRessources(getCostsOfBuilding(building));
+            const costs = getCostsOfBuilding(building);
+            const ressourcesToRemove = Object.fromEntries(
+              Object.entries(costs).map(([key, value]) => [key, value.amount])
+            );
+            state.removeRessources(ressourcesToRemove);
 
             if (building === BuildingType.Outpost) {
               state.unlock(x, y, 8);
             }
 
             // add building output
-            const newBuildingOutputs = state.buildingOutputs;
-            Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
-              newBuildingOutputs[ressource[0] as Ressources] += ressource[1];
+            const newBuildingOutputs = { ...state.buildingOutputs };
+            const output = getOutputOfBuilding(building);
+            Object.entries(output).forEach(([key, value]) => {
+              newBuildingOutputs[key as Ressources] += value.amount;
             });
 
             // add new building
-            const newBuildingType = state.buildings;
+            const newBuildingType = { ...state.buildings };
             if (!newBuildingType[x]) newBuildingType[x] = {};
             newBuildingType[x][y] = building;
 
@@ -124,27 +129,32 @@ export const useStore = create<State & Actions>()(
         removeBuilding: (x, y) =>
           set((state) => {
             const building = state.buildings[x][y];
-            state.addRessources(BuildingSellBenefits[state.buildings[x][y]]);
+            const sellBenefits = BuildingSellBenefits[building];
+            const ressourcesToAdd = Object.fromEntries(
+              Object.entries(sellBenefits).map(([key, value]) => [key, value])
+            );
+            state.addRessources(ressourcesToAdd);
 
             if (building === BuildingType.Outpost) {
               state.lock(x, y, 8);
             }
 
-            // TODO: remove output from state.buildingOutputs
-            const newBuildingOutputs = state.buildingOutputs;
-            Object.entries(getOutputOfBuilding(building)).forEach((ressource) => {
-              newBuildingOutputs[ressource[0] as Ressources] -= ressource[1];
+            // remove building output
+            const newBuildingOutputs = { ...state.buildingOutputs };
+            const output = getOutputOfBuilding(building);
+            Object.entries(output).forEach(([key, value]) => {
+              newBuildingOutputs[key as Ressources] -= value.amount;
             });
 
-            const newBuildingType = state.buildings;
+            const newBuildingType = { ...state.buildings };
             delete newBuildingType[x][y];
-            return { buildings: newBuildingType };
+            return { buildings: newBuildingType, buildingOutputs: newBuildingOutputs };
           }),
         addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {
-            const newRessources = state.ressources;
-            Object.entries(ressourcesToAdd).forEach((ressource) => {
-              newRessources[ressource[0] as Ressources] += ressource[1];
+            const newRessources = { ...state.ressources };
+            Object.entries(ressourcesToAdd).forEach(([key, value]) => {
+              newRessources[key as Ressources] += value!;
             });
             return {
               ressources: newRessources,
@@ -152,9 +162,9 @@ export const useStore = create<State & Actions>()(
           }),
         removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {
-            const newRessources = state.ressources;
-            Object.entries(ressourcesToRemove).forEach((ressource) => {
-              newRessources[ressource[0] as Ressources] -= ressource[1];
+            const newRessources = { ...state.ressources };
+            Object.entries(ressourcesToRemove).forEach(([key, value]) => {
+              newRessources[key as Ressources] -= value!;
             });
             return {
               ressources: newRessources,
@@ -162,7 +172,7 @@ export const useStore = create<State & Actions>()(
           }),
         lock: (x, y, range) =>
           set((state: State) => {
-            const newUnlocked = state.unlocked;
+            const newUnlocked = { ...state.unlocked };
             let distance: number;
             for (let i = x - range; i <= x + range; i++) {
               for (let j = y - range; j <= y + range; j++) {
@@ -179,7 +189,7 @@ export const useStore = create<State & Actions>()(
           }),
         unlock: (x, y, range) =>
           set((state: State) => {
-            const newUnlocked = state.unlocked;
+            const newUnlocked = { ...state.unlocked };
             let distance: number;
             for (let i = x - range; i <= x + range; i++) {
               for (let j = y - range; j <= y + range; j++) {
