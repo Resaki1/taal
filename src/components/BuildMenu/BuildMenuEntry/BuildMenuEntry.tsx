@@ -23,7 +23,6 @@ const BuildingMenuEntry = ({
   hasEnoughRessources,
 }: BuildMenuEntryProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-
   const modalRef = useClickOutside(() => setModalOpen(false));
 
   const buildingToRemove = buildingTypeToRemove !== undefined ? getBuildingByType(buildingTypeToRemove) : undefined;
@@ -48,9 +47,9 @@ const BuildingMenuEntry = ({
             <p>{building.description}</p>
             <h3>Costs to build:</h3>
             <ul>
-              {Object.entries(building.costs).map((cost) => (
-                <li key={cost[0]}>
-                  <span>{cost[0]}:</span> <span>{cost[1] * -1}</span>
+              {Object.entries(building.costs).map(([key, value]) => (
+                <li key={key}>
+                  <span className = "value-symbol">{value.emoji}</span> <span className = "value-amount">{value.amount * -1}</span> 
                 </li>
               ))}
             </ul>
@@ -65,7 +64,7 @@ const BuildingMenuEntry = ({
               🔨
             </button>
             <button className="building-menu__modal-close" onClick={() => setModalOpen(false)}>
-            ⭕
+              ⭕
             </button>
           </div>,
           document.body,
@@ -75,8 +74,8 @@ const BuildingMenuEntry = ({
     buildingToRemove && (
       <>
         <button className="building-menu__entry" onClick={() => setModalOpen(true)}>
-          <figure className="building-menu__entry-icon">❌</figure>
-          remove {buildingToRemove.name}
+          <figure className="building-menu__entry-icon">💥</figure>
+         delete {buildingToRemove.name}
         </button>
         {modalOpen &&
           createPortal(
@@ -96,7 +95,7 @@ const BuildingMenuEntry = ({
                 remove
               </button>
               <button className="building-menu__modal-close" onClick={() => setModalOpen(false)}>
-              ⭕
+                ⭕
               </button>
             </div>,
             document.body,
