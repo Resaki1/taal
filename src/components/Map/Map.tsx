@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useLayoutEffect, useRef } from 'react';
 import { Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3 } from 'three';
 import debounce from 'lodash.debounce';
-import { getTerrainHeight, getTerrainType } from '../../helpers/terrain';
+import { getTerrainHeight, getTerrainType, WATER_HEIGHT } from '../../helpers/terrain';
 import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
 import { tileShader } from '../../helpers/shader';
@@ -42,9 +42,10 @@ export const Map = () => {
       const posX = (index % MAP_LENGTH) - RENDER_DISTANCE + waterRef.current.position.x;
       const posY = Math.floor(index / MAP_LENGTH) - RENDER_DISTANCE + waterRef.current.position.z;
 
-      tile.position.set(posX, getTerrainHeight(posX, posY), posY);
+      const height = getTerrainHeight(posX, posY);
+      tile.position.set(posX, height, posY);
 
-      bufferAttribute.array[index] = getTerrainType(posX, posY);
+      bufferAttribute.array[index] = getTerrainType(height);
       tile.userData.update();
     });
 
@@ -83,7 +84,7 @@ export const Map = () => {
             updated = true;
           }
           if (updated) {
-            bufferAttribute.array[index] = getTerrainType(tile.position.x, tile.position.z);
+            bufferAttribute.array[index] = getTerrainType(getTerrainHeight(tile.position.x, tile.position.z));
             tile.userData.update && tile.userData.update();
           }
         });
@@ -93,6 +94,7 @@ export const Map = () => {
       }
 
       waterRef.current.position.copy(newPosition);
+      waterRef.current.position.y = WATER_HEIGHT;
       saveCameraPositionDebounced(camera.position, waterRef.current.position);
     }
   });

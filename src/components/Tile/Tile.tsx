@@ -4,16 +4,20 @@ import { memo, startTransition, Suspense, useRef, useState } from 'react';
 import { useStore } from '../../store/store';
 import { Building } from '../Building/Building';
 import { Color, Group } from 'three';
-import { getTerrainHeight } from '../../helpers/terrain';
+import { getTerrainHeight, WATER_HEIGHT } from '../../helpers/terrain';
 import { useSelectedTile } from './SelectedTileContext';
 
 export interface ColoredGroup extends Group {
   color: Color;
 }
 
-const lightGray = new Color(0xa0a0a0);
-const grayScale = new Color('hsla(62, 0%, 20%)');
+const lightGray = new Color('hsl(0, 0%, 80%)');
 const noColor = new Color();
+
+const grayScale = (value: number) => {
+  const clampedValue = Math.max(0, 50 + value * 10);
+  return new Color(`hsla(62, 0%, ${clampedValue}%)`);
+};
 
 const TileComponent = () => {
   const ref = useRef<ColoredGroup>(null!);
@@ -45,9 +49,10 @@ const TileComponent = () => {
       return;
     }
 
-    if (unlocked[x]?.[y] === undefined || unlocked[x]?.[y] < 1) {
+    if (unlocked[x]?.[y] === undefined || unlocked[x]?.[y] < 1 || ref.current.position.y < WATER_HEIGHT - 1) {
       // tile is shown as unlocked but should be locked
-      ref.current.color = grayScale;
+      ref.current.color =
+        ref.current.position.y < WATER_HEIGHT - 1 ? grayScale(ref.current.position.y) : grayScale(-1 + WATER_HEIGHT);
     } else {
       // tile is shown as locked but should be unlocked
       ref.current.color = lightGray;
@@ -60,7 +65,9 @@ const TileComponent = () => {
 
     updateColor();
 
-    ref.current.position.y = getTerrainHeight(x, y) - 0.5;
+    let height = getTerrainHeight(x, y) - 0.5;
+    if (height < WATER_HEIGHT - 1 + 0.01 && height > WATER_HEIGHT - 1 - 0.01) height -= 0.01;
+    ref.current.position.y = height;
   };
 
   const onRefChange = () => {
@@ -108,7 +115,6 @@ const TileComponent = () => {
         }}
         userData={{ update: () => onRefChange(), deselect: () => deselect() }}
         onClick={(e) => handleClick(e)}
-        color={grayScale}
       >
         {hasBuilding && <Building type={buildings[ref.current.position.x][ref.current.position.z]} />}
       </Instance>

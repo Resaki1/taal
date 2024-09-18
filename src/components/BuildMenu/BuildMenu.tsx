@@ -33,7 +33,7 @@ export const BuildMenu = () => {
     const position = selected?.object?.position;
     if (!position) return [];
 
-    const terrain = getTerrainType(position.x, position.z);
+    const terrain = getTerrainType(position.y);
     const isUnlocked = unlocked[position.x] && unlocked[position.x][position.z];
 
     if (Object.keys(unlocked).length === 0) {
