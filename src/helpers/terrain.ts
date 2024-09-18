@@ -22,9 +22,9 @@ export const getTerrainType = (height: number): Terrain => {
   switch (true) {
     case height < 0.3 * HEIGHT_SCALE - (1 - WATER_HEIGHT):
       return Terrain.BEACH;
-    case height < 1 * HEIGHT_SCALE - (1 - WATER_HEIGHT):
+    case height < 0.6 * HEIGHT_SCALE - (1 - WATER_HEIGHT):
       return Terrain.MEADOW;
-    case height < 2 * HEIGHT_SCALE - (1 - WATER_HEIGHT):
+    case height < 1 * HEIGHT_SCALE - (1 - WATER_HEIGHT):
       return Terrain.FOREST;
     default:
       return Terrain.MOUNTAIN;
