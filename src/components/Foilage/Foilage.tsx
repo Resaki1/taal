@@ -9,7 +9,7 @@ interface FoilageProps {
 
 export const Foilage = ({ position }: FoilageProps) => {
   const getFoilage = () => {
-    const type = getTerrainType(position.x, position.z);
+    const type = getTerrainType(position.y);
 
     switch (type) {
       case Terrain.FOREST:

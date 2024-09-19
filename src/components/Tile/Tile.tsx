@@ -1,6 +1,6 @@
 import { Instance } from '@react-three/drei';
 import { ThreeEvent, invalidate, useFrame } from '@react-three/fiber';
-import { memo, startTransition, Suspense, useRef, useState } from 'react';
+import { memo, startTransition, useRef, useState } from 'react';
 import { useStore } from '../../store/store';
 import { Building } from '../Building/Building';
 import { Color, Group } from 'three';
@@ -108,7 +108,7 @@ const TileComponent = () => {
   });
 
   return (
-    <Suspense>
+    <>
       <Instance
         ref={(el: ColoredGroup) => {
           ref.current = el;
@@ -121,7 +121,7 @@ const TileComponent = () => {
       {/* {ref?.current?.position && !hasBuilding && (
         <Foilage position={ref.current.position} />
       )} */}
-    </Suspense>
+    </>
   );
 };
 

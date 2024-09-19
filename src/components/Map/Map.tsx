@@ -1,6 +1,6 @@
 import { Instances, Plane } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useTransition } from 'react';
 import { Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3 } from 'three';
 import debounce from 'lodash.debounce';
 import { getTerrainHeight, getTerrainType, WATER_HEIGHT } from '../../helpers/terrain';
@@ -27,6 +27,7 @@ export const Map = () => {
   const waterRef = useRef<Mesh>(null!); // ref to the water plane; its position is also used as center point of the map
   const cameraHistory = useStore((state) => state.camera);
   const setCamera = useStore((state) => state.setCamera);
+  const [, startTransition] = useTransition();
 
   const saveCameraPositionDebounced = debounce((cameraPosition: Vector3, centerBlock: Vector3) => {
     setCamera(cameraPosition, centerBlock);
@@ -63,39 +64,41 @@ export const Map = () => {
     newPosition.sub(direction).round(); // set newPosition to tile in center of view
 
     if (waterRef.current.position.distanceTo(newPosition) > 0) {
-      direction.copy(newPosition).sub(waterRef.current.position); // set direction to where the camera has moved
-      // only update if camera has moved less than 1 tile to fix distorted map
-      if (Math.abs(direction.x) <= 1 && Math.abs(direction.z) <= 1) {
-        moveVector
-          .copy(direction)
-          .multiplyScalar(RENDER_DISTANCE * 2)
-          .add(direction);
+      startTransition(() => {
+        direction.copy(newPosition).sub(waterRef.current.position); // set direction to where the camera has moved
+        // only update if camera has moved less than 1 tile to fix distorted map
+        if (Math.abs(direction.x) <= 1 && Math.abs(direction.z) <= 1) {
+          moveVector
+            .copy(direction)
+            .multiplyScalar(RENDER_DISTANCE * 2)
+            .add(direction);
 
-        bufferAttribute.array = instancedMesh.current.geometry.attributes.texIdx.array;
+          bufferAttribute.array = instancedMesh.current.geometry.attributes.texIdx.array;
 
-        instancedMesh.current.children.forEach((tile: Object3D, index: number) => {
-          updated = false;
-          if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
-            tile.position.x += moveVector.x;
-            updated = true;
-          }
-          if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
-            tile.position.z += moveVector.z;
-            updated = true;
-          }
-          if (updated) {
-            bufferAttribute.array[index] = getTerrainType(getTerrainHeight(tile.position.x, tile.position.z));
-            tile.userData.update && tile.userData.update();
-          }
-        });
+          instancedMesh.current.children.forEach((tile: Object3D, index: number) => {
+            updated = false;
+            if (Math.abs(tile?.position.x - newPosition.x) > RENDER_DISTANCE) {
+              tile.position.x += moveVector.x;
+              updated = true;
+            }
+            if (Math.abs(tile?.position.z - newPosition.z) > RENDER_DISTANCE) {
+              tile.position.z += moveVector.z;
+              updated = true;
+            }
+            if (updated) {
+              bufferAttribute.array[index] = getTerrainType(getTerrainHeight(tile.position.x, tile.position.z));
+              tile.userData.update && tile.userData.update();
+            }
+          });
 
-        bufferAttribute.needsUpdate = true;
-        instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
-      }
+          bufferAttribute.needsUpdate = true;
+          instancedMesh.current.geometry.setAttribute('texIdx', bufferAttribute);
+        }
 
-      waterRef.current.position.copy(newPosition);
-      waterRef.current.position.y = WATER_HEIGHT;
-      saveCameraPositionDebounced(camera.position, waterRef.current.position);
+        waterRef.current.position.copy(newPosition);
+        waterRef.current.position.y = WATER_HEIGHT;
+        saveCameraPositionDebounced(camera.position, waterRef.current.position);
+      });
     }
   });
 
