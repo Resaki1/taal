@@ -1,20 +1,19 @@
 import { Instances, Plane } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useLayoutEffect, useRef } from 'react';
-import { Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3 } from 'three';
+import { Euler, InstancedBufferAttribute, InstancedMesh, Mesh, Object3D, Vector3, MeshPhongMaterial } from 'three';
 import debounce from 'lodash.debounce';
 import { getTerrainHeight, getTerrainType } from '../../helpers/terrain';
 import { Materials } from '../../materials/materials';
 import { Tile } from '../Tile/Tile';
 import { tileShader } from '../../helpers/shader';
 import { useStore } from '../../store/store';
-import * as THREE from 'three';
 
 const RENDER_DISTANCE = 32;
 const MAP_LENGTH = RENDER_DISTANCE * 2 + 1;
 const MAP_SIZE = Math.pow(MAP_LENGTH, 2);
 
-const waterMaterial = new THREE.MeshPhongMaterial({
+const waterMaterial = new MeshPhongMaterial({
   color: 0x006994,
   shininess: 60,
   transparent: true,
