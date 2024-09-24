@@ -110,8 +110,6 @@
   position: fixed;
   top: 41cqi;
   left: 5cqi;
-  //background: rgba(211, 197, 122, 0.4); Never used since infinite animation is active. Change global value instead
-  //background-color: rgba(33, 73, 77, 0.702); Never used since infinite animation is active. Change global value instead
   backdrop-filter: saturate(180%) blur(30px);
   -webkit-backdrop-filter: saturate(180%) blur(30px);
   padding: 10px 10px;

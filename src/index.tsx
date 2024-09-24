@@ -5,11 +5,6 @@ import App from "./App";
 import { register } from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
-const meta = document.createElement('meta');
-meta.name = 'viewport';
-meta.content = 'width=device-width, initial-scale=1, maximum-scale=1';
-document.getElementsByTagName('head')[0].appendChild(meta);
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

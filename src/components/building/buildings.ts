@@ -2,7 +2,6 @@ import { Terrain } from '../../helpers/terrain';
 import { Ressources } from '../../store/store';
 import { BuildingType } from './Building';
 
-// Definiere die Emojis als Konstanten
 const EMOJIS = {
   wood: '🪵',
   gold: '💰',
