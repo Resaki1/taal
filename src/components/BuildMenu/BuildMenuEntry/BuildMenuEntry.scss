@@ -20,29 +20,6 @@
   }
 }
 
-@keyframes rgbPulse {
-  0% {
-    background-color: rgb(255, 0, 0); /* Rot */
-  }
-  16% {
-    background-color: rgb(255, 255, 0); /* Gelb */
-  }
-  33% {
-    background-color: rgb(0, 255, 0); /* Grün */
-  }
-  50% {
-    background-color: rgb(0, 255, 255); /* Cyan */
-  }
-  66% {
-    background-color: rgb(0, 0, 255); /* Blau */
-  }
-  83% {
-    background-color: rgb(255, 0, 255); /* Magenta */
-  }
-  100% {
-    background-color: rgb(255, 0, 0); /* Zurück zu Rot */
-  }
-}
 
 @keyframes subtleRing {
   0%,
@@ -85,16 +62,6 @@
   color: #d5d5d5;
 
   animation: fadeIn 0.18s forwards ease-in-out;
-
-  .value-symbol {
-    font-size: 1.5em; /* Größerer Schriftgrad für das Emoji */
-    margin-right: 55px;
-    display: inline-block;
-    animation: subtleRing 1s infinite; /* Animation für das Emoji */
-  }
-
-  .value-amount {
-  }
 
   p {
     font-size: 0.9em;
@@ -143,8 +110,7 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     align-self: center;
     animation:
-      fadeIn 0.4s forwards ease-in-out,
-      rgbPulse 3s infinite;
+      fadeIn 0.4s forwards ease-in-out;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.67, 0.38, 0.09, 2.1);
     margin-top: 8px;
