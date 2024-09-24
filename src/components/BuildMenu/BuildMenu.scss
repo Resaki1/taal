@@ -23,12 +23,12 @@ $build-menu-height: 64px;
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ;
+  animation: fadeIn 0.2s ;
   will-change: opacity, filter;
 }
 
 .fade-out {
-  animation: fadeOut 0.5s ;
+  animation: fadeOut 0.2s ;
   will-change: opacity, filter;
 }
 
