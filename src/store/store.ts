@@ -42,7 +42,6 @@ export type Actions = {
   unlock: (x: number, y: number, range: number) => void;
   setSelected: (object: SelectedObject | undefined) => void;
   saveLocation: (title: string, x: number, y: number) => void;
-  listLocations: () => {};
   removeLocation: (title: string) => void;
   setCamera: (position: Vector3, lookAt: Vector3) => void;
   reset: () => void;
@@ -122,10 +121,6 @@ export const useStore = create<State & Actions>()(
               locations: newLocationType,
             };
           }),
-        // list saved locations
-        listLocations: () => {
-          return get().locations;
-        },
         removeBuilding: (x, y) =>
           set((state) => {
             const building = state.buildings[x][y];
