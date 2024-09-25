@@ -72,7 +72,7 @@ const initialState: State = {
 export const useStore = create<State & Actions>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         ...initialState,
         addBuilding: (x, y, building) =>
           set((state) => {
@@ -87,14 +87,14 @@ export const useStore = create<State & Actions>()(
             }
 
             // add building output
-            const newBuildingOutputs = { ...state.buildingOutputs };
+            const newBuildingOutputs =state.buildingOutputs;
             const output = getOutputOfBuilding(building);
             Object.entries(output).forEach(([key, value]) => {
               newBuildingOutputs[key as Ressources] += value.amount;
             });
 
             // add new building
-            const newBuildingType = { ...state.buildings };
+            const newBuildingType = state.buildings;
             if (!newBuildingType[x]) newBuildingType[x] = {};
             newBuildingType[x][y] = building;
 
@@ -106,7 +106,7 @@ export const useStore = create<State & Actions>()(
         // add new saved location
         saveLocation: (t, x, y) =>
           set((state) => {
-            const newLocationType = { ...state.locations };
+            const newLocationType = state.locations;
             newLocationType[t] = { positionX: x, positionY: y };
             return {
               locations: newLocationType,
@@ -115,7 +115,7 @@ export const useStore = create<State & Actions>()(
         // remove saved location
         removeLocation: (t) =>
           set((state) => {
-            const newLocationType = { ...state.locations };
+            const newLocationType = state.locations;
             delete newLocationType[t];
             return {
               locations: newLocationType,
@@ -135,7 +135,7 @@ export const useStore = create<State & Actions>()(
             }
 
             // remove building output
-            const newBuildingOutputs = { ...state.buildingOutputs };
+            const newBuildingOutputs = state.buildingOutputs;
             const output = getOutputOfBuilding(building);
             Object.entries(output).forEach(([key, value]) => {
               newBuildingOutputs[key as Ressources] -= value.amount;
@@ -147,7 +147,7 @@ export const useStore = create<State & Actions>()(
           }),
         addRessources: (ressourcesToAdd: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {
-            const newRessources = { ...state.ressources };
+            const newRessources = state.ressources;
             Object.entries(ressourcesToAdd).forEach(([key, value]) => {
               newRessources[key as Ressources] += value!;
             });
@@ -157,7 +157,7 @@ export const useStore = create<State & Actions>()(
           }),
         removeRessources: (ressourcesToRemove: Partial<{ [key in Ressources]: number }>) =>
           set((state: State) => {
-            const newRessources = { ...state.ressources };
+            const newRessources = state.ressources ;
             Object.entries(ressourcesToRemove).forEach(([key, value]) => {
               newRessources[key as Ressources] -= value!;
             });
@@ -167,7 +167,7 @@ export const useStore = create<State & Actions>()(
           }),
         lock: (x, y, range) =>
           set((state: State) => {
-            const newUnlocked = { ...state.unlocked };
+            const newUnlocked = state.unlocked;
             let distance: number;
             for (let i = x - range; i <= x + range; i++) {
               for (let j = y - range; j <= y + range; j++) {
@@ -184,7 +184,7 @@ export const useStore = create<State & Actions>()(
           }),
         unlock: (x, y, range) =>
           set((state: State) => {
-            const newUnlocked = { ...state.unlocked };
+            const newUnlocked = state.unlocked;
             let distance: number;
             for (let i = x - range; i <= x + range; i++) {
               for (let j = y - range; j <= y + range; j++) {
@@ -209,7 +209,7 @@ export const useStore = create<State & Actions>()(
           set(() => {
             return { camera: { position, lookAt } };
           }),
-        reset: () => set({ ...initialState }),
+        reset: () => set(initialState),
       }),
       {
         name: 'game-state',
